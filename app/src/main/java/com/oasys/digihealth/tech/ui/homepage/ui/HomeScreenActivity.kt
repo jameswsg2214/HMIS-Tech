@@ -30,6 +30,7 @@ import com.oasys.digihealth.tech.ui.homepage.viewModel.HomeScreenViewModel
 import com.oasys.digihealth.tech.ui.institution.common_departmant.view.fragment.DepartmentInstituteDialogFragment
 import com.oasys.digihealth.tech.ui.institution.lmis.view.fragment.LabInstituteDialogFragment
 import com.oasys.digihealth.tech.ui.institution.rmis.view.fragment.RadiologyInstituteDialogFragment
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.view.fragment.LabTestFragment
 import com.oasys.digihealth.tech.ui.login.model.SimpleResponseModel
 import com.oasys.digihealth.tech.ui.login.view.LoginActivity
 import com.oasys.digihealth.tech.ui.login.view_model.LoginViewModel
@@ -242,7 +243,6 @@ class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLangua
                 lmisList?.visibility=View.VISIBLE
                 rmislayout?.visibility=View.GONE
                 settingLayout?.visibility= View.GONE
-
 
                 add_image?.setImageResource(R.drawable.ic_add)
                 lab_image?.setImageResource(R.drawable.ic_minus_white)
@@ -574,10 +574,10 @@ class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLangua
 
         lab_test?.setOnClickListener {
             drawerLayout!!.closeDrawer(GravityCompat.START)
-       /*     val op=LabTestActivity()
+            val op=LabTestFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()*/
+            fragmentTransaction.commit()
 
         }
         lab_approvl?.setOnClickListener {

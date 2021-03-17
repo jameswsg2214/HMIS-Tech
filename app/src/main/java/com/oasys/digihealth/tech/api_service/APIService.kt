@@ -7,6 +7,8 @@ import com.oasys.digihealth.tech.BuildConfig.BASE_URL
 import com.oasys.digihealth.tech.config.AppConstants
 import com.oasys.digihealth.tech.ui.institution.common_departmant.model.DepartmentResponseModel
 import com.oasys.digihealth.tech.ui.institution.lmis.model.LocationMasterResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
 import com.oasys.digihealth.tech.ui.login.model.*
 import com.oasys.digihealth.tech.ui.login.model.institution_response.InstitutionResponseModel
 import com.oasys.digihealth.tech.ui.login.model.login_response_model.LoginResponseModel
@@ -149,6 +151,21 @@ interface APIService {
 
 
 
+    /* ---------- lmis ---------------*/
+
+    // LMIS TEST List
+
+    @POST(getLabTestList)
+    fun getLabTestList(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body body: LabTestRequestModel?
+    ): Call<LabTestResponseModel>
+
+
 /*
 
     */
@@ -209,13 +226,12 @@ interface APIService {
             BASE_DOMAIN + "HMIS-RMIS/v1/api/tolocationmaster/gettolocationmasterbyfacilityid"
 
 
-        /*Nurse Desk*/
-        const val GetWardList =
-            BASE_DOMAIN + "HMIS-IP-Management/v1/api/ward/getwardbyloggedyinfacility"
+        /*LMIS*/
+
+        const val getLabTestList =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/viewlabtest/getviewlabtest"
 
 
-        const val GetStoreList =
-            BASE_DOMAIN + "HMIS-INVENTORY/v1/api/storeMaster/getStoreMasterByFacilityId"
 
     }
 }

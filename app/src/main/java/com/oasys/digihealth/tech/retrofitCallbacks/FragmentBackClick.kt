@@ -1,9 +1,7 @@
-package com.oasys.digihealth.tech.retrofitCallbacks;
+package com.oasys.digihealth.tech.retrofitCallbacks
 
+import androidx.fragment.app.Fragment
 
-import androidx.fragment.app.Fragment;
-
-public interface FragmentBackClick {
-    void setSelectedFragment(Fragment fragment);
+interface FragmentBackClick {
+    fun setSelectedFragment(fragment: Fragment?)
 }
-
