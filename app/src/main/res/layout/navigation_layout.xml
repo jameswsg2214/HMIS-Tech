@@ -1,0 +1,1034 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileCircleImageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="@dimen/_5sdp"
+                android:src="@drawable/ic_menu_gallery"
+                tools:ignore="RtlCompat,UnusedAttribute,VectorDrawableCompat" />
+
+            <LinearLayout
+                android:id="@+id/familyAddLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/userNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/dr_medium_text"
+                        android:textStyle="bold"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:id="@+id/user_department"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/poppins"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:text="20-03-2020"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/dr_medium_text"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:paddingLeft="@dimen/_5sdp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/view"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- App Master-->
+
+
+                    <!--Registration-->
+
+                    <LinearLayout
+                        android:id="@+id/registration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            app:srcCompat="@drawable/ic_registration_icon"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/registration_text"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/registration"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/add_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="20"
+                            app:srcCompat="@drawable/ic_add"
+                            tools:ignore="ContentDescription" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/registerList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/quickReg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:visibility="visible"
+                            android:weightSum="100"
+                            tools:ignore="UnusedAttribute">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="10" />
+
+                            <TextView
+                                android:id="@+id/quick_reg_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="70"
+                                android:drawablePadding="30dp"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/quickReg"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dr_medium_text"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/covid_reg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:visibility="visible"
+                            android:weightSum="100"
+                            tools:ignore="UnusedAttribute">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="10" />
+
+                            <TextView
+                                android:id="@+id/covidregtext"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="70"
+                                android:drawablePadding="30dp"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/covidReg"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dr_medium_text"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/detailedRegistration"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:visibility="visible"
+                            android:weightSum="100"
+                            tools:ignore="UnusedAttribute">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="10" />
+
+                            <TextView
+
+                                android:text="Detailed Registration"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="70"
+                                android:drawablePadding="30dp"
+                                android:fontFamily="@font/poppins"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dr_medium_text"
+                                android:textStyle="bold"
+
+
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/OPCorrection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:visibility="visible"
+                            android:weightSum="100"
+                            tools:ignore="UnusedAttribute">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="10" />
+
+                            <TextView
+                                android:id="@+id/OPCorrectionText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="70"
+                                android:drawablePadding="30dp"
+                                android:fontFamily="@font/poppins"
+                                android:text="@string/opCorrection"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dr_medium_text"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <!--LMIS-->
+
+                    <LinearLayout
+                        android:id="@+id/lab"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            app:srcCompat="@drawable/ic_lmis_list"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/lmistext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/lmis"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/lab_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="20"
+                            app:srcCompat="@drawable/ic_add"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lmisList"
+                        android:visibility="visible"
+                        android:orientation="vertical"
+                        >
+                    <LinearLayout
+                        android:id="@+id/new_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/newordertext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/neworder"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lab_test"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/labtest"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/labtesttext"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lab_process"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/textprocesstext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/testprocess"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lab_approvl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute,UseCompoundDrawables">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/testapprovaltext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/testapproval"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sample_dispatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute,UseCompoundDrawables">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/sampledispathtext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/samplediaptch"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/result_dispatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/resultdispathtext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/resultdispath"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/order_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute,UseCompoundDrawables">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/orderstatustext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/orderstatus"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <!--RMIS-->
+
+                    <LinearLayout
+                        android:id="@+id/radilogy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            app:srcCompat="@drawable/ic_lmis_list"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/rad_text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmis"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/rad_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="20"
+                            app:srcCompat="@drawable/ic_add"
+                            tools:ignore="ContentDescription" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rmislayout"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/rad_dashboard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/rad_dashboardtext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmisdashboard"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/rad_new_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/rad_newordertext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmistech"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rad_test"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/radtest"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmistest"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rad_process"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/textradprocesstext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmisprocess"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rad_approvl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/testradapprovaltext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmisapproval"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rad_result_dispatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/radsampledispathtext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmisdispatch"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rad_order_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/radorderstatustext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/rmisorder"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Settings-->
+
+                    <LinearLayout
+                        android:id="@+id/settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            app:srcCompat="@drawable/ic_settings"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/settingstext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/action_settings"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/settings_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="20"
+                            app:srcCompat="@drawable/ic_add"
+                            tools:ignore="ContentDescription" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/settingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/changePassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="visible"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/changepasswordtext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/change_password"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/languages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:visibility="visible"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/languagetext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/languages"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+                    <!--Logout-->
+
+                    <LinearLayout
+                        android:id="@+id/logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="100"
+                        tools:ignore="UnusedAttribute">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            app:srcCompat="@drawable/ic_logout"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/logouttext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="70"
+                            android:fontFamily="@font/poppins"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/logout"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dr_medium_text"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>
