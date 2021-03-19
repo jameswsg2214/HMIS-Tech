@@ -26,8 +26,14 @@ import com.oasys.digihealth.tech.config.AppPreferences
 import com.oasys.digihealth.tech.databinding.FragmentLabTestBinding
 import com.oasys.digihealth.tech.retrofitCallbacks.RetrofitCallback
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetail
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetailsResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderReq
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.SendIdList
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.view.adapter.LabTestAdapter
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.view.dialogFragment.OrderProcessDialogFragment
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.view.dialogFragment.RejectDialogFragment
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.viewModel.LabTestViewModel
 import com.oasys.digihealth.tech.ui.login.view_model.LoginViewModel
 import com.oasys.digihealth.tech.utils.Utils
@@ -38,9 +44,11 @@ import kotlin.collections.ArrayList
 
 class LabTestFragment : Fragment()
 
-    //, OrderProcessDialogFragment.OnOrderProcessListener,
-//    RejectDialogFragment.OnLabTestRefreshListener, SendForApprovalDialogFragment.OnsendForApprovalListener,
-//    AssignToOtherDialogFragment.OnAssignToOtherListener,OrderProcessDialogFragment.OnLabTestCallBack
+    , OrderProcessDialogFragment.OnOrderProcessListener
+    ,RejectDialogFragment.OnLabTestRefreshListener
+//    , SendForApprovalDialogFragment.OnsendForApprovalListener,
+//    AssignToOtherDialogFragment.OnAssignToOtherListener
+    ,OrderProcessDialogFragment.OnLabTestCallBack
 
 {
     private var selectTestitemUuid: String? = ""
@@ -73,7 +81,7 @@ class LabTestFragment : Fragment()
     private var pinOrMobile: String = ""
     private var orderNumber: String = ""
 
-//    private var orderId: ArrayList<SendIdList> = ArrayList()
+    private var orderId: ArrayList<SendIdList> = ArrayList()
 
     private var LabUUId: Int? = null
 
@@ -351,11 +359,10 @@ class LabTestFragment : Fragment()
             labListAPI(pageSize, currentPage)
         }
 
-  /*      binding?.rejected?.setOnClickListener {
+
+        binding?.rejected?.setOnClickListener {
 
             val datas = mAdapter!!.getSelectedCheckData()
-
-            var reqest: LabrapidSaveRequestModel = LabrapidSaveRequestModel()
 
             var detailsArray: ArrayList<SendIdList> = ArrayList()
 
@@ -408,6 +415,8 @@ class LabTestFragment : Fragment()
 
 
         }
+
+  /*
 
 
         binding?.assignOthers?.setOnClickListener {
@@ -509,80 +518,12 @@ class LabTestFragment : Fragment()
             mAdapter!!.selectAllCheckbox(isChecked)
 
         }
-/*
-
-
-        binding?.sampleAcceptanceBtn!!.setOnClickListener {
-
-
-
-            val request: SampleAcceptedRequest = SampleAcceptedRequest()
-
-            val datas = mAdapter!!.getSelectedCheckData()
-
-            var OrderList: ArrayList<Sample> = ArrayList()
-
-            OrderList.clear()
-
-
-            var status: Boolean = true
-
-            if (datas!!.size != 0) {
-
-                for (i in datas!!.indices) {
-
-                    if (datas[i]!!.order_status_uuid == CREATEDUUID) {
-
-                        var order: Sample = Sample()
-
-                        order.Id = datas[i]!!.uuid!!
-
-
-                        order.order_number= datas[i]!!.order_number!!
-
-                        order.order_status_uuid = datas[i]!!.order_status_uuid!!
-
-                        order.to_location_uuid = datas[i]!!.to_location_uuid!!
-
-                        OrderList.add(order)
-
-                    } else {
-
-                        status = false
-
-                    }
-                }
-
-                if (status) {
-
-                    request.details = OrderList
-
-
-                    viewModel!!.getLabSampleAcceptance(request,labTestAcceptRetrofitCallback)
-
-                    //viewModel!!.orderDetailsGet(request, orderDetailsRetrofitCallback)
-
-                } else {
-
-                    Toast.makeText(context, "Already Sample Accepted", Toast.LENGTH_SHORT).show()
-
-                }
-
-            } else {
-
-                Toast.makeText(context, "Please Select Any one Item", Toast.LENGTH_SHORT).show()
-
-            }
-
-
-
-        }
 
 
 
         binding!!.orderProccess!!.setOnClickListener {
 
-            val request: Req = Req()
+            val request: OrderReq = OrderReq()
 
             val datas = mAdapter!!.getSelectedCheckData()
 
@@ -656,6 +597,77 @@ class LabTestFragment : Fragment()
 
 
         }
+/*
+
+
+        binding?.sampleAcceptanceBtn!!.setOnClickListener {
+
+
+
+            val request: SampleAcceptedRequest = SampleAcceptedRequest()
+
+            val datas = mAdapter!!.getSelectedCheckData()
+
+            var OrderList: ArrayList<Sample> = ArrayList()
+
+            OrderList.clear()
+
+
+            var status: Boolean = true
+
+            if (datas!!.size != 0) {
+
+                for (i in datas!!.indices) {
+
+                    if (datas[i]!!.order_status_uuid == CREATEDUUID) {
+
+                        var order: Sample = Sample()
+
+                        order.Id = datas[i]!!.uuid!!
+
+
+                        order.order_number= datas[i]!!.order_number!!
+
+                        order.order_status_uuid = datas[i]!!.order_status_uuid!!
+
+                        order.to_location_uuid = datas[i]!!.to_location_uuid!!
+
+                        OrderList.add(order)
+
+                    } else {
+
+                        status = false
+
+                    }
+                }
+
+                if (status) {
+
+                    request.details = OrderList
+
+
+                    viewModel!!.getLabSampleAcceptance(request,labTestAcceptRetrofitCallback)
+
+                    //viewModel!!.orderDetailsGet(request, orderDetailsRetrofitCallback)
+
+                } else {
+
+                    Toast.makeText(context, "Already Sample Accepted", Toast.LENGTH_SHORT).show()
+
+                }
+
+            } else {
+
+                Toast.makeText(context, "Please Select Any one Item", Toast.LENGTH_SHORT).show()
+
+            }
+
+
+
+        }
+
+
+
 
         binding!!.saveOfApproval.setOnClickListener {
 
@@ -1116,6 +1128,91 @@ class LabTestFragment : Fragment()
             binding?.progressbar!!.setVisibility(View.GONE);
         }
     }
+
+
+
+    val orderDetailsRetrofitCallback = object : RetrofitCallback<OrderProcessDetailsResponseModel> {
+        override fun onSuccessfulResponse(responseBody: Response<OrderProcessDetailsResponseModel?>) {
+
+
+            val ft = childFragmentManager.beginTransaction()
+            val dialog = OrderProcessDialogFragment()
+            val bundle = Bundle()
+            val saveArray = responseBody!!.body()!!.responseContents.rows
+            bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, saveArray)
+            bundle.putParcelableArrayList(AppConstants.RESPONSEORDERARRAY, orderId)
+            bundle.putInt(AppConstants.RESPONSENEXT, orderCount)
+            bundle.putString("testMethodCode", testMethodCode)
+            bundle.putString("From", "Test")
+            // send this arraylist orderId
+            dialog.arguments = bundle
+
+            // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            dialog.show(ft, "Tag")
+        }
+
+        override fun onBadRequest(errorBody: Response<OrderProcessDetailsResponseModel?>) {
+
+
+            utils?.showToast(
+                R.color.negativeToast,
+                binding?.mainLayout!!,
+                "something wrong"
+            )
+
+            val gson = GsonBuilder().create()
+            val responseModel: OrderProcessDetailsResponseModel
+            try {
+                responseModel = gson.fromJson(
+                    errorBody!!.errorBody()!!.string(),
+                    OrderProcessDetailsResponseModel::class.java
+                )
+
+            } catch (e: Exception) {
+                utils?.showToast(
+                    R.color.negativeToast,
+                    binding?.mainLayout!!,
+                    getString(R.string.something_went_wrong)
+                )
+                e.printStackTrace()
+            }
+        }
+
+        override fun onServerError(response: Response<*>?) {
+            utils?.showToast(
+                R.color.negativeToast,
+                binding?.mainLayout!!,
+                getString(R.string.something_went_wrong)
+            )
+        }
+
+        override fun onUnAuthorized() {
+            utils?.showToast(
+                R.color.negativeToast,
+                binding?.mainLayout!!,
+                getString(R.string.unauthorized)
+            )
+        }
+
+        override fun onForbidden() {
+            utils?.showToast(
+                R.color.negativeToast,
+                binding?.mainLayout!!,
+                getString(R.string.something_went_wrong)
+            )
+        }
+
+        override fun onFailure(failure: String?) {
+            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure!!)
+        }
+
+        override fun onEverytime() {
+            viewModel!!.progress.value = 8
+        }
+
+    }
+
+
 /*
     val saveRapidRetrofitCallback = object : RetrofitCallback<SimpleResponseModel> {
         override fun onSuccessfulResponse(responseBody: Response<SimpleResponseModel>?) {
@@ -1191,83 +1288,6 @@ class LabTestFragment : Fragment()
 
     }
 
-
-    val orderDetailsRetrofitCallback = object : RetrofitCallback<OrderProcessDetailsResponseModel> {
-        override fun onSuccessfulResponse(responseBody: Response<OrderProcessDetailsResponseModel>?) {
-
-
-            val ft = childFragmentManager.beginTransaction()
-            val dialog = OrderProcessDialogFragment()
-            val bundle = Bundle()
-            val saveArray = responseBody!!.body()!!.responseContents.rows
-            bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, saveArray)
-            bundle.putParcelableArrayList(AppConstants.RESPONSEORDERARRAY, orderId)
-            bundle.putInt(AppConstants.RESPONSENEXT, orderCount)
-            bundle.putString("testMethodCode", testMethodCode)
-            bundle.putString("From", "Test")
-            // send this arraylist orderId
-            dialog.arguments = bundle
-
-           // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-            dialog.show(ft, "Tag")
-        }
-
-        override fun onBadRequest(errorBody: Response<OrderProcessDetailsResponseModel>?) {
-            val gson = GsonBuilder().create()
-            val responseModel: OrderProcessDetailsResponseModel
-            try {
-                responseModel = gson.fromJson(
-                    errorBody!!.errorBody()!!.string(),
-                    OrderProcessDetailsResponseModel::class.java
-                )
-                utils?.showToast(
-                    R.color.negativeToast,
-                    binding?.mainLayout!!,
-                    "something wrong"
-                )
-            } catch (e: Exception) {
-                utils?.showToast(
-                    R.color.negativeToast,
-                    binding?.mainLayout!!,
-                    getString(R.string.something_went_wrong)
-                )
-                e.printStackTrace()
-            }
-        }
-
-        override fun onServerError(response: Response<*>) {
-            utils?.showToast(
-                R.color.negativeToast,
-                binding?.mainLayout!!,
-                getString(R.string.something_went_wrong)
-            )
-        }
-
-        override fun onUnAuthorized() {
-            utils?.showToast(
-                R.color.negativeToast,
-                binding?.mainLayout!!,
-                getString(R.string.unauthorized)
-            )
-        }
-
-        override fun onForbidden() {
-            utils?.showToast(
-                R.color.negativeToast,
-                binding?.mainLayout!!,
-                getString(R.string.something_went_wrong)
-            )
-        }
-
-        override fun onFailure(failure: String) {
-            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure)
-        }
-
-        override fun onEverytime() {
-            viewModel!!.progress.value = 8
-        }
-
-    }
 
 
     val labTestAcceptRetrofitCallback = object : RetrofitCallback<SampleAcceptanceResponseModel> {
@@ -1542,12 +1562,21 @@ class LabTestFragment : Fragment()
     }
     override fun onAttachFragment(childFragment: Fragment) {
         super.onAttachFragment(childFragment)
-    /*    if (childFragment is RejectDialogFragment) {
-            childFragment.setOnLabTestRefreshListener(this)
-        }
+
+
         if(childFragment is OrderProcessDialogFragment){
             childFragment.setOnOrderProcessRefreshListener(this)
         }
+
+        if(childFragment is OrderProcessDialogFragment)
+        {
+            childFragment.setOnLabTestProcess(this)
+        }
+        if (childFragment is RejectDialogFragment) {
+            childFragment.setOnLabTestRefreshListener(this)
+        }
+    /*
+
         if(childFragment is SendForApprovalDialogFragment)
         {
             childFragment.setOnForApprovalRefreshListener(this)
@@ -1558,12 +1587,41 @@ class LabTestFragment : Fragment()
             childFragment.setOnAssignToOtherRefreshListener(this)
         }
 
-        if(childFragment is OrderProcessDialogFragment)
-        {
-            childFragment.setOnLabTestProcess(this)
-        }*/
+     */
     }
-/*
+
+    // orderProcessRefresh
+    override fun onRefreshOrderList(from:String) {
+
+        Toast.makeText(requireContext(),"Save Successfully",Toast.LENGTH_LONG).show()
+
+        mAdapter!!.clearAll()
+
+        pageSize = 10
+
+        currentPage = 0
+
+        if(from=="Test"){
+
+
+
+//            AnalyticsManager.getAnalyticsManager().trackLMISLabTestOrderApproval(requireContext(),"")
+
+        }
+
+        labListAPI(10, 0)
+    }
+
+
+    override fun onArrayList(orderData: ArrayList<SendIdList>?) {
+        val ft = childFragmentManager.beginTransaction()
+        val dialog = RejectDialogFragment()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, orderData)
+        dialog.arguments = bundle
+        dialog.show(ft, "Tag")
+    }
+
 
     override fun onRefreshList() {
         //RejectDialogFragment
@@ -1579,26 +1637,10 @@ class LabTestFragment : Fragment()
 
     }
 
-    override fun onRefreshOrderList(from:String) {
-
-        Toast.makeText(requireContext(),"Save Successfully",Toast.LENGTH_LONG).show()
-
-        mAdapter!!.clearAll()
-
-        pageSize = 10
-
-        currentPage = 0
-
-        if(from=="Test"){
+/*
 
 
 
-            AnalyticsManager.getAnalyticsManager().trackLMISLabTestOrderApproval(requireContext(),"")
-
-        }
-
-        labListAPI(10, 0)
-    }
 
     override fun onRefreshsendApprovalList() {
         mAdapter!!.clearAll()
@@ -1622,14 +1664,7 @@ class LabTestFragment : Fragment()
         labListAPI(10, 0)
     }
 
-    override fun onArrayList(orderData: ArrayList<SendIdList>?) {
-        val ft = childFragmentManager.beginTransaction()
-        val dialog = RejectDialogFragment()
-        val bundle = Bundle()
-        bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, orderData)
-        dialog.arguments = bundle
-        dialog.show(ft, "Tag")
-    }
+
 
 */
 }

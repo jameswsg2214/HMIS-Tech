@@ -31,6 +31,7 @@ import com.oasys.digihealth.tech.ui.institution.common_departmant.view.fragment.
 import com.oasys.digihealth.tech.ui.institution.lmis.view.fragment.LabInstituteDialogFragment
 import com.oasys.digihealth.tech.ui.institution.rmis.view.fragment.RadiologyInstituteDialogFragment
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.view.fragment.LabTestFragment
+import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.view.fragment.SampleDispatchFragment
 import com.oasys.digihealth.tech.ui.login.model.SimpleResponseModel
 import com.oasys.digihealth.tech.ui.login.view.LoginActivity
 import com.oasys.digihealth.tech.ui.login.view_model.LoginViewModel
@@ -620,13 +621,11 @@ class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLangua
         }
         sample_dispatch?.setOnClickListener {
 
-
             drawerLayout!!.closeDrawer(GravityCompat.START)
-          /*  val op=SampleDispatchActivity()
+            val op= SampleDispatchFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
             fragmentTransaction.commit()
-*/
 
         }
         result_dispatch?.setOnClickListener {

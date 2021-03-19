@@ -7,8 +7,21 @@ import com.oasys.digihealth.tech.BuildConfig.BASE_URL
 import com.oasys.digihealth.tech.config.AppConstants
 import com.oasys.digihealth.tech.ui.institution.common_departmant.model.DepartmentResponseModel
 import com.oasys.digihealth.tech.ui.institution.lmis.model.LocationMasterResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.DirectApprovelReq
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.GetNoteTemplateReq
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.RejectRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetailsResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderReq
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderToProcessReqestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToResponseModel
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.noteTemplateResponse.GetNoteTemplateResp
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.rejectReferenceResponse.RejectReferenceResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethod
+import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.model.request.DispatchReq
+import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.model.request.SampleDispatchRequest
+import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.model.response.SampleDispatchResponseModel
 import com.oasys.digihealth.tech.ui.login.model.*
 import com.oasys.digihealth.tech.ui.login.model.institution_response.InstitutionResponseModel
 import com.oasys.digihealth.tech.ui.login.model.login_response_model.LoginResponseModel
@@ -166,6 +179,108 @@ interface APIService {
     ): Call<LabTestResponseModel>
 
 
+    @POST(orderProcess)
+    fun orderProcess(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: OrderToProcessReqestModel?
+    ): Call<SimpleResponseModel>
+
+    @POST(DirectApprovel)
+    fun directApprovel(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body directApprovelReq: DirectApprovelReq?
+    ): Call<SimpleResponseModel>
+
+    @POST(GetNoteTemplateByID)
+    fun getNoteTemplate(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body getNoteTemplateReq: GetNoteTemplateReq
+    ): Call<GetNoteTemplateResp>
+
+
+    //reject
+
+    @POST(rejectData)
+    fun rejectTestLab(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RejectRequestModel?
+    ): Call<SimpleResponseModel>
+
+    @POST(getRejectReference)
+    fun getRejectReference(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<RejectReferenceResponseModel>
+
+
+
+    @POST(orderDetailsGet)
+    fun orderDetailsGet(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: OrderReq?
+    ): Call<OrderProcessDetailsResponseModel>
+
+    //search list
+    @POST(GetRefrenceTestMethod)
+    fun getTestMethod(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<ResponseTestMethod>
+
+    @POST(getAssignedSpinnerList)
+    fun getLabAssignedToSpinner(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body body: RequestBody?
+    ): Call<LabAssignedToResponseModel>
+
+
+    //Sample Dispath
+
+    @POST(getLabTestList)
+    fun getSampleDispatchList(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body body: SampleDispatchRequest?
+    ): Call<LabTestResponseModel>
+
+    //dispatch
+    @POST(sampledispatch)
+    fun dispatch(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: DispatchReq?
+    ): Call<SampleDispatchResponseModel>
+
+
 /*
 
     */
@@ -230,7 +345,30 @@ interface APIService {
 
         const val getLabTestList =
             BASE_DOMAIN + "HMIS-LIS/v1/api/viewlabtest/getviewlabtest"
+        const val orderDetailsGet =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorderdetails/getOrderProcessDetails"
+        const val orderProcess =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/orderProcessSave"
+        const val DirectApprovel =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/saveandapproval"
+        const val GetNoteTemplateByID =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/notetemplate/getNoteTemplateById"
+        const val rejectData =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/sampletransportdetails/sampleRejectForAll"
 
+        const val getRejectReference =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/commonReference/getReference"
+
+        //search feilds
+        const val GetRefrenceTestMethod =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/commonReference/getAllReference"
+        const val getAssignedSpinnerList =
+            BASE_DOMAIN + "Appmaster/v1/api/facility/getAllFacility"
+
+
+        //dispatch
+        const val sampledispatch =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/sampletransportbatch/dispatchsampletransport"
 
 
     }

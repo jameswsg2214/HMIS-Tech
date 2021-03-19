@@ -12,8 +12,18 @@ import com.oasys.digihealth.tech.config.AppPreferences
 import com.oasys.digihealth.tech.db.UserDetailsRoomRepository
 import com.oasys.digihealth.tech.retrofitCallbacks.RetrofitCallback
 import com.oasys.digihealth.tech.retrofitCallbacks.RetrofitMainCallback
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.DirectApprovelReq
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.GetNoteTemplateReq
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.RejectRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetailsResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderReq
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.request.orderRequest.OrderToProcessReqestModel
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.noteTemplateResponse.GetNoteTemplateResp
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.orderProcessResponse.OrderProcessResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.rejectReferenceResponse.RejectReferenceResponseModel
+import com.oasys.digihealth.tech.ui.login.model.SimpleResponseModel
 import com.oasys.digihealth.tech.utils.Utils
 import okhttp3.RequestBody
 import org.json.JSONException
@@ -70,51 +80,8 @@ class LabTestViewModel(
 
     }
 
-/*
 
-
-
-    fun getLabSampleAcceptance(requestLabTestSampleRequest: SampleAcceptedRequest, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SampleAcceptanceResponseModel>
-    ) {
-        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
-
-        if (!Utils.isNetworkConnected(getApplication())) {
-            errorText.value = getApplication<Application>().getString(R.string.no_internet)
-            return
-        }
-        progress.value = 0
-        val aiiceApplication = HmisApplication.get(getApplication())
-        val apiService = aiiceApplication.getRetrofitService()
-
-        apiService?.getSampleAccept(AppConstants.ACCEPT_LANGUAGE_EN,
-            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
-            userDataStoreBean?.uuid!!, facility_id!!,true,
-            requestLabTestSampleRequest
-        )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
-
-    }
-
-    fun orderDetailsGet(req: Req, GetLabTestSampleListRetrofitCallback: RetrofitCallback<OrderProcessDetailsResponseModel>
-    ) {
-        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
-
-        if (!Utils.isNetworkConnected(getApplication())) {
-            errorText.value = getApplication<Application>().getString(R.string.no_internet)
-            return
-        }
-        progress.value = 0
-        val aiiceApplication = HmisApplication.get(getApplication())
-        val apiService = aiiceApplication.getRetrofitService()
-
-        apiService?.orderDetailsGet(AppConstants.ACCEPT_LANGUAGE_EN,
-            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
-            userDataStoreBean?.uuid!!, facility_id!!,
-            req
-        )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
-
-    }
-
-    fun orderProcess(req: OrderToProcessReqestModel, GetLabTestSampleListRetrofitCallback: RetrofitCallback<OrderProcessResponseModel>
+    fun orderProcess(req: OrderToProcessReqestModel, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
     ) {
         val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
 
@@ -127,6 +94,26 @@ class LabTestViewModel(
         val apiService = aiiceApplication.getRetrofitService()
 
         apiService?.orderProcess(AppConstants.ACCEPT_LANGUAGE_EN,
+            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
+            userDataStoreBean?.uuid!!, facility_id!!,
+            req
+        )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
+
+    }
+
+    fun orderDetailsGet(req: OrderReq, GetLabTestSampleListRetrofitCallback: RetrofitCallback<OrderProcessDetailsResponseModel>
+    ) {
+        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
+
+        if (!Utils.isNetworkConnected(getApplication())) {
+            errorText.value = getApplication<Application>().getString(R.string.no_internet)
+            return
+        }
+        progress.value = 0
+        val aiiceApplication = HmisApplication.get(getApplication())
+        val apiService = aiiceApplication.getRetrofitService()
+
+        apiService?.orderDetailsGet(AppConstants.ACCEPT_LANGUAGE_EN,
             AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
             userDataStoreBean?.uuid!!, facility_id!!,
             req
@@ -154,6 +141,118 @@ class LabTestViewModel(
         )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
 
     }
+
+
+    fun getNoteTemplate(
+        facility_uuid: Int,
+        getNoteTemplateReq: GetNoteTemplateReq,
+        getNoteTemplateRespCallback: RetrofitCallback<GetNoteTemplateResp>
+    ) {
+        if (!Utils.isNetworkConnected(getApplication())) {
+            errorText.value = getApplication<Application>().getString(R.string.no_internet)
+            return
+        }
+
+        progress.value = 0
+        val aiiceApplication = HmisApplication.get(getApplication())
+        val apiService = aiiceApplication.getRetrofitService()
+        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
+
+        apiService?.getNoteTemplate(
+            "accept",
+            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
+            userDataStoreBean?.uuid!!,
+            facility_uuid,
+            getNoteTemplateReq
+        )?.enqueue(RetrofitMainCallback(getNoteTemplateRespCallback))
+    }
+
+    fun rejectLabTest(req: RejectRequestModel, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
+    ) {
+        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
+
+        if (!Utils.isNetworkConnected(getApplication())) {
+            errorText.value = getApplication<Application>().getString(R.string.no_internet)
+            return
+        }
+        progress.value = 0
+        val aiiceApplication = HmisApplication.get(getApplication())
+        val apiService = aiiceApplication.getRetrofitService()
+
+        apiService?.rejectTestLab(AppConstants.ACCEPT_LANGUAGE_EN,
+            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
+            userDataStoreBean?.uuid!!, facility_id!!,
+            req
+        )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
+
+    }
+
+
+    fun getRejectReference(labTestResponseSecondRetrofitCallback: RetrofitCallback<RejectReferenceResponseModel>)
+    {
+        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
+
+        if (!Utils.isNetworkConnected(getApplication())) {
+            errorText.value = getApplication<Application>().getString(R.string.no_internet)
+            return
+        }
+
+
+        val jsonBody = JSONObject()
+
+        try {
+            jsonBody.put("table_name", "reject_category")
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val body = RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            jsonBody.toString()
+        )
+
+        progress.value = 0
+        val aiiceApplication = HmisApplication.get(getApplication())
+        val apiService = aiiceApplication.getRetrofitService()
+
+        apiService?.getRejectReference(AppConstants.ACCEPT_LANGUAGE_EN,
+            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
+            userDataStoreBean?.uuid!!, facility_id!!,
+            body
+        )?.enqueue(RetrofitMainCallback(labTestResponseSecondRetrofitCallback))
+
+    }
+
+
+/*
+
+
+
+    fun getLabSampleAcceptance(requestLabTestSampleRequest: SampleAcceptedRequest, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SampleAcceptanceResponseModel>
+    ) {
+        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
+
+        if (!Utils.isNetworkConnected(getApplication())) {
+            errorText.value = getApplication<Application>().getString(R.string.no_internet)
+            return
+        }
+        progress.value = 0
+        val aiiceApplication = HmisApplication.get(getApplication())
+        val apiService = aiiceApplication.getRetrofitService()
+
+        apiService?.getSampleAccept(AppConstants.ACCEPT_LANGUAGE_EN,
+            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
+            userDataStoreBean?.uuid!!, facility_id!!,true,
+            requestLabTestSampleRequest
+        )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
+
+    }
+
+
+
+
+
 
 
     fun orderProcess(GetLabTestSampleListRetrofitCallback: RetrofitCallback<UserProfileResponseModel>
@@ -196,25 +295,7 @@ class LabTestViewModel(
 
     }
 
-    fun rejectLabTest(req: RejectRequestModel, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
-    ) {
-        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
 
-        if (!Utils.isNetworkConnected(getApplication())) {
-            errorText.value = getApplication<Application>().getString(R.string.no_internet)
-            return
-        }
-        progress.value = 0
-        val aiiceApplication = HmisApplication.get(getApplication())
-        val apiService = aiiceApplication.getRetrofitService()
-
-        apiService?.rejectTestLab(AppConstants.ACCEPT_LANGUAGE_EN,
-            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
-            userDataStoreBean?.uuid!!, facility_id!!,
-            req
-        )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
-
-    }
 
     fun rapidSave(req: LabrapidSaveRequestModel, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
     ) {
@@ -389,41 +470,6 @@ class LabTestViewModel(
 
     }
 
-    fun getRejectReference(labTestResponseSecondRetrofitCallback: RetrofitCallback<RejectReferenceResponseModel>)
-    {
-        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
-
-        if (!Utils.isNetworkConnected(getApplication())) {
-            errorText.value = getApplication<Application>().getString(R.string.no_internet)
-            return
-        }
-
-
-        val jsonBody = JSONObject()
-
-        try {
-            jsonBody.put("table_name", "reject_category")
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-
-        val body = RequestBody.create(
-            okhttp3.MediaType.parse("application/json; charset=utf-8"),
-            jsonBody.toString()
-        )
-
-        progress.value = 0
-        val aiiceApplication = HmisApplication.get(getApplication())
-        val apiService = aiiceApplication.getRetrofitService()
-
-        apiService?.getRejectReference(AppConstants.ACCEPT_LANGUAGE_EN,
-            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
-            userDataStoreBean?.uuid!!, facility_id!!,
-            body
-        )?.enqueue(RetrofitMainCallback(labTestResponseSecondRetrofitCallback))
-
-    }
 
     fun getTextAssignedTo(facilityId: Int, ResponseTestAssignedToRetrofitCallback: RetrofitCallback<LabAssignedToResponseModel>) {
 
@@ -465,30 +511,6 @@ class LabTestViewModel(
             body
         )?.enqueue(RetrofitMainCallback(ResponseTestAssignedToRetrofitCallback))
 
-    }
-
-    fun getNoteTemplate(
-        facility_uuid: Int,
-        getNoteTemplateReq: GetNoteTemplateReq,
-        getNoteTemplateRespCallback: RetrofitCallback<GetNoteTemplateResp>
-    ) {
-        if (!Utils.isNetworkConnected(getApplication())) {
-            errorText.value = getApplication<Application>().getString(R.string.no_internet)
-            return
-        }
-
-        progress.value = 0
-        val aiiceApplication = HmisApplication.get(getApplication())
-        val apiService = aiiceApplication.getRetrofitService()
-        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
-
-        apiService?.getNoteTemplate(
-            "accept",
-            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
-            userDataStoreBean?.uuid!!,
-            facility_uuid,
-            getNoteTemplateReq
-        )?.enqueue(RetrofitMainCallback(getNoteTemplateRespCallback))
     }
 
 */
