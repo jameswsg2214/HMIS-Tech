@@ -10,6 +10,12 @@
     <string name="Departmantmaperror">No Department is Mapped with this user</string>
     <string name="empty_item">Please select any item</string>
 
+    <!-- Alert dialog region-->
+    <string name="dialog_action_cancel" translatable="false">Cancel</string>
+    <string name="dialog_action_yes" translatable="false">Yes</string>
+    <string name="dialog_action_ok" translatable="false">OK</string>
+
+
     //Main Screen
     <string name="terms_condition_label">Terms and conditions</string>
     <string name="copyright_name" translatable="false">Powered by</string>

@@ -13,7 +13,7 @@ public interface RetrofitCallback<T> {
 
     fun onForbidden()
 
-    fun onFailure(s: String?)
+    fun onFailure(failure: String?)
 
     fun onEverytime()
 }

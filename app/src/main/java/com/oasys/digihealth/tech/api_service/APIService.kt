@@ -19,6 +19,17 @@ import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.labTestResponse
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.noteTemplateResponse.GetNoteTemplateResp
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.rejectReferenceResponse.RejectReferenceResponseModel
 import com.oasys.digihealth.tech.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethod
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.request.ApprovalRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.request.LabTestApprovalRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.response.LabApprovalResultResponse.LabApprovalResultResponse
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.response.LabApprovalResultResponse.LabApprovelResultReq
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.response.LabApprovalSpinnerResponse.LabApprovalSpinnerResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.response.LabTestApprovelResponse.LabTestApprovalResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.model.response.LabTestSpinnerResponseModel.LabTestSpinnerResponseModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestProcess.model.request.SampleTransportRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestProcess.model.request.SendApprovalRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestProcess.model.request.TestProcessRequestModel
+import com.oasys.digihealth.tech.ui.lmis.lmisTestProcess.model.response.userProfileResponse.UserProfileResponseModel
 import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.model.request.DispatchReq
 import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.model.request.SampleDispatchRequest
 import com.oasys.digihealth.tech.ui.lmis.sampleDispatch.model.response.SampleDispatchResponseModel
@@ -258,6 +269,15 @@ interface APIService {
     ): Call<LabAssignedToResponseModel>
 
 
+    @POST(lmisretest)
+    fun lmisRetest(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<SimpleResponseModel>
+
+
     //Sample Dispath
 
     @POST(getLabTestList)
@@ -279,6 +299,99 @@ interface APIService {
         @Header("facility_uuid") facility_uuid: Int,
         @Body body: DispatchReq?
     ): Call<SampleDispatchResponseModel>
+
+
+    @POST(getLabTestList)
+    fun getLabTestApproval(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body body: LabTestApprovalRequestModel?
+    ): Call<LabTestApprovalResponseModel>
+
+
+    @POST(GetLabSearchResult)
+    fun getLabTestSpinner(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body body: RequestBody?
+    ): Call<LabTestSpinnerResponseModel>
+
+    @POST(orderProcessApprovel)
+    fun orderApproved(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body approvalRequestModel: ApprovalRequestModel?
+    ): Call<SimpleResponseModel>
+
+
+    @POST(orderDetailsGetLabApproval)
+    fun orderDetailsGetLabApproval(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: LabApprovelResultReq
+    ): Call<LabApprovalResultResponse>
+
+
+
+    @POST(getRejectReference)
+    fun getApprovalResultSpinner(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Body body: RequestBody?
+    ): Call<LabApprovalSpinnerResponseModel>
+
+
+    // Test Process
+
+
+    @POST(getLabTestList)
+    fun getLabTestProcess(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body body: TestProcessRequestModel?
+    ): Call<LabTestResponseModel>
+
+    @POST(sampleRecived)
+    fun sampleRecived(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: SampleTransportRequestModel?
+    ): Call<SimpleResponseModel>
+
+    @POST(getUserProfile)
+    fun getUserProfile(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<UserProfileResponseModel>
+
+    @POST(sendApprovel)
+    fun sendApprovel(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: SendApprovalRequestModel?
+    ): Call<SimpleResponseModel>
 
 
 /*
@@ -356,20 +469,42 @@ interface APIService {
         const val rejectData =
             BASE_DOMAIN + "HMIS-LIS/v1/api/sampletransportdetails/sampleRejectForAll"
 
+
+        const val orderDetailsGetLabApproval =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorderdetails/getOrderProcessDetails"
         const val getRejectReference =
             BASE_DOMAIN + "HMIS-LIS/v1/api/commonReference/getReference"
 
+
+        const val lmisretest = BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/orderProcessRetest"
         //search feilds
         const val GetRefrenceTestMethod =
             BASE_DOMAIN + "HMIS-LIS/v1/api/commonReference/getAllReference"
         const val getAssignedSpinnerList =
             BASE_DOMAIN + "Appmaster/v1/api/facility/getAllFacility"
 
+        const val GetLabSearchResult =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/testmaster/gettestandprofileinfo"
+
+
 
         //dispatch
         const val sampledispatch =
             BASE_DOMAIN + "HMIS-LIS/v1/api/sampletransportbatch/dispatchsampletransport"
 
+        //Approved
+        const val orderProcessApprovel =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/orderProcessApproval"
+
+        //Process
+        const val sampleRecived =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/sampletransportdetails/sampletransportreceived"
+
+        const val getUserProfile =
+            BASE_DOMAIN + "Appmaster/v1/api/userProfile/getUserProfile"
+
+        const val sendApprovel =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/sendApprovalTestWise"
 
     }
 }
