@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.oasys.digihealth.tech.ui.lmis.lmisTestApprovel.viewModel.LabTestApprovalViewModel" />
+            type="com.hmis_tn.lims.ui.lmis.lmisTestApprovel.viewModel.LabTestApprovalViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
