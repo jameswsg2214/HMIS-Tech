@@ -90,16 +90,6 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
     private var LabUUId: Int? = null
 
     var cal = Calendar.getInstance()
-
-    var ACCEPTEDUUId:Int=10
-
-    var APPROVEDUUId:Int=7
-
-    var EXECUTEDUUId:Int=13
-    var APPROVELPENDINGAUTH:Int=1
-
-    var REJECTEDUUId:Int=2
-
     var SAMPLE_RECEIVE:Int=14
     var SAMPLE_TRANSPORTUUId:Int=16
     var SENDFORAPPROVALUUId:Int=19
