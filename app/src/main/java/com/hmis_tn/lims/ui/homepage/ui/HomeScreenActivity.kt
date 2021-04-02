@@ -5,12 +5,9 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -18,7 +15,6 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.hmis_tn.lims.BuildConfig
 import com.hmis_tn.lims.R
 import com.hmis_tn.lims.config.AppConstants
 import com.hmis_tn.lims.config.AppPreferences
@@ -30,11 +26,15 @@ import com.hmis_tn.lims.ui.homepage.viewModel.HomeScreenViewModel
 import com.hmis_tn.lims.ui.institution.common_departmant.view.fragment.DepartmentInstituteDialogFragment
 import com.hmis_tn.lims.ui.institution.lmis.view.fragment.LabInstituteDialogFragment
 import com.hmis_tn.lims.ui.institution.rmis.view.fragment.RadiologyInstituteDialogFragment
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.ui.LimsNewOrderFragment
+import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.ui.OrderStatusFragment
+import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.ui.ResultDispatchFragment
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.fragment.LabTestFragment
+import com.hmis_tn.lims.ui.lmis.lmisTestApprovel.view.fragment.LabTestApprovalFragment
+import com.hmis_tn.lims.ui.lmis.lmisTestProcess.view.fragment.LabTestProcessFragment
 import com.hmis_tn.lims.ui.lmis.sampleDispatch.view.fragment.SampleDispatchFragment
 import com.hmis_tn.lims.ui.login.model.SimpleResponseModel
 import com.hmis_tn.lims.ui.login.view.LoginActivity
-import com.hmis_tn.lims.ui.login.view_model.LoginViewModel
 import com.hmis_tn.lims.ui.settings.ui.ChangePasswordFragemnt
 import com.hmis_tn.lims.ui.settings.ui.LanguagesDialogFragemnt
 import com.hmis_tn.lims.utils.Utils
@@ -43,7 +43,6 @@ import kotlinx.android.synthetic.main.land_layout.*
 import kotlinx.android.synthetic.main.land_layout.view.*
 import kotlinx.android.synthetic.main.navigation_layout.*
 import retrofit2.Response
-import java.util.*
 
 class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLanguageProcessListener,
     FragmentBackClick {
@@ -587,37 +586,33 @@ class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLangua
             drawerLayout!!.closeDrawer(GravityCompat.START)
 
 
-       /*     val op=LabTestApprovalActivity()
+            val op=LabTestApprovalFragment()
 
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()*/
+            fragmentTransaction.commit()
 
         }
 
         lab_process?.setOnClickListener {
 
             drawerLayout!!.closeDrawer(GravityCompat.START)
-/*
 
-            val op=LabTestProcessActivity()
-
+            val op=LabTestProcessFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
             fragmentTransaction.commit()
-*/
 
 
         }
 
         new_order?.setOnClickListener {
             drawerLayout!!.closeDrawer(GravityCompat.START)
-           /* val op=LimsNewOrderFragment()
+            val op= LimsNewOrderFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
             fragmentTransaction.commit()
 
-*/
         }
         sample_dispatch?.setOnClickListener {
 
@@ -631,72 +626,20 @@ class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLangua
         result_dispatch?.setOnClickListener {
 
             drawerLayout!!.closeDrawer(GravityCompat.START)
-         /*   val op= ResultDispatchActivity()
+            val op= ResultDispatchFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
             fragmentTransaction.commit()
-*/
 
         }
 
         order_status?.setOnClickListener {
 
             drawerLayout!!.closeDrawer(GravityCompat.START)
-       /*     val op=OrderStatusActivity()
+            val op= OrderStatusFragment()
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.landfragment, op)
             fragmentTransaction.commit()
-*/
-
-        }
-
-        rad_order_status?.setOnClickListener {
-
-            drawerLayout!!.closeDrawer(GravityCompat.START)
-         /*   val op=RmisOrderStatusfragment()
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()
-
-*/
-        }
-
-        rad_result_dispatch?.setOnClickListener {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
-          /*  val op= RMISResultDispatchFragment()
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()*/
-        }
-
-
-
-        rad_new_order.setOnClickListener {
-
-            drawerLayout!!.closeDrawer(GravityCompat.START)
-           /* val op= RMISNewOrderFragment()
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()
-
-*/
-        }
-
-        rad_process.setOnClickListener {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
-        /*    val op= RmisTestProcessActivity()
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()
-*/
-        }
-
-        rad_approvl.setOnClickListener {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
-      /*      val op= RmisTestApprovalActivity()
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.landfragment, op)
-            fragmentTransaction.commit()*/
 
         }
 

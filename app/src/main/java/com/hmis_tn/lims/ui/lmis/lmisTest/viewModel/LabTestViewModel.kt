@@ -12,17 +12,25 @@ import com.hmis_tn.lims.config.AppPreferences
 import com.hmis_tn.lims.db.UserDetailsRoomRepository
 import com.hmis_tn.lims.retrofitCallbacks.RetrofitCallback
 import com.hmis_tn.lims.retrofitCallbacks.RetrofitMainCallback
+import com.hmis_tn.lims.ui.institution.lmis.model.LocationMasterResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.AssignToOtherRequest.AssignToOtherRequest
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.DirectApprovelReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.GetNoteTemplateReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabrapidSaveRequestModel.LabrapidSaveRequestModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.RejectRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.SampleAcceptedRequest.SampleAcceptedRequest
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetailsResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderToProcessReqestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.LabNameSearchResponseModel.LabNameSearchResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.noteTemplateResponse.GetNoteTemplateResp
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.orderProcessResponse.OrderProcessResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.rejectReferenceResponse.RejectReferenceResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethod
+import com.hmis_tn.lims.ui.lmis.lmisTestProcess.model.response.userProfileResponse.UserProfileResponseModel
 import com.hmis_tn.lims.ui.login.model.SimpleResponseModel
 import com.hmis_tn.lims.utils.Utils
 import okhttp3.RequestBody
@@ -225,11 +233,10 @@ class LabTestViewModel(
     }
 
 
-/*
 
 
 
-    fun getLabSampleAcceptance(requestLabTestSampleRequest: SampleAcceptedRequest, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SampleAcceptanceResponseModel>
+    fun getLabSampleAcceptance(requestLabTestSampleRequest: SampleAcceptedRequest, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
     ) {
         val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
 
@@ -248,12 +255,6 @@ class LabTestViewModel(
         )?.enqueue(RetrofitMainCallback(GetLabTestSampleListRetrofitCallback))
 
     }
-
-
-
-
-
-
 
     fun orderProcess(GetLabTestSampleListRetrofitCallback: RetrofitCallback<UserProfileResponseModel>
     ) {
@@ -317,7 +318,7 @@ class LabTestViewModel(
 
     }
 
-    fun assigntoOther(req: AssigntootherRequest, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
+    fun assigntoOther(req: AssignToOtherRequest, GetLabTestSampleListRetrofitCallback: RetrofitCallback<SimpleResponseModel>
     ) {
         val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
 
@@ -366,7 +367,6 @@ class LabTestViewModel(
             body
         )?.enqueue(RetrofitMainCallback(stateRetrofitCallback))
 
-        return
     }
 
     fun getLabListSecond(labTestRequestModel: LabTestRequestModel, labTestResponseSecondRetrofitCallback: RetrofitCallback<LabTestResponseModel>)
@@ -513,6 +513,5 @@ class LabTestViewModel(
 
     }
 
-*/
 
 }

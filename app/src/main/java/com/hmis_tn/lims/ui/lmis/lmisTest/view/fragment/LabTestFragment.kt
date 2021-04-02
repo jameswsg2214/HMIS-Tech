@@ -26,15 +26,27 @@ import com.hmis_tn.lims.config.AppPreferences
 import com.hmis_tn.lims.databinding.FragmentLabTestBinding
 import com.hmis_tn.lims.retrofitCallbacks.RetrofitCallback
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabrapidSaveRequestModel.DetailX
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabrapidSaveRequestModel.LabrapidSaveRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.SampleAcceptedRequest.Sample
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.SampleAcceptedRequest.SampleAcceptedRequest
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetail
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetailsResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.SendIdList
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToresponseContent
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethod
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethodContent
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.LabTestAdapter
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.LabTestdropdownAdapter
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.AssignToOtherDialogFragment
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.OrderProcessDialogFragment
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.RejectDialogFragment
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.SendForApprovalDialogFragment
 import com.hmis_tn.lims.ui.lmis.lmisTest.viewModel.LabTestViewModel
+import com.hmis_tn.lims.ui.login.model.SimpleResponseModel
 import com.hmis_tn.lims.ui.login.view_model.LoginViewModel
 import com.hmis_tn.lims.utils.Utils
 import retrofit2.Response
@@ -46,8 +58,8 @@ class LabTestFragment : Fragment()
 
     , OrderProcessDialogFragment.OnOrderProcessListener
     ,RejectDialogFragment.OnLabTestRefreshListener
-//    , SendForApprovalDialogFragment.OnsendForApprovalListener,
-//    AssignToOtherDialogFragment.OnAssignToOtherListener
+    , SendForApprovalDialogFragment.OnsendForApprovalListener,
+    AssignToOtherDialogFragment.OnAssignToOtherListener
     ,OrderProcessDialogFragment.OnLabTestCallBack
 
 {
@@ -63,8 +75,8 @@ class LabTestFragment : Fragment()
     private var mAdapter: LabTestAdapter? = null
     var linearLayoutManager: LinearLayoutManager? = null
     private var endDate: String = ""
-//    private var listfilteritem: ArrayList<ResponseTestMethodContent?>? = ArrayList()
-//    private var listfilteritemAssignSpinner: ArrayList<LabAssignedToresponseContent?>? = ArrayList()
+    private var listfilteritem: ArrayList<ResponseTestMethodContent?>? = ArrayList()
+    private var listfilteritemAssignSpinner: ArrayList<LabAssignedToresponseContent?>? = ArrayList()
     private var FilterTestNameResponseMap = mutableMapOf<Int, String>()
     private var FilterAssignSpinnereResponseMap = mutableMapOf<Int, String>()
     private var startDate: String = ""
@@ -416,7 +428,6 @@ class LabTestFragment : Fragment()
 
         }
 
-  /*
 
 
         binding?.assignOthers?.setOnClickListener {
@@ -492,7 +503,7 @@ class LabTestFragment : Fragment()
 
             }
 
-        }*/
+        }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd")
 
@@ -597,12 +608,9 @@ class LabTestFragment : Fragment()
 
 
         }
-/*
 
 
         binding?.sampleAcceptanceBtn!!.setOnClickListener {
-
-
 
             val request: SampleAcceptedRequest = SampleAcceptedRequest()
 
@@ -812,7 +820,6 @@ class LabTestFragment : Fragment()
 
         }
 
-*/
 
         binding?.autoCompleteTextView?.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -1213,11 +1220,10 @@ class LabTestFragment : Fragment()
     }
 
 
-/*
     val saveRapidRetrofitCallback = object : RetrofitCallback<SimpleResponseModel> {
-        override fun onSuccessfulResponse(responseBody: Response<SimpleResponseModel>?) {
+        override fun onSuccessfulResponse(responseBody: Response<SimpleResponseModel?>) {
 
-            AnalyticsManager.getAnalyticsManager().trackLMISLabSave(context!!,"")
+      //      AnalyticsManager.getAnalyticsManager().trackLMISLabSave(context!!,"")
 
             Toast.makeText(context,"Save Successfully",Toast.LENGTH_LONG).show()
 
@@ -1231,7 +1237,7 @@ class LabTestFragment : Fragment()
 
         }
 
-        override fun onBadRequest(errorBody: Response<SimpleResponseModel>?) {
+        override fun onBadRequest(errorBody: Response<SimpleResponseModel?>) {
             val gson = GsonBuilder().create()
             val responseModel: SimpleResponseModel
             try {
@@ -1254,7 +1260,7 @@ class LabTestFragment : Fragment()
             }
         }
 
-        override fun onServerError(response: Response<*>) {
+        override fun onServerError(response: Response<*>?) {
             utils?.showToast(
                 R.color.negativeToast,
                 binding?.mainLayout!!,
@@ -1278,8 +1284,8 @@ class LabTestFragment : Fragment()
             )
         }
 
-        override fun onFailure(failure: String) {
-            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure)
+        override fun onFailure(failure: String?) {
+            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure!!)
         }
 
         override fun onEverytime() {
@@ -1290,8 +1296,8 @@ class LabTestFragment : Fragment()
 
 
 
-    val labTestAcceptRetrofitCallback = object : RetrofitCallback<SampleAcceptanceResponseModel> {
-        override fun onSuccessfulResponse(responseBody: Response<SampleAcceptanceResponseModel?>) {
+    val labTestAcceptRetrofitCallback = object : RetrofitCallback<SimpleResponseModel> {
+        override fun onSuccessfulResponse(responseBody: Response<SimpleResponseModel?>) {
 
             Toast.makeText(context, "Sample Accepted Successfully", Toast.LENGTH_SHORT).show()
 
@@ -1306,7 +1312,7 @@ class LabTestFragment : Fragment()
 
         }
 
-        override fun onBadRequest(errorBody: Response<SampleAcceptanceResponseModel?>) {
+        override fun onBadRequest(errorBody: Response<SimpleResponseModel?>) {
 
 
             utils?.showToast(
@@ -1341,8 +1347,8 @@ class LabTestFragment : Fragment()
             )
         }
 
-        override fun onFailure(failure: String) {
-            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure)
+        override fun onFailure(failure: String?) {
+            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure!!)
         }
 
         override fun onEverytime() {
@@ -1357,15 +1363,15 @@ class LabTestFragment : Fragment()
     val getTestMethdCallBack1 =
         object : RetrofitCallback<ResponseTestMethod> {
             @SuppressLint("SetTextI18n")
-            override fun onSuccessfulResponse(response: Response<ResponseTestMethod>) {
+            override fun onSuccessfulResponse(responseBody: Response<ResponseTestMethod?>) {
 
           //      listfilteritem?.add(ResponseTestMethodContent())
 
-                listfilteritem?.addAll((response?.body()?.responseContents)!!)
+                listfilteritem?.addAll((responseBody?.body()?.responseContents)!!)
 
-                setMethod(response?.body()?.responseContents)
+                setMethod(responseBody?.body()?.responseContents)
+/*
 
-*//*
                 FilterTestNameResponseMap =
                     listfilteritem!!.map { it?.uuid!! to it.name!! }!!.toMap().toMutableMap()
                 try {
@@ -1382,17 +1388,18 @@ class LabTestFragment : Fragment()
                 }
                 binding?.testSpinner?.prompt = listfilteritem?.get(0)?.name
                 binding?.testSpinner?.setSelection(0)
-*//*
+*/
+
 
                 viewModel?.getTextAssignedTo(facility_id, LabAssignedSpinnerRetrofitCallback)
             }
 
-            override fun onBadRequest(response: Response<ResponseTestMethod>) {
+            override fun onBadRequest(errorBody: Response<ResponseTestMethod?>) {
                 val gson = GsonBuilder().create()
                 val responseModel: ResponseTestMethod
                 try {
                     responseModel = gson.fromJson(
-                        response.errorBody()!!.string(),
+                        errorBody.errorBody()!!.string(),
                         ResponseTestMethod::class.java
                     )
 
@@ -1406,7 +1413,7 @@ class LabTestFragment : Fragment()
                 }
             }
 
-            override fun onServerError(response: Response<*>) {
+            override fun onServerError(response: Response<*>?) {
                 utils?.showToast(
                     R.color.negativeToast,
                     binding?.mainLayout!!,
@@ -1430,8 +1437,8 @@ class LabTestFragment : Fragment()
                 )
             }
 
-            override fun onFailure(failure: String) {
-                utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure)
+            override fun onFailure(failure: String?) {
+                utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure!!)
             }
 
             override fun onEverytime() {
@@ -1466,7 +1473,7 @@ class LabTestFragment : Fragment()
 
 
     val LabAssignedSpinnerRetrofitCallback = object : RetrofitCallback<LabAssignedToResponseModel> {
-        override fun onSuccessfulResponse(responseBody: Response<LabAssignedToResponseModel>?) {
+        override fun onSuccessfulResponse(responseBody: Response<LabAssignedToResponseModel?>) {
 
             Log.e("AssignedToSpinner", responseBody?.body()?.responseContents.toString())
 
@@ -1494,7 +1501,7 @@ class LabTestFragment : Fragment()
 
         }
 
-        override fun onBadRequest(response: Response<LabAssignedToResponseModel>) {
+        override fun onBadRequest(response: Response<LabAssignedToResponseModel?>) {
             val gson = GsonBuilder().create()
             val responseModel: LabAssignedToResponseModel
             try {
@@ -1513,7 +1520,7 @@ class LabTestFragment : Fragment()
             }
         }
 
-        override fun onServerError(response: Response<*>) {
+        override fun onServerError(response: Response<*>?) {
             utils?.showToast(
                 R.color.negativeToast,
                 binding?.mainLayout!!,
@@ -1537,8 +1544,8 @@ class LabTestFragment : Fragment()
             )
         }
 
-        override fun onFailure(failure: String) {
-            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure)
+        override fun onFailure(failure: String?) {
+            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure!!)
         }
 
         override fun onEverytime() {
@@ -1548,7 +1555,6 @@ class LabTestFragment : Fragment()
 
     }
 
-    */
     private fun clearSearch() {
 
         binding?.searchUsingMobileNo!!.setText("")
@@ -1575,7 +1581,6 @@ class LabTestFragment : Fragment()
         if (childFragment is RejectDialogFragment) {
             childFragment.setOnLabTestRefreshListener(this)
         }
-    /*
 
         if(childFragment is SendForApprovalDialogFragment)
         {
@@ -1587,7 +1592,6 @@ class LabTestFragment : Fragment()
             childFragment.setOnAssignToOtherRefreshListener(this)
         }
 
-     */
     }
 
     // orderProcessRefresh
@@ -1637,7 +1641,6 @@ class LabTestFragment : Fragment()
 
     }
 
-/*
 
 
 
@@ -1666,5 +1669,4 @@ class LabTestFragment : Fragment()
 
 
 
-*/
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView
+    android:id="@+id/nameTextView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/text_spiiner"
     android:text="jhgcvvv"
     android:textSize="@dimen/dr_small_text"
     android:paddingStart="5dp"

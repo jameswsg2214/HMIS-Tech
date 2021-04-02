@@ -21,10 +21,14 @@
     <color name="red">#ff0000</color>
     <color name="Skyblue">#00BCD4</color>
     <color name="grey">#999999</color>
-    <color name="negativeToast">#F44336</color>
     <color name="poweredBy">#CFD0D2</color>
 
     <color name="save">#00bfa5</color>
     <color name="clear">#6F6F6F</color>
+    <color name="fadeBlue">#CFDDF2</color>
+
+
+    <color name="positiveToast">#4CAF50</color>
+    <color name="negativeToast">#F44336</color>
 
 </resources>

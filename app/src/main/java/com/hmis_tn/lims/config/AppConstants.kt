@@ -1,6 +1,6 @@
 package com.hmis_tn.lims.config
 
-//import com.oss.digihealth.doc.ui.emr_workflow.model.favourite.FavouritesModel
+//import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.getFavouriteList.FavouritesModel
 import java.util.ArrayList
 
 object AppConstants {

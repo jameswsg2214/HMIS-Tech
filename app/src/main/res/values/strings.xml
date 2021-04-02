@@ -85,11 +85,34 @@
     <string name="no">No</string>
 
 
+    <!-- searcb -->
+
+
+    <string name="search_with_3_letters">Search with 3 letters</string>
+
     <!-- LMIS TEST -->
 
+    <string name="name">Name</string>
+    <string name="command">Command</string>
+
+
+    <string name="MT_title">Manage Templates</string>
+
+    <string name="share">Share</string>
+    <string name="active">Active</string>
+    <string name="inactive">In Active</string>
+    <string name="MT_fav_title">Manage Favorites</string>
+    <string name="share_radio1">Myself</string>
+
+    <string name="Snomed_title">Snomed Browser</string>
+    <string name="share_radio2">My Department</string>
+
+    <string name="s_no">S.No</string>
+    <string name="Code">Code</string>
+    <string name="status">Status</string>
+    <string name="Type">Type</string>
     <string name="Action">Action</string>
-
-
+    <string name="bad">Bad Request</string>
 
 
 

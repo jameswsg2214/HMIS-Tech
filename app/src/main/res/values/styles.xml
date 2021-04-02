@@ -32,6 +32,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="TextAppearance.AppCompat.Medium.MySubheader">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
     <style name="Hmis.LoginTablet" parent="AppTheme">
         <item name="android:windowBackground">@drawable/login_background</item>
@@ -58,5 +64,14 @@
 
     <style name="BlackTextInputLayout" parent="@style/TextAppearance.AppCompat">
         <item name="android:textColor">@color/navColor</item>
+    </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/outPtientGreen</item>
+
+        <item name="colorSwitchThumbNormal">#f1f1f1</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#70221F1F</item>
     </style>
 </resources>

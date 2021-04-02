@@ -7,13 +7,50 @@ import com.hmis_tn.lims.BuildConfig.BASE_URL
 import com.hmis_tn.lims.config.AppConstants
 import com.hmis_tn.lims.ui.institution.common_departmant.model.DepartmentResponseModel
 import com.hmis_tn.lims.ui.institution.lmis.model.LocationMasterResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.DoctorNameResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.LabModifiyRequest
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.LabModifiyResponse
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.PrevLabLmisResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.LabTechSearch
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.RequestLmisNewOrder
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.searcPatientListResponse.NewLmisOrderModule
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.SearchPatientRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.createEncounterRequest.CreateEncounterRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.requestLabFav.RequestLabFavModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.templateRequest.RequestTemplateAddDetails
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.request.updateRequest.UpdateRequestModule
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.FavAddListResponse.FavAddListResponse
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.GetToLocationTestResponse.GetToLocationTestResponse
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.GetWardIdResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.LabFavManageResponse.LabFavManageResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.ResponseLmisListview
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.createEncounterResponse.CreateEncounterResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.favAddTestNameResponse.FavAddTestNameResponse
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.favEditResponse.FavEditResponse
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.fetchEncountersResponse.FectchEncounterResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.getDepaetmantList.FavAddAllDepatResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.getFavouriteList.FavouritesResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.getReferenceResponse.GetReferenceResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.getTemplate.ResponseLabGetTemplateDetails
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.getTempleteList.TempleResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisNewOrder.model.response.templateResponse.ReponseTemplateadd
+import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.model.OrderStatusRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.model.OrderStatusResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.model.OrderStatusSpinnerResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.model.TestNameResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseResultDispatch
+import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.RequestDispatchSearch
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.AssignToOtherRequest.AssignToOtherRequest
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.DirectApprovelReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.GetNoteTemplateReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabTestRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabrapidSaveRequestModel.LabrapidSaveRequestModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.RejectRequestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.SampleAcceptedRequest.SampleAcceptedRequest
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderProcessDetailsResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.OrderToProcessReqestModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.LabNameSearchResponseModel.LabNameSearchResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.noteTemplateResponse.GetNoteTemplateResp
@@ -190,6 +227,26 @@ interface APIService {
     ): Call<LabTestResponseModel>
 
 
+    @POST(getSampleAcceptance)
+    fun getSampleAccept(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body sampleAcceptedRequest: SampleAcceptedRequest?
+    ): Call<SimpleResponseModel>
+
+    @POST(rapidSave)
+    fun rapidSave(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: LabrapidSaveRequestModel?
+    ): Call<SimpleResponseModel>
+
+
     @POST(orderProcess)
     fun orderProcess(
         @Header("Accept-Language") acceptLanguage: String?,
@@ -238,7 +295,22 @@ interface APIService {
         @Body body: RequestBody?
     ): Call<RejectReferenceResponseModel>
 
+    @POST(orderSendtonext)
+    fun orderSendtonext(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: AssignToOtherRequest?
+    ): Call<SimpleResponseModel>
 
+    @POST(getLocationMaster)
+    fun getLocationMaster(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<LocationMasterResponseModel>
 
     @POST(orderDetailsGet)
     fun orderDetailsGet(
@@ -268,6 +340,14 @@ interface APIService {
         @Body body: RequestBody?
     ): Call<LabAssignedToResponseModel>
 
+    @POST(getLabName)
+    fun getLabname(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<LabNameSearchResponseModel>
 
     @POST(lmisretest)
     fun lmisRetest(
@@ -393,31 +473,312 @@ interface APIService {
         @Body body: SendApprovalRequestModel?
     ): Call<SimpleResponseModel>
 
+// order status
 
-/*
-
-    */
-    /**
-     * Get Department List
-     *
-     * @param authorization
-     * @param user_uuid
-     * @param body
-     * @return
-     *//*
-
-    @POST(GetDepartmentList)
-    fun getDepartmentList(
+    @POST(getOrderStatus)
+    fun getOrderStatus(
+        @Header("Accept-Language") acceptLanguage: String?,
         @Header("Authorization") authorization: String?,
-        @Header("user_uuid") user_uuid: Int, @Body body: RequestBody?
-    ): Call<DepartmentResponseModel?>?
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<OrderStatusResponseModel>
 
-    @POST(GetStoreList)
-    fun getStoreList(
+    @POST(getOrderStatus)
+    fun getSearchOrderStatus(
+        @Header("Accept-Language") acceptLanguage: String?,
         @Header("Authorization") authorization: String?,
-        @Header("user_uuid") user_uuid: Int, @Body body: RequestBody?
-    ): Call<StoreListResponseModel?>?
-*/
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body orderStatusRequestModel: OrderStatusRequestModel?
+    ): Call<OrderStatusResponseModel>
+
+    @POST(GetRefrenceTestMethod)
+    fun getSearchOrderStatus(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<OrderStatusSpinnerResponseModel>
+
+
+    @POST(GetLabSearchResult)
+    fun getOrderStatusTestName(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<TestNameResponseModel>
+
+
+    // result dispathch
+
+
+    @POST(getResultDispatch)
+    fun getresultdispatchlist(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Body requestResultdiapatch: RequestDispatchSearch?
+    ): Call<ResponseResultDispatch>
+
+    //New order
+
+    @POST(searchRegisterpatient)
+    fun searchOutPatientLmisOrder(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body searchPatientRequestModel: SearchPatientRequestModel?
+    ): Call<NewLmisOrderModule>
+
+    @GET(GetFavorites)
+    fun getLmisFavourites(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Query("lab_id") dept_id: Int,
+        @Query("fav_type_id") fav_type_id: Int
+    ): Call<FavouritesResponseModel>
+
+    @GET(GetTemplete)
+    fun getLmisTemplete(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_id: Int,
+        @Query("lab_id") dept_id: Int,
+        @Query("temp_type_id") temp_type_id: Int
+    ): Call<TempleResponseModel>
+
+
+    @POST(GetFavaddDepartmentList)
+    fun getFavddAllADepartmentList(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<FavAddAllDepatResponseModel>
+
+
+    @POST(getUserDepartment)
+    fun getUserDepartment(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<FavAddAllDepatResponseModel>
+
+    @POST(GetToLocation)
+    fun getLocation(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<LocationMasterResponseModel>
+
+    @POST(GetLabSearchResult)
+    fun getLabTestSpinner(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Header("isMobileApi") value: Boolean,
+        @Body labTechSearch: LabTechSearch?
+    ): Call<LabTestSpinnerResponseModel>
+
+
+    @POST(GetReference)
+    fun getLabType(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body labtype: RequestBody?
+    ): Call<GetReferenceResponseModel>
+
+    @POST(GetPrevLab)
+    fun getPrevLmisLab(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<PrevLabLmisResponseModel>
+
+    @PUT(DeleteTemplate)
+    fun deleteTemplate(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<SimpleResponseModel>
+
+    @GET(LabGetTemplate)
+    fun getLastTemplate(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Query("temp_id") temp_id: Int,
+        @Query("temp_type_id") temp_type_id: Int,
+        @Query("dept_id") dept_id: Int
+    ): Call<ResponseLabGetTemplateDetails>
+
+    @GET(LabGetTemplate)
+    fun getLmisLastTemplate(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Query("temp_id") temp_id: Int,
+        @Query("temp_type_id") temp_type_id: Int,
+        @Query("lab_id") dept_id: Int
+    ): Call<ResponseLabGetTemplateDetails>
+
+    @POST(EmrPost)
+    fun lmisEmrpost(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body requestLmisNewOrder: RequestLmisNewOrder?
+    ): Call<SimpleResponseModel>
+
+    @PUT(LmisLabUpdate)
+    fun lmisLabUpdate(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body requestLmisNewOrder: LabModifiyRequest?
+    ): Call<LabModifiyResponse>
+
+    @POST(GetLabSearchResult)
+    fun getLmisSearchResult(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<ResponseLmisListview>
+
+    @POST(CreateEncounter)
+    fun LmiscreateEncounter(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") faciltyid: Int,
+        @Body createEncounterRequestModel: CreateEncounterRequestModel?
+    ): Call<CreateEncounterResponseModel>
+
+    @GET(GetEncounters)
+    fun getLmisEncounters(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Query("patientId") patientId: Int,
+        @Query("doctorId") doctorId: Int,
+        @Query("departmentId") departmentId: Int,
+        @Query("encounterType") encounterType: Int
+    ): Call<FectchEncounterResponseModel>
+
+    @POST(getDoctorName)
+    fun getDoctorName(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<DoctorNameResponseModel>
+
+
+    @GET(getWardId)
+    fun getWardIdByPatientId(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Query("patient_uuid") patient_uuid: Int
+    ): Call<GetWardIdResponseModel>
+
+    @POST(gettolocationmapid)
+    fun getToLocationLabTest(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<GetToLocationTestResponse>
+
+/*    @POST(GetFavDepartmentList)
+    fun getFavDepartmentList(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<FavAddResponseModel>*/
+
+    @POST(GetLabSearchResult)
+    fun getAutocommitText(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<FavAddTestNameResponse>
+
+    @POST(GetFavddAll)
+    fun getFavddAll(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestLabFavModel?
+    ): Call<LabFavManageResponseModel>
+
+    @GET(GetFavddAllList)
+    fun getFavddAllList(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Query("favourite_id") favourite_id: Int,
+        @Query("favourite_type_id") favourite_type_id: Int
+    ): Call<FavAddListResponse>
+
+    @PUT(FavouriteUpdate)
+    fun labEditFav(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<FavEditResponse>
+
+    @PUT(DeleteRows)
+    fun deleteRows(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestBody?
+    ): Call<SimpleResponseModel>
+
+    @POST(LabTemplateCreate)
+    fun createTemplate(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: RequestTemplateAddDetails?
+    ): Call<ReponseTemplateadd>
+
+    @PUT(LabUpdateTemplate)
+    fun getTemplateUpdate(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body body: UpdateRequestModule?
+    ): Call<SimpleResponseModel>
+
+    @GET(GetTemplete)
+    fun getTemplete(
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_id: Int,
+        @Query("dept_id") dept_id: Int,
+        @Query("temp_type_id") temp_type_id: Int
+    ): Call<TempleResponseModel>
+
 
 
     companion object {
@@ -468,13 +829,20 @@ interface APIService {
             BASE_DOMAIN + "HMIS-EMR/v1/api/notetemplate/getNoteTemplateById"
         const val rejectData =
             BASE_DOMAIN + "HMIS-LIS/v1/api/sampletransportdetails/sampleRejectForAll"
-
+        const val rapidSave =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/saveandapproval"
+        const val orderSendtonext =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorderdetails/assigntootherinstitute"
 
         const val orderDetailsGetLabApproval =
             BASE_DOMAIN + "HMIS-LIS/v1/api/patientorderdetails/getOrderProcessDetails"
         const val getRejectReference =
             BASE_DOMAIN + "HMIS-LIS/v1/api/commonReference/getReference"
+        const val getLabName =
+            BASE_DOMAIN + "Appmaster/v1/api/facility/otherFaciltiySearchDropdown"
 
+        const val getSampleAcceptance =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorderdetails/ordersampleacceptancetestwise"
 
         const val lmisretest = BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/orderProcessRetest"
         //search feilds
@@ -506,5 +874,67 @@ interface APIService {
         const val sendApprovel =
             BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorder/sendApprovalTestWise"
 
+
+        // order Status
+
+        const val getOrderStatus =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/ordertat/getorderstatus"
+
+        //reesult
+
+        const val getResultDispatch =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorderdetails/getresultdispatchlist"
+
+
+        //New order
+
+        const val searchRegisterpatient =
+            BASE_DOMAIN + "registration/v1/api/patient/search"
+        const val GetFavorites =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/favourite/getFavourite"
+        const val GetTemplete =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/template/gettemplateByID"
+        const val GetFavaddDepartmentList =
+            BASE_DOMAIN + "Appmaster/v1/api/department/getAllDepartment"
+        const val getUserDepartment =
+            BASE_DOMAIN + "Appmaster/v1/api/userDepartment/getUserDepartment"
+        const val GetToLocation =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/tolocationmaster/gettolocationmaster"
+        const val GetReference =
+                BASE_DOMAIN + "HMIS-LIS/v1/api/commonReference/getReference"
+        const val GetPrevLab =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorders/getLatestRecords"
+        const val DeleteTemplate =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/template/deleteTemplateDetails"
+        const val LabGetTemplate =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/template/gettempdetails"
+        const val EmrPost =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorders/postpatientorder"
+        const val LmisLabUpdate =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientorders/updatePatientOrder"
+        const val CreateEncounter =
+                BASE_DOMAIN + "HMIS-EMR/v1/api/encounter/create"
+        const val GetEncounters =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/encounter/getEncounterByDocAndPatientId"
+        const val getDoctorName =
+            BASE_DOMAIN + "Appmaster/v1/api/userProfile/getAllDoctorsByFacilityId"
+        const val getWardId =
+            BASE_DOMAIN + "HMIS-IP-Management/v1/api/admission/getWardByPatientID"
+        const val gettolocationmapid =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/departmentwisemapping/gettolocationmapid"
+        const val GetFavDepartmentList =
+                BASE_DOMAIN + "Appmaster/v1/api/department/getDepartmentOnlyById"
+        const val GetFavddAll =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/favourite/create?searchkey=lab"
+        const val GetFavddAllList =
+                BASE_DOMAIN + "HMIS-EMR/v1/api/favourite/getFavouriteById"
+        const val FavouriteUpdate =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/favourite/updateFavouriteById"
+        const val DeleteRows =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/favourite/delete"
+        const val LabTemplateCreate =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/template/create"
+        const val LabUpdateTemplate =
+            BASE_DOMAIN + "HMIS-EMR/v1/api/template/updatetemplateById"
     }
 }
