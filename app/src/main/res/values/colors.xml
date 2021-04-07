@@ -31,4 +31,10 @@
     <color name="positiveToast">#4CAF50</color>
     <color name="negativeToast">#F44336</color>
 
+
+    <color name="discharge_summary_color">#c7e5ff</color>
+
+
+    <color name="blueprintborder">#EEEEEE</color>
+
 </resources>

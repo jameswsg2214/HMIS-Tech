@@ -85,12 +85,42 @@
     <string name="no">No</string>
 
 
+    <!-- common -->
+
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
+    <string name="search">Search</string>
+
     <!-- searcb -->
 
 
     <string name="search_with_3_letters">Search with 3 letters</string>
 
+    <!-- LMIS TEST MOB -->
+
+    <string name="labTestHeading">Lab Test Details</string>
+    <string name="accepted">Accepted</string>
+    <string name="process">Process</string>
+    <string name="send">Send</string>
+    <string name="assign">Assign</string>
+    <string name="reject">Reject</string>
+    <string name="print">Print</string>
+
+
+
+
+
+
+
     <!-- LMIS TEST -->
+
+
+    <string name="ordered_raised">Ordered Raised</string>
+    <string name="sample_accepted">Sample Accepted</string>
+    <string name="sample_transferred">Sample Transferred</string>
+    <string name="sample_processed">Sample Processed</string>
+    <string name="waiting_for_approval">Waiting for Approval</string>
+    <string name="sample_acceptance">Sample Acceptance</string>
 
     <string name="name">Name</string>
     <string name="command">Command</string>
@@ -114,6 +144,54 @@
     <string name="Action">Action</string>
     <string name="bad">Bad Request</string>
 
+
+
+    <!-- Quick Register-->
+
+    <string name="remark">Remarks</string>
+    <string name="quickreg">OP Registration</string>
+    <string name="OPCorrection">OP Correction</string>
+    <string name="IPCorrection">IP Correction</string>
+    <string name="bluePrint">Blue Print</string>
+    <string name="salutation">Salutation</string>
+    <string name="professional">Professional</string>
+    <string name="middlename">Middle Name</string>
+    <string name="lastname">Last Name</string>
+
+    <string name="fathername">Father / Mother / Guardian Name</string>
+    <string name="suffixcode">Suffix Code</string>
+    <string name="age">Age</string>
+    <string name="Period">Period</string>
+    <string name="DOB">DOB</string>
+    <string name="Gender">Gender</string>
+    <string name="Mobile">Mobile</string>
+    <string name="Community">Community</string>
+    <string name="DepartmentName">Department</string>
+    <string name="Schema">Schema</string>
+    <string name="Unit">Unit</string>
+    <string name="Maternity">Maternity</string>
+    <string name="Address">Address</string>
+
+    <string name="ReasonforCorrection">Reason for Correction</string>
+    <string name="DoorNo">Door No</string>
+    <string name="StreetName">Street Name</string>
+    <string name="Country">Country</string>
+    <string name="State">State</string>
+    <string name="District">District</string>
+    <string name="Taluk">Taluk</string>
+    <string name="Village">Village</string>
+    <string name="PinCode">Pin Code</string>
+    <string name="SaveOrder">Save Order</string>
+    <string name="threeletterSearch">Search with 3 letters</string>
+    <string name="AdvanceSearch">Advance Search</string>
+    <string name="MobileNumber">Mobile Number</string>
+
+    <string name="MobileNumberPin">Mobile Number/ PIN</string>
+    <string name="ExistPin">Existing PIN</string>
+    <string name="PDS">PDS</string>
+    <string name="Aadhaar_number">Aadhaar Number</string>
+
+    <string name="Aadhaar_numberOldPin">Aadhaar Number/ Exist PIN</string>
 
 
 </resources>

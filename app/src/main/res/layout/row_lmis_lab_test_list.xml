@@ -1,191 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    app:cardElevation="4dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="5dp"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/mainLinearLayout"
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:padding="5dp"
         android:layout_width="match_parent"
+        android:background="@color/discharge_summary_color"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="7.7">
+        tools:ignore="RtlCompat">
+
 
         <CheckBox
             android:id="@+id/checkbox"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.30"
-            android:padding="5dp"/>
-
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:background="@color/view" />
-
-        <TextView
-            android:id="@+id/patient_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:padding="8dp"
-            android:fontFamily="@font/poppins"
-            android:text="Patient Info"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
+          >
 
-        </TextView>
+        </CheckBox>
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:background="@color/view" />
-
-        <TextView
-            android:id="@+id/test_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:fontFamily="@font/poppins"
-            android:text="Test Name"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
-
-        </TextView>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="wrap_content"
-            android:background="@color/view" />
-
-
-        <TextView
-            android:id="@+id/order_num"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.90"
-            android:fontFamily="@font/poppins"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="6755457"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
-
-        </TextView>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1.4"
-            android:padding="8dp">
-
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:contentDescription="Layouts"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radiobutton1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/hmis_background"
-                    android:text="P"
-                    android:fontFamily="@font/poppins"
-                    android:textColor="@color/navColor"
-                    android:textSize="@dimen/dr_medium_text" />
-
-                <RadioButton
-                    android:id="@+id/radiobutton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/hmis_background"
-                    android:text="N"
-                    android:fontFamily="@font/poppins"
-                    android:textColor="@color/navColor"
-                    android:textSize="@dimen/dr_medium_text"/>
-
-                <RadioButton
-                    android:id="@+id/radiobutton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/hmis_background"
-                    android:text="E"
-                    android:fontFamily="@font/poppins"
-                    android:textColor="@color/navColor"
-                    android:textSize="@dimen/dr_medium_text" />
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@+id/checkbox"
+            android:orientation="vertical">
 
 
-            </RadioGroup>
+            <TextView
+                android:id="@+id/tv1"
+                android:text="@string/labTestHeading"
+                android:background="@color/discharge_summary_color"
+                style="@style/SmallTextView2"
+                android:layout_centerVertical="true"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/tv2"
+                android:text="@string/labTestHeading"
+                android:background="@color/discharge_summary_color"
+                style="@style/SmallTextView2"
+                android:layout_centerVertical="true"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/tv3"
+                android:text="@string/labTestHeading"
+                android:background="@color/discharge_summary_color"
+                style="@style/SmallTextView2"
+                android:layout_centerVertical="true"
+                >
+            </TextView>
 
 
         </LinearLayout>
 
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
-
-
         <TextView
             android:id="@+id/status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1.10"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_arrow_left"
             android:gravity="center"
-            android:padding="8dp"
-            android:text="Status"
+            android:layout_marginEnd="10dp"
+            android:text="Created"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="@dimen/dr_small_text"
+            android:layout_centerVertical="true"
             android:fontFamily="@font/poppins"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
+            android:textColor="@color/hmis_background"
+            android:background="@drawable/status_border"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlCompat">
 
         </TextView>
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
-
-        <ImageView
-            android:id="@+id/print"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:fontFamily="@font/poppins"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textColor="@color/navColor"
-            android:textSize="14sp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_print">
-
-        </ImageView>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
+    </RelativeLayout>
 
 
-    </LinearLayout>
-
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

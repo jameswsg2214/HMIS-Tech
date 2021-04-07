@@ -74,4 +74,84 @@
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">#70221F1F</item>
     </style>
+
+
+    <style name="commonCardView">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_width">@dimen/common_card_view_dimens</item>
+        <item name="android:layout_height">@dimen/common_card_view_dimens</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
+        <item name="cardCornerRadius">@dimen/common_card_view_radius</item>
+    </style>
+
+
+
+    <!-- text -->
+
+    <style name="Heading1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_title_text</item>
+    </style>
+    <style name="Heading2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_title_text</item>
+    </style>
+
+    <style name="SemiHeading1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_large_text</item>
+    </style>
+    <style name="SemiHeading2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_large_text</item>
+    </style>
+
+    <style name="SimpleTextView1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_medium_text</item>
+    </style>
+    <style name="SimpleTextView2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_medium_text</item>
+    </style>
+
+
+    <style name="SmallTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_small_text</item>
+    </style>
+    <style name="SmallTextView2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/poppins</item>
+        <item name="paddingStart">10dp</item>
+        <item name="android:textSize">@dimen/dr_small_text</item>
+    </style>
+
+
+
+
 </resources>

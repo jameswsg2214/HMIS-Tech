@@ -54,24 +54,24 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LabTestFragment : Fragment()
-
-    , OrderProcessDialogFragment.OnOrderProcessListener
-    ,RejectDialogFragment.OnLabTestRefreshListener
-    , SendForApprovalDialogFragment.OnsendForApprovalListener,
-    AssignToOtherDialogFragment.OnAssignToOtherListener
-    ,OrderProcessDialogFragment.OnLabTestCallBack
+class LabTestFragment : Fragment(),
+    OrderProcessDialogFragment.OnOrderProcessListener,
+    RejectDialogFragment.OnLabTestRefreshListener,
+    SendForApprovalDialogFragment.OnsendForApprovalListener,
+    AssignToOtherDialogFragment.OnAssignToOtherListener,
+    OrderProcessDialogFragment.OnLabTestCallBack
 
 {
+
+    private var isTablet:Boolean= false
+
     private var selectTestitemUuid: String? = ""
     private var selectAssignitemUuid: String? = ""
-//    private var details: Detail? = Detail()
     var binding: FragmentLabTestBinding? = null
     var utils: Utils? = null
     private var viewModel: LabTestViewModel? = null
     private var isLoadingPaginationAdapterCallback : Boolean = false
     var appPreferences: AppPreferences? = null
-   // private val labTestList: MutableList<RecyclerDto> = ArrayList()
     private var mAdapter: LabTestAdapter? = null
     var linearLayoutManager: LinearLayoutManager? = null
     private var endDate: String = ""
@@ -152,6 +152,10 @@ class LabTestFragment : Fragment()
         binding?.lifecycleOwner = this
         binding?.viewModel = viewModel
         utils = Utils(requireContext())
+
+
+        isTablet = Utils(requireContext()).isTablet(requireContext())
+
         binding?.searchDrawerCardView?.setOnClickListener {
             binding?.drawerLayout!!.openDrawer(GravityCompat.END)
 
@@ -173,9 +177,6 @@ class LabTestFragment : Fragment()
         facility_id = appPreferences?.getInt(AppConstants.FACILITY_UUID)!!
 
         LabUUId = appPreferences?.getInt(AppConstants.LAB_UUID)!!
-        utils = Utils(requireContext())
-
-      //  viewModel?.getTextMethod1(facility_id!!, getTestMethdCallBack1)
 
         binding?.labTestrecycleview?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -225,7 +226,9 @@ class LabTestFragment : Fragment()
 
                 }
             }
-*/        binding?.assignedToSpinner!!.onItemSelectedListener =
+*/
+
+        binding?.assignedToSpinner!!.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -371,7 +374,6 @@ class LabTestFragment : Fragment()
             labListAPI(pageSize, currentPage)
         }
 
-
         binding?.rejected?.setOnClickListener {
 
             val datas = mAdapter!!.getSelectedCheckData()
@@ -427,8 +429,6 @@ class LabTestFragment : Fragment()
 
 
         }
-
-
 
         binding?.assignOthers?.setOnClickListener {
 
@@ -677,7 +677,7 @@ class LabTestFragment : Fragment()
 
 
 
-        binding!!.saveOfApproval.setOnClickListener {
+        binding!!.saveOfApproval?.setOnClickListener {
 
             val datas = mAdapter!!.getSelectedCheckData()
 
@@ -734,7 +734,7 @@ class LabTestFragment : Fragment()
 
         }
 
-        binding!!.saveCardView.setOnClickListener {
+        binding!!.saveCardView?.setOnClickListener {
 
             val datas = mAdapter!!.getSelectedCheckData()
 
@@ -1358,8 +1358,6 @@ class LabTestFragment : Fragment()
     }
 
 
-
-
     val getTestMethdCallBack1 =
         object : RetrofitCallback<ResponseTestMethod> {
             @SuppressLint("SetTextI18n")
@@ -1640,10 +1638,6 @@ class LabTestFragment : Fragment()
         labListAPI(10, 0)
 
     }
-
-
-
-
 
     override fun onRefreshsendApprovalList() {
         mAdapter!!.clearAll()
