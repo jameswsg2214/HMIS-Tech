@@ -20,7 +20,7 @@
     <dimen name="margin_left">5dp</dimen>
     <dimen name="margin_right">5dp</dimen>
 
-    <dimen name="nav_drawer_width">300dp</dimen>
+    <dimen name="nav_drawer_width">250dp</dimen>
 
     <dimen name="dialog_size">330dp</dimen>
 

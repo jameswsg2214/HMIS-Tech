@@ -99,12 +99,19 @@
     <!-- LMIS TEST MOB -->
 
     <string name="labTestHeading">Lab Test Details</string>
-    <string name="accepted">Accepted</string>
+    <string name="accepted">Accept</string>
     <string name="process">Process</string>
     <string name="send">Send</string>
     <string name="assign">Assign</string>
     <string name="reject">Reject</string>
     <string name="print">Print</string>
+    <string name="testMethod">Test Method</string>
+    <string name="assignedTo">Assigned To</string>
+    <string name="pinMob">PIN/Mobile No</string>
+    <string name="dateRange">Date Range</string>
+    <string name="orderNumber">Order Number</string>
+    <string name="description">Description</string>
+    <string name="reason">Reason</string>
 
 
 

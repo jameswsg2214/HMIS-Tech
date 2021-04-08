@@ -12,7 +12,7 @@
         android:id="@+id/rl_header"
         android:padding="5dp"
         android:layout_width="match_parent"
-        android:background="@color/discharge_summary_color"
+        android:background="@color/fadeBlue"
         android:layout_height="wrap_content"
         tools:ignore="RtlCompat">
 
@@ -36,31 +36,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_toRightOf="@+id/checkbox"
+            android:layout_toLeftOf="@+id/status"
+            android:layout_marginEnd="5dp"
             android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/tv1"
                 android:text="@string/labTestHeading"
-                android:background="@color/discharge_summary_color"
-                style="@style/SmallTextView2"
+                android:background="@color/fadeBlue"
+                style="@style/SimpleTextView3"
+                android:fontFamily="@font/poppins_bold"
                 android:layout_centerVertical="true"
                 >
             </TextView>
             <TextView
                 android:id="@+id/tv2"
-                android:text="@string/labTestHeading"
-                android:background="@color/discharge_summary_color"
+                android:text="list"
+                android:background="@color/fadeBlue"
                 style="@style/SmallTextView2"
                 android:layout_centerVertical="true"
-                >
-            </TextView>
-            <TextView
-                android:id="@+id/tv3"
-                android:text="@string/labTestHeading"
-                android:background="@color/discharge_summary_color"
-                style="@style/SmallTextView2"
-                android:layout_centerVertical="true"
+                android:singleLine="false"
                 >
             </TextView>
 
@@ -74,7 +70,7 @@
             android:layout_alignParentEnd="true"
             app:srcCompat="@drawable/ic_arrow_left"
             android:gravity="center"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:text="Created"
             android:paddingVertical="5dp"
             android:paddingHorizontal="10dp"

@@ -28,9 +28,12 @@ class LabTestAdapter(
 
     var status: String? = null
 
+    private var utils: Utils? = null
+
     var selectAllCheckbox: Boolean? = false
 
     private var onPrintClickListener: OnPrintClickListener? = null
+    private var onSelectAllListener: OnSelectAllListener? = null
 
     private var RTLabData: ArrayList<LabTestresponseContent?>? = ArrayList()
 
@@ -45,15 +48,12 @@ class LabTestAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemLayout = LayoutInflater.from(mContext)
-            .inflate(R.layout.row_lmis_lab_test_list, parent, false) as LinearLayout
-        var recyclerView: RecyclerView
-        
-        
+        val itemLayout = LayoutInflater.from(mContext).inflate(R.layout.row_lmis_lab_test_list, parent, false)
+
         return MyViewHolder(itemLayout)
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "SetTextI18n")
     override fun onBindViewHolder(holder:MyViewHolder, position: Int) {
 
         
@@ -172,6 +172,8 @@ class LabTestAdapter(
                 holder.itemView.checkbox.isEnabled = true
                 holder.itemView.status.setTextColor(Color.parseColor("#000000"))
             }
+
+            holder.itemView.checkbox.isChecked = labAllData.is_selected!!
 
             holder.itemView.checkbox.setOnClickListener {
 
@@ -304,6 +306,94 @@ class LabTestAdapter(
             }
 
         }
+
+        else{
+
+            val labAllData = this.labTestList!![position]
+
+            if(labTestList!![position]?.pattitle!=null && labTestList!![position]?.pattitle!="") {
+
+                holder.itemView.tv1.text =""+
+                        labTestList!![position]?.pattitle + labTestList!![position]!!.first_name + " / " + (labTestList!![position]?.gender_name?.get(
+                            0
+                        ) ?: "") + " / " + labTestList!![position]?.ageperiod
+            }
+            else{
+
+                holder.itemView.tv1.text =
+                    labTestList!![position]!!.first_name + " / " + (labTestList!![position]?.gender_name?.get(
+                            0
+                        ) ?: "") + " / " + labTestList!![position]?.ageperiod
+
+            }
+
+
+            holder.itemView.checkbox.setOnClickListener {
+
+                val myCheckBox = it as CheckBox
+                val responseLabTestContent = labTestList!![position]
+                if (myCheckBox.isChecked) {
+
+                    responseLabTestContent!!.is_selected = true
+
+                    RTLabData!!.add(responseLabTestContent)
+
+
+
+                } else {
+
+                    RTLabData!!.remove(responseLabTestContent)
+
+
+                }
+
+
+             if(RTLabData?.size==labTestList?.size){
+
+
+                 onSelectAllListener?.onSelectAll(true)
+
+                }
+                else{
+                    onSelectAllListener?.onSelectAll(false)
+                }
+            }
+
+
+            holder.itemView.checkbox.isChecked = labTestList!![position]!!.is_selected!!
+
+            if (labTestList!![position]!!.order_status_uuid != 2) {
+
+                holder.itemView.status.setText(labTestList!![position]!!.order_status_name)
+
+            } else {
+
+                holder.itemView.status.setText(labTestList!![position]!!.auth_status_name)
+            }
+            if(labAllData!!.sample_identifier!= null && labAllData!!.sample_identifier!=""){
+
+                holder.itemView.tv2.text=
+                    "${labTestList!![position]?.uhid} / ${labTestList!![position]?.order_number} / ${labTestList!![position]?.test_name} /  ${labTestList!![position]?.sample_identifier} /${labTestList!![position]?.location_name} / "+utils?.convertDateFormat(
+                        labTestList!![position]?.order_request_date!!,
+                        "yyyy-MM-dd HH:mm:ss",
+                    "dd-MM-yyyy HH:mm"
+
+                )
+
+            }
+            else{
+
+                holder.itemView.tv2.text=
+                    "${labTestList!![position]?.uhid} / ${labTestList!![position]?.order_number} / ${labTestList!![position]?.test_name} / ${labTestList!![position]?.location_name} / "+utils?.convertDateFormat(
+                        labTestList!![position]?.order_request_date!!,
+                        "yyyy-MM-dd HH:mm:ss",
+                        "dd-MM-yyyy HH:mm"
+                    )
+
+            }
+
+
+        }
         
 
     }
@@ -316,6 +406,7 @@ class LabTestAdapter(
         mLayoutInflater = LayoutInflater.from(context)
         mContext = context
         isTablet = Utils(mContext).isTablet(mContext)
+        utils= Utils(mContext)
     }
 
     fun getSelectedCheckData(): ArrayList<LabTestresponseContent?>? {
@@ -384,6 +475,17 @@ class LabTestAdapter(
 
     fun setOnPrintClickListener(onprintClickListener: OnPrintClickListener) {
         this.onPrintClickListener = onprintClickListener
+    }
+
+    interface OnSelectAllListener {
+        fun onSelectAll(
+            ischeck: Boolean
+        )
+    }
+
+
+    fun setOnSelectAllListener(onSelectAllListener: OnSelectAllListener) {
+        this.onSelectAllListener = onSelectAllListener
     }
 
 }

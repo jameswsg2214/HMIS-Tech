@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -48,6 +49,7 @@ import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.SendForApprovalDial
 import com.hmis_tn.lims.ui.lmis.lmisTest.viewModel.LabTestViewModel
 import com.hmis_tn.lims.ui.login.model.SimpleResponseModel
 import com.hmis_tn.lims.ui.login.view_model.LoginViewModel
+import com.hmis_tn.lims.utils.CustomProgressDialog
 import com.hmis_tn.lims.utils.Utils
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -64,7 +66,6 @@ class LabTestFragment : Fragment(),
 {
 
     private var isTablet:Boolean= false
-
     private var selectTestitemUuid: String? = ""
     private var selectAssignitemUuid: String? = ""
     var binding: FragmentLabTestBinding? = null
@@ -92,18 +93,11 @@ class LabTestFragment : Fragment(),
 
     private var pinOrMobile: String = ""
     private var orderNumber: String = ""
-
     private var orderId: ArrayList<SendIdList> = ArrayList()
-
     private var LabUUId: Int? = null
-
     var ACCEPTEDUUId: Int = 10
-
     var APPROVEDUUId: Int = 7
-
     var CREATEDUUID: Int = 1
-
-
     var EXECUTEDUUId: Int = 13
 
     var REJECTEDUUId: Int = 2
@@ -130,7 +124,7 @@ class LabTestFragment : Fragment(),
 
     var cal = Calendar.getInstance()
 
-    //private var customProgressDialog: CustomProgressDialog? = null
+    private var customProgressDialog: CustomProgressDialog? = null
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -153,6 +147,7 @@ class LabTestFragment : Fragment(),
         binding?.viewModel = viewModel
         utils = Utils(requireContext())
 
+        customProgressDialog = CustomProgressDialog(requireContext())
 
         isTablet = Utils(requireContext()).isTablet(requireContext())
 
@@ -177,6 +172,9 @@ class LabTestFragment : Fragment(),
         facility_id = appPreferences?.getInt(AppConstants.FACILITY_UUID)!!
 
         LabUUId = appPreferences?.getInt(AppConstants.LAB_UUID)!!
+
+
+
 
         binding?.labTestrecycleview?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -331,6 +329,15 @@ class LabTestFragment : Fragment(),
             datePickerDialog.show()
 
         }
+
+        mAdapter!!.setOnSelectAllListener(object :LabTestAdapter.OnSelectAllListener{
+            override fun onSelectAll(ischeck: Boolean) {
+
+                binding!!.selectAllCheckBox?.isChecked=ischeck
+
+
+            }
+        })
 
   /*      mAdapter!!.setOnPrintClickListener(object :LabTestAdapter.OnPrintClickListener{
             override fun onPrintClick(uuid: Int) {
@@ -523,14 +530,24 @@ class LabTestFragment : Fragment(),
 
         }
 
+binding?.selectAllCheckBox?.setOnClickListener {
 
+    val myCheckBox = it as CheckBox
+
+        mAdapter!!.selectAllCheckbox(myCheckBox.isChecked!!)
+
+
+    }
+
+     /*
         binding!!.selectAllCheckBox?.setOnCheckedChangeListener { buttonView, isChecked ->
 
-            mAdapter!!.selectAllCheckbox(isChecked)
+
+            mAdapter!!.selectAllCheckbox(isChecked!!)
 
         }
 
-
+*/
 
         binding!!.orderProccess!!.setOnClickListener {
 
@@ -609,7 +626,6 @@ class LabTestFragment : Fragment(),
 
         }
 
-
         binding?.sampleAcceptanceBtn!!.setOnClickListener {
 
             val request: SampleAcceptedRequest = SampleAcceptedRequest()
@@ -653,7 +669,7 @@ class LabTestFragment : Fragment(),
 
                     request.details = OrderList
 
-
+                    showLoader(true)
                     viewModel!!.getLabSampleAcceptance(request,labTestAcceptRetrofitCallback)
 
                     //viewModel!!.orderDetailsGet(request, orderDetailsRetrofitCallback)
@@ -673,9 +689,6 @@ class LabTestFragment : Fragment(),
 
 
         }
-
-
-
 
         binding!!.saveOfApproval?.setOnClickListener {
 
@@ -836,6 +849,7 @@ class LabTestFragment : Fragment(),
             }
         })
 
+//        viewModel?.getTextAssignedTo(facility_id, LabAssignedSpinnerRetrofitCallback)
         return binding!!.root
     }
 
@@ -869,6 +883,7 @@ class LabTestFragment : Fragment(),
         currentPage: Int
     ) {
         //customProgressDialog!!.show()
+        showLoader(true)
         val labTestRequestModel = LabTestRequestModel()
         labTestRequestModel.pageNo = currentPage
         labTestRequestModel.paginationSize = pageSize
@@ -896,100 +911,98 @@ class LabTestFragment : Fragment(),
             if (responseBody!!.body()?.responseContents?.isNotEmpty()!!) {
                 TOTAL_PAGES =
                     Math.ceil(responseBody!!.body()!!.totalRecords!!.toDouble() / 10).toInt()
-                binding?.positiveTxt!!.setText("0")
-
-                binding?.negativeTxt!!.setText("0")
-
-                binding?.equivocalTxt!!.setText("0")
-
-                binding?.rejectedTxt!!.setText("0")
 
 
                 if (responseBody.body()!!.responseContents!!.isNotEmpty()!!) {
                     isLoadingPaginationAdapterCallback = false
                     mAdapter!!.addAll(responseBody!!.body()!!.responseContents)
                     if (currentPage < TOTAL_PAGES!!) {
-                        binding?.progressbar!!.setVisibility(View.VISIBLE);
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.VISIBLE);
                         mAdapter!!.addLoadingFooter()
                         isLoading = true
                         isLastPage = false
                     } else {
-                        binding?.progressbar!!.setVisibility(View.GONE);
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.GONE);
                         mAdapter!!.removeLoadingFooter()
                         isLoading = false
                         isLastPage = true
                     }
 
                 } else {
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
                     mAdapter!!.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
                 }
                 if(responseBody!!.body()!!.totalRecords!!<11)
                 {
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
                 }
 
-                val diseaseList = responseBody?.body()?.disease_result_data
+                if(isTablet) {
 
-                for (i in diseaseList!!.indices) {
+                    binding?.positiveTxt!!.setText("0")
+                    binding?.negativeTxt!!.setText("0")
+                    binding?.equivocalTxt!!.setText("0")
+                    binding?.rejectedTxt!!.setText("0")
+                    val diseaseList = responseBody?.body()?.disease_result_data
 
-                    if (diseaseList.size != 0 && diseaseList[i]?.result_value.equals("Positive")) {
-                        binding?.positiveTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
-                    } else if (diseaseList.size != 0 && diseaseList[i]?.result_value.equals("Negative")) {
-                        binding?.negativeTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
-                    } else if (diseaseList.size != 0 && diseaseList[i]?.result_value.equals("Equivocal")) {
-                        binding?.equivocalTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
-                    }
+                    for (i in diseaseList!!.indices) {
 
-                }
-
-                val orderList = responseBody?.body()?.order_status_count
-
-                if (orderList?.size != 0) {
-
-                    for (i in orderList!!.indices) {
-
-                        if (orderList[i]?.order_status_uuid == REJECTEDUUId) {
-
-                            binding?.rejectedTxt!!.setText(orderList[i]?.order_count.toString())
-
-                        }
-
-                        else if (orderList[i]?.order_status_uuid == ACCEPTEDUUId) {
-
-                            binding?.positiveTxt!!.setText(orderList[i]?.order_count.toString())
-
-                        }
-
-                        else if (orderList[i]?.order_status_uuid == SENDFORAPPROVALUUId) {
-
-                            binding?.equivocalTxt!!.setText(orderList[i]?.order_count.toString())
-
-                        }
-                        else if (orderList[i]?.order_status_uuid == SAMPLE_TRANSPORTUUId) {
-
-                            binding?.negativeTxt!!.setText(orderList[i]?.order_count.toString())
-
+                        if (diseaseList.size != 0 && diseaseList[i]?.result_value.equals("Positive")) {
+                            binding?.positiveTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
+                        } else if (diseaseList.size != 0 && diseaseList[i]?.result_value.equals("Negative")) {
+                            binding?.negativeTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
+                        } else if (diseaseList.size != 0 && diseaseList[i]?.result_value.equals("Equivocal")) {
+                            binding?.equivocalTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
                         }
 
                     }
 
-                }
+                    val orderList = responseBody?.body()?.order_status_count
 
+                    if (orderList?.size != 0) {
+
+                        for (i in orderList!!.indices) {
+
+                            if (orderList[i]?.order_status_uuid == REJECTEDUUId) {
+
+                                binding?.rejectedTxt!!.setText(orderList[i]?.order_count.toString())
+
+                            } else if (orderList[i]?.order_status_uuid == ACCEPTEDUUId) {
+
+                                binding?.positiveTxt!!.setText(orderList[i]?.order_count.toString())
+
+                            } else if (orderList[i]?.order_status_uuid == SENDFORAPPROVALUUId) {
+
+                                binding?.equivocalTxt!!.setText(orderList[i]?.order_count.toString())
+
+                            } else if (orderList[i]?.order_status_uuid == SAMPLE_TRANSPORTUUId) {
+
+                                binding?.negativeTxt!!.setText(orderList[i]?.order_count.toString())
+
+                            }
+
+                        }
+
+                    }
+                }
 
             } else {
                 Toast.makeText(context, "No records found", Toast.LENGTH_LONG).show()
-                binding?.progressbar!!.setVisibility(View.GONE);
-                binding?.positiveTxt!!.setText("0")
 
-                binding?.negativeTxt!!.setText("0")
+                if(isTablet) {
 
-                binding?.equivocalTxt!!.setText("0")
-
-                binding?.rejectedTxt!!.setText("0")
-
+                    binding?.progressbar!!.setVisibility(View.GONE);
+                    binding?.positiveTxt!!.setText("0")
+                    binding?.negativeTxt!!.setText("0")
+                    binding?.equivocalTxt!!.setText("0")
+                    binding?.rejectedTxt!!.setText("0")
+                }
                 mAdapter!!.clearAll()
             }
 
@@ -1051,8 +1064,11 @@ class LabTestFragment : Fragment(),
         }
 
         override fun onEverytime() {
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.GONE);
 
+
+            showLoader(false)
         }
 
     }
@@ -1060,7 +1076,8 @@ class LabTestFragment : Fragment(),
     val labTestResponseSecondRetrofitCallback = object : RetrofitCallback<LabTestResponseModel> {
         override fun onSuccessfulResponse(response: Response<LabTestResponseModel?>) {
             if (response.body()?.responseContents!!.isNotEmpty()!!) {
-                binding?.progressbar!!.setVisibility(View.GONE);
+                if(isTablet)
+                    binding?.progressbar!!.setVisibility(View.GONE);
                 mAdapter!!.removeLoadingFooter()
                 isLoading = false
                 isLoadingPaginationAdapterCallback = false
@@ -1070,14 +1087,16 @@ class LabTestFragment : Fragment(),
                 println("testing for two  = $currentPage--$TOTAL_PAGES")
 
                 if (currentPage < TOTAL_PAGES!!) {
-                    binding?.progressbar!!.setVisibility(View.VISIBLE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.VISIBLE);
                     mAdapter?.addLoadingFooter()
                     isLoading = true
                     isLastPage = false
                     println("testing for four  = $currentPage--$TOTAL_PAGES")
                 } else {
                     isLastPage = true
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
 //                    visitHistoryAdapter.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
@@ -1085,7 +1104,8 @@ class LabTestFragment : Fragment(),
                 }
 
             } else {
-                binding?.progressbar!!.setVisibility(View.GONE);
+                if(isTablet)
+                    binding?.progressbar!!.setVisibility(View.GONE);
                 println("testing for six  = $currentPage--$TOTAL_PAGES")
                 mAdapter?.removeLoadingFooter()
                 isLoading = false
@@ -1132,7 +1152,8 @@ class LabTestFragment : Fragment(),
         }
 
         override fun onEverytime() {
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.GONE);
         }
     }
 
@@ -1353,6 +1374,7 @@ class LabTestFragment : Fragment(),
 
         override fun onEverytime() {
             viewModel!!.progress.value = 8
+            showLoader(false)
         }
 
     }
@@ -1389,7 +1411,7 @@ class LabTestFragment : Fragment(),
 */
 
 
-                viewModel?.getTextAssignedTo(facility_id, LabAssignedSpinnerRetrofitCallback)
+
             }
 
             override fun onBadRequest(errorBody: Response<ResponseTestMethod?>) {
@@ -1653,14 +1675,17 @@ class LabTestFragment : Fragment(),
 
     override fun onRefreshAssignToOrderList() {
         mAdapter!!.clearAll()
-
         pageSize = 10
-
         currentPage = 0
-
         labListAPI(10, 0)
     }
 
 
+    fun showLoader(isLoad:Boolean){
+        if(isLoad)
+            customProgressDialog?.show()
+        else
+            customProgressDialog?.dismiss()
+    }
 
 }

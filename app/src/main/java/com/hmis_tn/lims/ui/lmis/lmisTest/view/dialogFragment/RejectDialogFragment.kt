@@ -137,6 +137,26 @@ class RejectDialogFragment : DialogFragment() {
         viewModel!!.getRejectReference(getRejectRefernceRetrofitCallback)
 
 
+        if(favouriteData.size ==1) {
+            binding?.testName?.setText(
+                favouriteData[0].name
+            )
+        }
+        else{
+
+            for(i in favouriteData!!.indices){
+
+                binding?.testName?.setText(
+
+                    " "+binding?.testName?.text + favouriteData[i].name
+
+                )
+
+            }
+
+
+        }
+
         binding?.closeImageView?.setOnClickListener {
             //Call back
             dialog?.dismiss()
@@ -149,7 +169,6 @@ class RejectDialogFragment : DialogFragment() {
         binding?.saveCardView?.setOnClickListener {
 
             val request: RejectRequestModel = RejectRequestModel()
-
             val Idlist: ArrayList<Int> = ArrayList()
 
             Log.i("reject",""+favouriteData)
