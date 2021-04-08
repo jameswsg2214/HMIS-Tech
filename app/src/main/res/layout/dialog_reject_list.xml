@@ -65,12 +65,11 @@
                     tools:ignore="VectorDrawableCompat" />
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/testName"
-                style="@style/SemiHeading1"
+                style="@style/SemiHeading3"
                 android:background="@color/fadeBlue"
-                android:text="@string/name"
+                android:text=""
                 android:padding="5dp"
                 android:layout_margin="5dp"
                 />
@@ -90,11 +89,11 @@
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/order_process"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/edit_text_bottom_border"
                 android:fontFamily="@font/poppins"
-                android:hint="Reason*"
+                android:hint="Reason"
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"

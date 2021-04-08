@@ -146,11 +146,14 @@ class RejectDialogFragment : DialogFragment() {
 
             for(i in favouriteData!!.indices){
 
-                binding?.testName?.setText(
+                if(binding?.testName?.text!="") {
+                    binding?.testName?.text = ""+binding?.testName?.text +" , "+ favouriteData[i].name
+                }
+                else{
 
-                    " "+binding?.testName?.text + favouriteData[i].name
+                    binding?.testName?.text = favouriteData[i].name
 
-                )
+                }
 
             }
 
@@ -310,10 +313,10 @@ class RejectDialogFragment : DialogFragment() {
 
         val adapter = ArrayAdapter<String>(
             requireContext(),
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             ref.values.toMutableList()
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.spinner_item)
 
         binding?.orderProcess!!.adapter = adapter
 

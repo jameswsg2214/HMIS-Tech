@@ -453,12 +453,11 @@
                             </TextView>
 
 
-                                <EditText
+                                <androidx.appcompat.widget.AppCompatEditText
                                     android:id="@+id/searchUsingMobileNo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppins"
-                                    android:hint="PIN/Mobile No"
                                     android:inputType="number"
                                     android:maxLines="1"
                                     android:padding="10dp"
@@ -472,7 +471,7 @@
                                 android:textColor="@color/black">
 
                             </TextView>
-                                <EditText
+                                <androidx.appcompat.widget.AppCompatEditText
                                     android:id="@+id/searchOrderNumber"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

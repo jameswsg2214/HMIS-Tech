@@ -367,28 +367,20 @@ class LabTestFragment : Fragment(),
                 endDate = toDateRev + "T23:59:59.000Z"
             }
 
-            pinOrMobile = binding?.searchUsingMobileNo!!.text.trim().toString()
-            orderNumber = binding?.searchOrderNumber!!.text.trim().toString()
-
+            pinOrMobile = binding?.searchUsingMobileNo!!.text!!.trim().toString()
+            orderNumber = binding?.searchOrderNumber!!.text!!.trim().toString()
             binding?.drawerLayout!!.closeDrawer(GravityCompat.END)
-
             mAdapter!!.clearAll()
-
             pageSize = 10
-
             currentPage = 0
-
             labListAPI(pageSize, currentPage)
         }
 
         binding?.rejected?.setOnClickListener {
 
             val datas = mAdapter!!.getSelectedCheckData()
-
             var detailsArray: ArrayList<SendIdList> = ArrayList()
-
             detailsArray.clear()
-
             var status: Boolean = true
 
             if (datas!!.size != 0) {
@@ -401,6 +393,8 @@ class LabTestFragment : Fragment(),
                         val details: SendIdList = SendIdList()
 
                         details.Id = datas[i]!!.uuid!!
+
+                        details.name = datas[i]!!.test_name!!
 
                         detailsArray.add(details)
 

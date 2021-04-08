@@ -702,7 +702,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                                <androidx.appcompat.widget.AppCompatEditText
                                     android:id="@+id/searchUsingMobileNo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -719,7 +719,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                                <androidx.appcompat.widget.AppCompatEditText
                                     android:id="@+id/searchOrderNumber"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -730,6 +730,7 @@
                                     android:maxLines="1"
                                     android:padding="10dp"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
                             </com.google.android.material.textfield.TextInputLayout>
 
 

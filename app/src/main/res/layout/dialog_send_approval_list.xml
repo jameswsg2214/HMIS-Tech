@@ -31,7 +31,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:background="@color/hmis_background"
                 tools:ignore="RtlCompat"
@@ -41,12 +41,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:fontFamily="@font/poppins"
+                    android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
-                    android:text="Send For Approval"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/sendForApproval"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dr_medium_text"
                     android:textStyle="bold"
                     tools:ignore="RtlCompat" />
 
@@ -65,7 +66,7 @@
                     tools:ignore="VectorDrawableCompat" />
             </LinearLayout>
 
-            <TextView
+            <com.hmis_tn.lims.utils.MandatoryTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -73,7 +74,8 @@
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/poppins"
                 android:maxLines="1"
-                android:text="Doctor Name*"
+                android:text="@string/doctorName"
+                android:textSize="@dimen/dr_small_text"
                 android:textColor="@color/black" />
 
 
@@ -86,9 +88,10 @@
                 tools:ignore="RtlCompat"
                 android:drawableEnd="@drawable/ic_search"
                 android:fontFamily="@font/poppins"
-                android:hint="Doctor Name*"
+                android:hint="@string/search_with_3_letters"
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
+                android:textSize="@dimen/dr_small_text"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium.MySubheader" />
 
@@ -101,7 +104,8 @@
                 tools:ignore="RtlCompat"
                 android:fontFamily="@font/poppins"
                 android:maxLines="1"
-                android:text="Comments"
+                android:text="@string/command"
+                android:textSize="@dimen/dr_small_text"
                 android:textColor="@color/black" />
 
             <EditText
@@ -111,6 +115,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
+                android:textSize="@dimen/dr_small_text"
                 android:background="@drawable/edittext_border_white"
                 android:fontFamily="@font/poppins"
                 android:inputType="textMultiLine"
@@ -151,7 +156,7 @@
                         android:paddingBottom="7dp"
                         android:text="OK"
                         android:textColor="@color/white"
-                        android:textSize="10dp"
+                        android:textSize="@dimen/dr_small_text"
                         tools:ignore="HardcodedText" />
 
                 </androidx.cardview.widget.CardView>
@@ -180,7 +185,7 @@
                         android:paddingBottom="7dp"
                         android:text="Cancel"
                         android:textColor="@color/white"
-                        android:textSize="10dp"
+                        android:textSize="@dimen/dr_small_text"
                         tools:ignore="HardcodedText" />
 
                 </androidx.cardview.widget.CardView>

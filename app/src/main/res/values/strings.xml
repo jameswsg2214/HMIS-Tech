@@ -112,6 +112,10 @@
     <string name="orderNumber">Order Number</string>
     <string name="description">Description</string>
     <string name="reason">Reason</string>
+    <string name="assignToOthers">Assign To Others</string>
+    <string name="labName">Lab Name</string>
+    <string name="sendForApproval">Send For Approval</string>
+    <string name="doctorName">Doctor Name</string>
 
 
 
