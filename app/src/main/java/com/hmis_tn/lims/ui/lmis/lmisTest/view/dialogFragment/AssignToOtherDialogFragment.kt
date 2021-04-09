@@ -207,7 +207,8 @@ class AssignToOtherDialogFragment : DialogFragment() {
 
 
 
-        } else {
+        }
+        else {
 
             ref.clear()
             ref.put(0, "select Lab")
@@ -388,7 +389,8 @@ class AssignToOtherDialogFragment : DialogFragment() {
                     binding?.testName?.setText(
                         favouriteData[0].name
                     )
-                } else {
+                }
+                else {
 
                     for (i in favouriteData!!.indices) {
 
@@ -649,6 +651,7 @@ class AssignToOtherDialogFragment : DialogFragment() {
             R.layout.spinner_item,
             responseContents
         )
+
         binding!!.institutionSpinner!!.threshold = 1
         binding!!.institutionSpinner!!.setAdapter(responseContentAdapter)
         binding!!.institutionSpinner!!.showDropDown()
@@ -656,16 +659,13 @@ class AssignToOtherDialogFragment : DialogFragment() {
         binding!!.institutionSpinner!!.setOnItemClickListener { parent, _, pos, id ->
 
             val selectedPoi = parent.adapter.getItem(pos) as LabName?
-
             binding!!.institutionSpinner!!.setText(selectedPoi!!.name)
-
             to_facility = selectedPoi.uuid
-            /*      lab.isEnabled=true
 
+            /*      lab.isEnabled=true
                   labTestList[searchposition].to_facility=selectedPoi.uuid*/
 
             viewModel!!.getLocationMaster(selectedPoi.uuid, LocationMasterResponseCallback)
-
 
         }
 
@@ -682,11 +682,10 @@ class AssignToOtherDialogFragment : DialogFragment() {
             ref.values.toMutableList()
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_nogap)
-
         binding?.labName!!.adapter = adapter
-
         binding?.labName?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
+
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     val itemValue = parent!!.getItemAtPosition(0).toString()
                     to_lab = ref.filterValues { it == itemValue }.keys.toList()[0]
@@ -705,8 +704,6 @@ class AssignToOtherDialogFragment : DialogFragment() {
                 }
 
             }
-
-
     }
 
 

@@ -1,7 +1,10 @@
 package com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.Html
 import android.text.SpannableStringBuilder
@@ -10,7 +13,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.*
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hmis_tn.lims.R
@@ -18,26 +24,21 @@ import com.hmis_tn.lims.config.AppConstants
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.OrderList
 
 
-class OrderProcessAdapter(context: Context, private var labTestList: ArrayList<OrderList>) :
-    RecyclerView.Adapter<OrderProcessAdapter.MyViewHolder>() {
+class OrderProcessMobAdapter(context: Context, private var labTestList: ArrayList<OrderList>) :
+    RecyclerView.Adapter<OrderProcessMobAdapter.MyViewHolder>() {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val mContext: Context = context
     var orderNumString: String? = null
     var status: String? = null
-
     private var onCommandClickListener: OnCommandClickListener? = null
 
-
     private  var AlphanumericCode="Alphanumeric"
-
+    private var customdialog: Dialog? = null
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var serialNumberTextView: TextView
+
         var textProcess: TextView
         var result_text: Spinner
-        var uom_text: TextView
-        var normal_val_text: TextView
-        var mainLinearLayout: LinearLayout
 
         var result: EditText
         var resultalphanumerioc: EditText
@@ -47,51 +48,47 @@ class OrderProcessAdapter(context: Context, private var labTestList: ArrayList<O
         var resultLongText: EditText
 
         var resultnotetemplate: EditText
+        var info: ImageView
 
         init {
 
+            textProcess = view.findViewById<View>(R.id.test_name) as TextView
 
-
-
-            serialNumberTextView = view.findViewById<View>(R.id.serialNumberTextView) as TextView
-            textProcess = view.findViewById<View>(R.id.textProcess) as TextView
-
-            uom_text = view.findViewById<View>(R.id.uom_text) as TextView
             result= view.findViewById<View>(R.id.resultData) as EditText
             result_text = view.findViewById<View>(R.id.result_spinner) as Spinner
 
-            resultalphanumerioc= view.findViewById<View>(R.id.resultDataAlphanumeric
-            ) as EditText
+            resultalphanumerioc= view.findViewById<View>(R.id.resultDataAlphanumeric) as EditText
             resultspecialCase= view.findViewById<View>(R.id.resultDataSplcase) as EditText
 
             resultnonEdiable= view.findViewById<View>(R.id.resultDataNoneditable) as EditText
             resultLongText= view.findViewById<View>(R.id.resultLongText) as EditText
-            normal_val_text = view.findViewById<View>(R.id.normal_val_text) as TextView
 
             resultnotetemplate=view.findViewById<View>(R.id.resultLongText) as EditText
-            mainLinearLayout = view.findViewById(R.id.mainLinearLayout)
+
+            info = view.findViewById<View>(R.id.info) as ImageView
+
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemLayout = LayoutInflater.from(mContext)
-            .inflate(R.layout.row_order_process_list, parent, false) as LinearLayout
-        var recyclerView: RecyclerView
+            .inflate(R.layout.row_order_process_mob, parent, false)
+
         return MyViewHolder(itemLayout)
     }
 
     @SuppressLint("ResourceAsColor", "NewApi")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         orderNumString = labTestList[position].toString()
-        holder.serialNumberTextView.text = (position + 1).toString()
 
         val movie = labTestList[position]
         holder.textProcess.text = movie.title
-
+/*
         holder.uom_text.text=movie.umo
 
         holder.normal_val_text.text=movie.value
+        */
 
 
         var spinnerData:MutableMap<Int,String> =movie.spinnerData
@@ -120,74 +117,7 @@ class OrderProcessAdapter(context: Context, private var labTestList: ArrayList<O
 
                     holder.result_text.setSelection(spinner[labTestList[position].name]!!)
                 }
-/*
-                if(labTestList[position].code=="COVID") {
 
-                    for (i in labTestList[position].spinnerdata.indices) {
-
-                        val data = labTestList[position].spinnerdata[i]
-
-                        when (data) {
-                            "Positive" -> {
-
-                                spinnerData[2] = data
-                            }
-                            "Negative" -> {
-
-                                spinnerData[1] = data
-                            }
-                            "Equivocal" -> {
-
-                                spinnerData[3] = data
-                            }
-                        }
-
-                        spinner[data]=i
-
-
-                    }
-
-                    val adapter = ArrayAdapter<String>(
-                        this.mContext,
-                        R.layout.spinner_item,
-                        spinnerData.values.toMutableList()
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    holder!!.result_text!!.adapter = adapter
-
-                    labTestList[position].name
-
-                    if(labTestList[position].name!="" && labTestList[position].name!=null ){
-
-                        holder.result_text.setSelection(spinner[labTestList[position].name]!!)
-                    }
-
-
-                }
-                else{
-                    for (i in labTestList[position].spinnerdata.indices) {
-
-                        val data = labTestList[position].spinnerdata[i]
-
-                        spinnerData[i]=data
-
-                        spinner[data]=i
-
-                    }
-
-                    val adapter = ArrayAdapter<String>(
-                        this.mContext,
-                        R.layout.spinner_item,
-                        spinnerData.values.toMutableList()
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    holder!!.result_text!!.adapter = adapter
-
-                    if(labTestList[position].name!="" && labTestList[position].name!=null ){
-
-                        holder.result_text.setSelection(spinner[labTestList[position].name]!!)
-                    }
-                }*/
             }
 
 
@@ -258,37 +188,37 @@ class OrderProcessAdapter(context: Context, private var labTestList: ArrayList<O
             )
 
 
-        /*    val richTextEditorDialog = RichTextEditorDialogFragment(
-                mContext = this.mContext,
-                title = "Template",
-                body = labTestList[position].name ?: "",
-                stringAsHtml = { stringAsHtml ->
-                    //returns HTML when save is clicked
+        }
+        holder.info.setOnClickListener {
 
-                    labTestList[position].name=stringAsHtml
-                 //   println(stringAsHtml)
-                }
-            )
-            richTextEditorDialog.show(ft, "Tag")
-*/
+            customdialog = Dialog(holder.itemView.context)
+
+            if (customdialog != null) {
+                customdialog!!.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                customdialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+            customdialog!! .requestWindowFeature(Window.FEATURE_NO_TITLE)
+            customdialog!! .setCancelable(false)
+            customdialog!! .setContentView(R.layout.dialog_umo_result)
+
+            val normalValue = customdialog!! .findViewById(R.id.normalValue) as TextView
+            val umoValue = customdialog!! .findViewById(R.id.umoValue) as TextView
+
+            umoValue.setText(labTestList[position].umo)
+            normalValue.setText(labTestList[position].value)
+
+            val close = customdialog!! .findViewById(R.id.closeCardView) as CardView
+
+            close.setOnClickListener {
+                customdialog!! .dismiss()
+            }
+            customdialog!! .show()
 
         }
 
-        if (position % 2 == 0) {
-            holder.mainLinearLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.alternateRow
-                )
-            )
-        } else {
-            holder.mainLinearLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.white
-                )
-            )
-        }
 
         holder!!.result_text?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {

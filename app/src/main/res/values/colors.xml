@@ -33,6 +33,7 @@
 
 
     <color name="discharge_summary_color">#c7e5ff</color>
+    <color name="orderListBackground">#ECF5FD</color>
 
 
     <color name="blueprintborder">#EEEEEE</color>

@@ -26,6 +26,7 @@ import com.hmis_tn.lims.config.AppConstants
 import com.hmis_tn.lims.config.AppPreferences
 import com.hmis_tn.lims.databinding.FragmentLabTestBinding
 import com.hmis_tn.lims.retrofitCallbacks.RetrofitCallback
+import com.hmis_tn.lims.ui.homepage.ui.HomeScreenActivity
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabTestRequestModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabrapidSaveRequestModel.DetailX
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.LabrapidSaveRequestModel.LabrapidSaveRequestModel
@@ -706,6 +707,8 @@ binding?.selectAllCheckBox?.setOnClickListener {
 
                         details.Id = datas[i]!!.uuid!!
 
+                        details.name = datas[i]!!.test_name!!
+
                         detailsArray.add(details)
 
                     } else {
@@ -1157,20 +1160,41 @@ binding?.selectAllCheckBox?.setOnClickListener {
         override fun onSuccessfulResponse(responseBody: Response<OrderProcessDetailsResponseModel?>) {
 
 
-            val ft = childFragmentManager.beginTransaction()
-            val dialog = OrderProcessDialogFragment()
-            val bundle = Bundle()
-            val saveArray = responseBody!!.body()!!.responseContents.rows
-            bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, saveArray)
-            bundle.putParcelableArrayList(AppConstants.RESPONSEORDERARRAY, orderId)
-            bundle.putInt(AppConstants.RESPONSENEXT, orderCount)
-            bundle.putString("testMethodCode", testMethodCode)
-            bundle.putString("From", "Test")
-            // send this arraylist orderId
-            dialog.arguments = bundle
+            if(isTablet) {
+                val ft = childFragmentManager.beginTransaction()
+                val dialog = OrderProcessDialogFragment()
+                val bundle = Bundle()
+                val saveArray = responseBody!!.body()!!.responseContents.rows
+                bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, saveArray)
+                bundle.putParcelableArrayList(AppConstants.RESPONSEORDERARRAY, orderId)
+                bundle.putInt(AppConstants.RESPONSENEXT, orderCount)
+                bundle.putString("testMethodCode", testMethodCode)
+                bundle.putString("From", "Test")
+                // send this arraylist orderId
+                dialog.arguments = bundle
+                // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                dialog.show(ft, "Tag")
 
-            // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-            dialog.show(ft, "Tag")
+            }
+            else{
+
+
+                val labtemplatedialog = OrderProcessFragment()
+
+                val bundle = Bundle()
+                val saveArray = responseBody!!.body()!!.responseContents.rows
+                bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, saveArray)
+                bundle.putParcelableArrayList(AppConstants.RESPONSEORDERARRAY, orderId)
+                bundle.putInt(AppConstants.RESPONSENEXT, orderCount)
+                bundle.putString("testMethodCode", testMethodCode)
+                bundle.putString("From", "Test")
+
+                labtemplatedialog.arguments = bundle
+
+                (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+
+            }
         }
 
         override fun onBadRequest(errorBody: Response<OrderProcessDetailsResponseModel?>) {

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginHorizontal="15dp"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    tools:ignore="RtlCompat" >
+
+    <TextView
+        style="@style/SmallTextView2"
+        android:text="RAA"
+        android:layout_width="100dp"
+        android:id="@+id/test_name"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        style="@style/SmallTextView2"
+        android:text=":"
+        android:layout_marginStart="30dp"
+        android:id="@+id/semicolon"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/test_name"
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"/>
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_toRightOf="@+id/semicolon"
+        android:layout_toLeftOf="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+
+        <Spinner
+            android:id="@+id/result_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/dr_small_text"
+            android:paddingStart="10dp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/resultData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/dr_small_text"
+            android:paddingStart="10dp"
+            android:visibility="gone"
+            android:singleLine="true"
+            />
+
+        <EditText
+            android:id="@+id/resultDataAlphanumeric"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/dr_small_text"
+            android:paddingStart="10dp"
+            android:visibility="gone"
+            android:digits="abcdefghijklmnopqrstuvwzyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "
+            android:singleLine="true"
+            />
+
+        <EditText
+            android:id="@+id/resultDataSplcase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/dr_small_text"
+            android:paddingStart="10dp"
+            android:visibility="gone"
+            />
+
+        <EditText
+            android:id="@+id/resultDataNoneditable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/dr_small_text"
+            android:paddingStart="10dp"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_weight="1.70"
+            android:visibility="gone"
+            />
+
+        <EditText
+            android:id="@+id/resultLongText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/dr_small_text"
+            android:paddingStart="10dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+
+            />
+
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_baseline_info_24"
+        android:layout_marginStart="5dp"
+        android:layout_centerVertical="true"
+        />
+
+
+</RelativeLayout>

@@ -427,7 +427,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@color/colorPrimaryDark"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -453,7 +453,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/outPtientGreen"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -478,7 +478,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/orange"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -503,7 +503,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/colorPrimaryDark"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -528,7 +528,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/outPtientGreen"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -553,7 +553,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/red"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -577,7 +577,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/colorPrimaryDark"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -747,7 +747,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:cardBackgroundColor="@color/Skyblue"
-                                    app:cardCornerRadius="5dp">
+                                    >
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -768,7 +768,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     app:cardBackgroundColor="@color/clear"
-                                    app:cardCornerRadius="5dp">
+                                    >
 
                                     <TextView
                                         android:layout_width="wrap_content"

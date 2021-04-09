@@ -125,7 +125,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="5dp"
+
                     android:id="@+id/save"
                     app:cardBackgroundColor="@color/save">
 
@@ -151,7 +151,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="5dp"
+
                     android:id="@+id/clear"
                     android:layout_marginStart="10dp"
                     app:cardBackgroundColor="@color/clear"

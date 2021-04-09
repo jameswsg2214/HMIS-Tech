@@ -257,7 +257,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:cardBackgroundColor="@color/hmis_background"
-                            app:cardCornerRadius="5dp">
+                            >
 
                             <TextView
                                 android:id="@+id/addDetails"
@@ -285,7 +285,7 @@
                             android:layout_marginStart="@dimen/_5sdp"
 
                             app:cardBackgroundColor="@color/clear"
-                            app:cardCornerRadius="5dp">
+                            >
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -432,7 +432,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@color/positiveToast"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -458,7 +458,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
 
                         app:cardBackgroundColor="@color/clear"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"

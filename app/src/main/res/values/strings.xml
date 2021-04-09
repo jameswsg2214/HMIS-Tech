@@ -90,6 +90,8 @@
     <string name="save">Save</string>
     <string name="clear">Clear</string>
     <string name="search">Search</string>
+    <string name="close">Close</string>
+    <string name="result">Result</string>
 
     <!-- searcb -->
 
@@ -116,6 +118,10 @@
     <string name="labName">Lab Name</string>
     <string name="sendForApproval">Send For Approval</string>
     <string name="doctorName">Doctor Name</string>
+    <string name="approve">Approve</string>
+    <string name="orderProcess">Order Process</string>
+    <string name="normalValue">Normal Value</string>
+    <string name="umo">UMO</string>
 
 
 

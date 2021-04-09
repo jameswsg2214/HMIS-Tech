@@ -87,7 +87,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/orange"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:id="@+id/completed_count"
@@ -111,7 +111,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
                         app:cardBackgroundColor="@color/colorPrimary"
-                        app:cardCornerRadius="5dp">
+                        >
 
                         <TextView
                             android:id="@+id/pending_count"

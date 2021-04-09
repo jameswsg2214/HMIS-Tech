@@ -50,6 +50,7 @@ class SendForApprovalDialogFragment : DialogFragment() {
     var appPreferences: AppPreferences? = null
     private var customProgressDialog: CustomProgressDialog? = null
     var selectDoctorId:Int=0
+    var isTablet:Boolean=false
 
     var responseAdapter: DoctorListAdapter? =null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -186,6 +187,8 @@ class SendForApprovalDialogFragment : DialogFragment() {
 
         }
 
+        isTablet= utils!!.isTablet(requireContext())
+
         val args = arguments
 
         if (args == null) {
@@ -193,6 +196,32 @@ class SendForApprovalDialogFragment : DialogFragment() {
         } else {
             // get value from bundle..
             favouriteData = args.getParcelableArrayList<SendIdList>(AppConstants.RESPONSECONTENT)!!
+
+            if(!isTablet){
+
+
+                        if (favouriteData.size == 1) {
+                    binding?.testName?.setText(
+                        favouriteData[0].name
+                    )
+                }
+                else {
+
+                    for (i in favouriteData!!.indices) {
+
+                        if (binding?.testName?.text != "") {
+                            binding?.testName?.text =
+                                "" + binding?.testName?.text + " , " + favouriteData[i].name
+                        } else {
+
+                            binding?.testName?.text = favouriteData[i].name
+
+                        }
+
+                    }
+                }
+
+            }
 
         }
         return binding?.root
