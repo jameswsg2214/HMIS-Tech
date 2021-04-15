@@ -49,7 +49,7 @@ class LoginViewModel(
 
 
     init {
-        username.value = "parthitech"
+        username.value = "parthiappr"
         password.value = "123456"
         forgotpasswordusername.value = ""
         otp.value = ""

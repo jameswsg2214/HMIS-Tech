@@ -31,6 +31,7 @@ import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.SendIdList
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.LabAssignedToresponseContent
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.LabTestAdapter
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.RejectDialogFragment
 import com.hmis_tn.lims.ui.lmis.lmisTestApprovel.model.request.LabTestApprovalRequestModel
 import com.hmis_tn.lims.ui.lmis.lmisTestApprovel.model.response.LabApprovalResultResponse.LabApprovalResultResponse
@@ -73,6 +74,7 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
     private var currentPage = 0
     private var pageSize = 10
     var testMethodCode:String=""
+    private var isTablet = false
     private var isLoading = false
     private var isLastPage = false
     private var TOTAL_PAGES: Int = 0
@@ -120,16 +122,20 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
         binding?.viewModel = viewModel
         utils = Utils(requireContext())
 
+        isTablet = utils!!.isTablet(requireContext())
+
         binding?.searchDrawerCardView?.setOnClickListener {
             binding?.drawerLayout!!.openDrawer(GravityCompat.END)
         }
         binding?.drawerLayout?.drawerElevation = 0f
+
         binding?.drawerLayout?.setScrimColor(
             ContextCompat.getColor(
                 requireContext()!!,
                 android.R.color.transparent
             )
         )
+
         linearLayoutManager = LinearLayoutManager(requireContext()!!, LinearLayoutManager.VERTICAL, false)
         binding?.labTestApprpovalrecycleview!!.layoutManager = linearLayoutManager
         mAdapter = LabTestApprovalAdapter(requireContext()!!, ArrayList())
@@ -287,8 +293,8 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
             }
             binding?.drawerLayout!!.closeDrawer(GravityCompat.END)
 
-            pinOrMobile = binding?.searchUsingMobileNo!!.text.trim().toString()
-            orderNumber = binding?.searchOrderNumber!!.text.trim().toString()
+            pinOrMobile = binding?.searchUsingMobileNo!!.text?.trim().toString()
+            orderNumber = binding?.searchOrderNumber!!.text?.trim().toString()
 
             mAdapter!!.clearAll()
 
@@ -302,11 +308,14 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
 
         }
 
-        mAdapter!!.setOnPrintClickListener(object :LabTestApprovalAdapter.OnPrintClickListener{
+        if(isTablet) {
 
-            override fun onPrintClick(uuid: Int) {
+            mAdapter!!.setOnPrintClickListener(object :
+                LabTestApprovalAdapter.OnPrintClickListener {
 
-           /*     Log.i("print",""+uuid)
+                override fun onPrintClick(uuid: Int) {
+
+                    /*     Log.i("print",""+uuid)
 
                 val bundle = Bundle()
 
@@ -320,11 +329,24 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
 
                 (activity as MainLandScreenActivity).replaceFragment(labtemplatedialog)*/
 
-            }
-        })
+                }
+            })
+
+        }
+        else{
+
+            mAdapter!!.setOnSelectAllListener(object : LabTestApprovalAdapter.OnSelectAllListener{
+                override fun onSelectAll(ischeck: Boolean) {
+
+                    binding!!.selectAllCheckBox?.isChecked=ischeck
 
 
-        binding!!.result.setOnClickListener {
+                }
+            })
+
+        }
+
+        binding!!.result?.setOnClickListener {
 
             val request: LabApprovelResultReq = LabApprovelResultReq()
 
@@ -654,47 +676,15 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
             Log.i("",""+responsedata)
             Log.i("",""+responsedata)
 
+            if(isTablet) {
+                binding?.positiveTxt!!.setText("0")
 
+                binding?.negativeTxt!!.setText("0")
 
-            binding?.positiveTxt!!.setText("0")
+                binding?.equivocalTxt!!.setText("0")
 
-            binding?.negativeTxt!!.setText("0")
+                binding?.rejectedTxt!!.setText("0")
 
-            binding?.equivocalTxt!!.setText("0")
-
-            binding?.rejectedTxt!!.setText("0")
-
-            if (responseBody!!.body()?.responseContents?.isNotEmpty()!!) {
-
-
-                Log.i("page",""+currentPage+" "+responseBody?.body()?.responseContents!!.size)
-                TOTAL_PAGES = Math.ceil(responseBody!!.body()!!.totalRecords!!.toDouble() / 10).toInt()
-
-                if (responseBody.body()!!.responseContents!!.isNotEmpty()!!) {
-                    isLoadingPaginationAdapterCallback = false
-                    mAdapter!!.addAll(responseBody!!.body()!!.responseContents)
-                    if (currentPage < TOTAL_PAGES!!) {
-                        binding?.progressbar!!.setVisibility(View.VISIBLE);
-                        mAdapter!!.addLoadingFooter()
-                        isLoading = true
-                        isLastPage = false
-                    } else {
-                        binding?.progressbar!!.setVisibility(View.GONE);
-                        mAdapter!!.removeLoadingFooter()
-                        isLoading = false
-                        isLastPage = true
-                    }
-
-                } else {
-                    binding?.progressbar!!.setVisibility(View.GONE);
-                    mAdapter!!.removeLoadingFooter()
-                    isLoading = false
-                    isLastPage = true
-                }
-                if(responseBody!!.body()!!.totalRecords!!<11)
-                {
-                    binding?.progressbar!!.setVisibility(View.GONE);
-                }
 
                 val diseaseList = responseBody?.body()?.disease_result_data
                 for (i in diseaseList!!.indices){
@@ -736,17 +726,60 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
 
                 }
 
+            }
+
+            if (responseBody!!.body()?.responseContents?.isNotEmpty()!!) {
+
+
+                Log.i("page",""+currentPage+" "+responseBody?.body()?.responseContents!!.size)
+                TOTAL_PAGES = Math.ceil(responseBody!!.body()!!.totalRecords!!.toDouble() / 10).toInt()
+
+                if (responseBody.body()!!.responseContents!!.isNotEmpty()!!) {
+                    isLoadingPaginationAdapterCallback = false
+                    mAdapter!!.addAll(responseBody!!.body()!!.responseContents)
+                    if (currentPage < TOTAL_PAGES!!) {
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.VISIBLE);
+                        mAdapter!!.addLoadingFooter()
+                        isLoading = true
+                        isLastPage = false
+                    } else {
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.GONE);
+                        mAdapter!!.removeLoadingFooter()
+                        isLoading = false
+                        isLastPage = true
+                    }
+
+                } else {
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
+                    mAdapter!!.removeLoadingFooter()
+                    isLoading = false
+                    isLastPage = true
+                }
+                if(responseBody!!.body()!!.totalRecords!!<11)
+                {
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
+                }
+
+
+
             }else{
                 Toast.makeText(context!!,"No records found",Toast.LENGTH_LONG).show()
-                binding?.progressbar!!.setVisibility(View.GONE);
+                if(isTablet) {
+                    binding?.progressbar!!.setVisibility(View.GONE);
 
-                binding?.positiveTxt!!.setText("0")
+                    binding?.positiveTxt!!.setText("0")
 
-                binding?.negativeTxt!!.setText("0")
+                    binding?.negativeTxt!!.setText("0")
 
-                binding?.equivocalTxt!!.setText("0")
+                    binding?.equivocalTxt!!.setText("0")
 
-                binding?.rejectedTxt!!.setText("0")
+                    binding?.rejectedTxt!!.setText("0")
+
+                }
                 mAdapter!!.clearAll()
             }
 
@@ -826,17 +859,20 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
                 mAdapter?.addAll(response.body()!!.responseContents)
                 Log.i("page",""+currentPage+" "+response?.body()?.responseContents!!.size)
                 println("testing for two  = $currentPage--$TOTAL_PAGES")
-                binding?.progressbar!!.setVisibility(View.GONE);
-
+                if(isTablet) {
+                    binding?.progressbar!!.setVisibility(View.GONE);
+                }
                 if (currentPage < TOTAL_PAGES!!) {
-                    binding?.progressbar!!.setVisibility(View.VISIBLE);
+                    if (isTablet)
+                        binding?.progressbar!!.setVisibility(View.VISIBLE);
                     mAdapter?.addLoadingFooter()
                     isLoading = true
                     isLastPage = false
                     println("testing for four  = $currentPage--$TOTAL_PAGES")
                 } else {
                     isLastPage = true
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
 //                    visitHistoryAdapter.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
@@ -846,7 +882,8 @@ class LabTestApprovalFragment : Fragment(), TestApprovalResultDialogFragment.OnL
 
             } else {
                 println("testing for six  = $currentPage--$TOTAL_PAGES")
-                binding?.progressbar!!.setVisibility(View.GONE);
+                if(isTablet)
+                    binding?.progressbar!!.setVisibility(View.GONE);
                 mAdapter?.removeLoadingFooter()
                 isLoading = false
                 isLastPage = true

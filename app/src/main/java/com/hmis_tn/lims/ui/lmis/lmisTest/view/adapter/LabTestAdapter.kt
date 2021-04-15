@@ -307,7 +307,8 @@ class LabTestAdapter(
 
         }
 
-        else{
+        else
+        {
 
             val labAllData = this.labTestList!![position]
 

@@ -331,6 +331,8 @@ class LabTestFragment : Fragment(),
 
         }
 
+        binding!!.selectAllCheckBox?.isChecked= false
+
         mAdapter!!.setOnSelectAllListener(object :LabTestAdapter.OnSelectAllListener{
             override fun onSelectAll(ischeck: Boolean) {
 

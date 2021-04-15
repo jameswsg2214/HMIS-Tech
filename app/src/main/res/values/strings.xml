@@ -101,6 +101,7 @@
     <!-- LMIS TEST MOB -->
 
     <string name="labTestHeading">Lab Test Details</string>
+    <string name="labTestProcessHeading">Lab Process Details</string>
     <string name="accepted">Accept</string>
     <string name="process">Process</string>
     <string name="send">Send</string>
@@ -122,6 +123,11 @@
     <string name="orderProcess">Order Process</string>
     <string name="normalValue">Normal Value</string>
     <string name="umo">UMO</string>
+
+    <string name="labApprovalHeading">Lab Approval Details</string>
+    <string name="resultApproval">Result Approval</string>
+    <string name="orderStatus">Order Status Details</string>
+    <string name="sampleReceive">Receive</string>
 
 
 

@@ -46,6 +46,7 @@ class OrderStatusFragment : Fragment() {
     var linearLayoutManager: LinearLayoutManager? = null
     private var currentPage = 0
     private var pageSize = 10
+    private var isTablet = false
     private var isLoading = false
     private var isLastPage = false
     private var TOTAL_PAGES: Int = 0
@@ -92,6 +93,8 @@ class OrderStatusFragment : Fragment() {
         binding?.lifecycleOwner = this
         binding?.viewModel = viewModel
         utils = Utils(requireContext())
+
+        isTablet= utils!!.isTablet(requireContext())
 
         binding?.searchDrawerCardView?.setOnClickListener {
             binding?.drawerLayout!!.openDrawer(GravityCompat.END)
@@ -330,22 +333,25 @@ class OrderStatusFragment : Fragment() {
 
     val OrderStatusRetrofitCallBack = object : RetrofitCallback<OrderStatusResponseModel> {
         override fun onSuccessfulResponse(responseBody: Response<OrderStatusResponseModel?>) {
-            binding?.completedCount?.setText("Completed Count "+responseBody?.body()?.completedCount!!)
-            binding?.pendingCount?.setText("Pending Count "+responseBody?.body()?.pendingCount!!)
+            binding?.completedCount?.setText("Completed Count :"+responseBody?.body()?.completedCount!!)
+            binding?.pendingCount?.setText("Pending Count :"+responseBody?.body()?.pendingCount!!)
             if (responseBody!!.body()?.responseContents?.isNotEmpty()!!) {
                 TOTAL_PAGES =
                     Math.ceil(responseBody!!.body()!!.totalRecords!!.toDouble() / 10).toInt()
                 if (responseBody.body()!!.responseContents!!.isNotEmpty()!!) {
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
                     mAdapter!!.addAll(responseBody!!.body()!!.responseContents)
                     if (currentPage < TOTAL_PAGES!!) {
                         isLoadingPaginationAdapterCallback = false
-                        binding?.progressbar!!.setVisibility(View.VISIBLE);
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.GONE);
                         mAdapter!!.addLoadingFooter()
                         isLoading = true
                         isLastPage = false
                     } else {
-                        binding?.progressbar!!.setVisibility(View.GONE);
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.GONE);
                         mAdapter!!.removeLoadingFooter()
                         isLoading = false
                         isLastPage = true
@@ -353,7 +359,8 @@ class OrderStatusFragment : Fragment() {
 
 
                 } else {
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
                     mAdapter!!.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
@@ -361,7 +368,8 @@ class OrderStatusFragment : Fragment() {
 
                 if(responseBody!!.body()!!.totalRecords!!<11)
                 {
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
                 }
 
 
@@ -377,7 +385,8 @@ class OrderStatusFragment : Fragment() {
 
 
         override fun onBadRequest(errorBody: Response<OrderStatusResponseModel?>) {
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.GONE);
             isLoadingPaginationAdapterCallback = false
             val gson = GsonBuilder().create()
             val responseModel: OrderStatusResponseModel
@@ -433,7 +442,8 @@ class OrderStatusFragment : Fragment() {
         }
 
         override fun onEverytime() {
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.GONE);
             isLoadingPaginationAdapterCallback = false
             viewModel!!.progress.value = 8
         }
@@ -451,7 +461,8 @@ class OrderStatusFragment : Fragment() {
                 println("testing for two  = $currentPage--$TOTAL_PAGES")
 
                 if (currentPage < TOTAL_PAGES!!) {
-                    binding?.progressbar!!.setVisibility(View.VISIBLE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.GONE);
                     mAdapter?.addLoadingFooter()
                     isLoading = true
                     isLastPage = false
@@ -465,7 +476,8 @@ class OrderStatusFragment : Fragment() {
                 }
             } else {
                 println("testing for six  = $currentPage--$TOTAL_PAGES")
-                binding?.progressbar!!.setVisibility(View.GONE);
+                if(isTablet)
+                    binding?.progressbar!!.setVisibility(View.GONE);
                 mAdapter?.removeLoadingFooter()
                 isLoading = false
                 isLastPage = true
@@ -473,7 +485,8 @@ class OrderStatusFragment : Fragment() {
         }
 
         override fun onBadRequest(errorBody: Response<OrderStatusResponseModel?>) {
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.GONE);
             isLoadingPaginationAdapterCallback = false
             mAdapter?.removeLoadingFooter()
             isLoading = false
@@ -513,7 +526,8 @@ class OrderStatusFragment : Fragment() {
         }
 
         override fun onEverytime() {
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.GONE);
         }}
 
 

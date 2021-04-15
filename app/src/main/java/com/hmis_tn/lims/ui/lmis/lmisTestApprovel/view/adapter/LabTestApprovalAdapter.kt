@@ -10,7 +10,19 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hmis_tn.lims.R
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.LabTestAdapter
 import com.hmis_tn.lims.ui.lmis.lmisTestApprovel.model.response.LabTestApprovelResponse.LabTestApprovalresponseContent
+import com.hmis_tn.lims.utils.Utils
+import kotlinx.android.synthetic.main.row_lab_test_process_list.view.*
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.*
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.checkbox
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.mainLinearLayout
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.patient_info
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.print
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.radioGroup
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.status
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.tv1
+import kotlinx.android.synthetic.main.row_lmis_lab_test_list.view.tv2
 
 class LabTestApprovalAdapter(context: Context, private var labTestApproval: ArrayList<LabTestApprovalresponseContent?>?) :
     RecyclerView.Adapter<LabTestApprovalAdapter.MyViewHolder>() {
@@ -19,6 +31,7 @@ class LabTestApprovalAdapter(context: Context, private var labTestApproval: Arra
     var orderNumString: String? = null
     var status: String? = null
     var selectAllCheckbox: Boolean? = false
+    var isTablet: Boolean = false
     private var isLoadingAdded = false
     private var RTLabData: ArrayList<LabTestApprovalresponseContent?>? = ArrayList()
     private  var positive_value:Int=0
@@ -26,17 +39,21 @@ class LabTestApprovalAdapter(context: Context, private var labTestApproval: Arra
     private  var equavel_value:Int=0
     private  var rejected_value:Int=0
 
+    private var utils: Utils? = null
+    private var onSelectAllListener: OnSelectAllListener? = null
     private var onPrintClickListener: OnPrintClickListener? = null
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        /*
+
         var patient_info: TextView
         var status: TextView
         var dateText: TextView
-        var testname: TextView
+        var test_name: TextView
         var testMethod: TextView
         var orderNo:TextView
         var mainLinearLayout: LinearLayout
-        var selectCheckBox : CheckBox
+        var checkbox : CheckBox
         var radioGroup : RadioGroup
         var radioButton1 : RadioButton
         var radioButton2 : RadioButton
@@ -48,260 +65,346 @@ class LabTestApprovalAdapter(context: Context, private var labTestApproval: Arra
             status = view.findViewById<View>(R.id.status) as TextView
             orderNo = view.findViewById<View>(R.id.orderNo) as TextView
             mainLinearLayout = view.findViewById(R.id.mainLinearLayout)
-            selectCheckBox = view.findViewById(R.id.checkbox)
+            checkbox = view.findViewById(R.id.checkbox)
             radioGroup = view.findViewById(R.id.radioGroup)
-            radioButton1 = view.findViewById(R.id.radiobutton1)
-            radioButton2 = view.findViewById(R.id.radiobutton2)
-            radioButton3 = view.findViewById(R.id.radiobutton3)
+            radioButton1 = view.findViewById(R.id.radioButton1)
+            radioButton2 = view.findViewById(R.id.radioButton2)
+            radioButton3 = view.findViewById(R.id.radioButton3)
             testMethod = view.findViewById(R.id.testMethod)
-            testname = view.findViewById(R.id.test_name)
-
+            test_name = view.findViewById(R.id.test_name)
             print = view.findViewById(R.id.print)
         }
+
+
+        */
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemLayout = LayoutInflater.from(mContext)
-            .inflate(R.layout.row_lab_test_process_list, parent, false) as LinearLayout
+            .inflate(R.layout.row_lab_test_process_list, parent, false)
         var recyclerView: RecyclerView
         return MyViewHolder(itemLayout)
     }
 
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        //orderNumString = labTestList[position].toString()
-        val labAllData = labTestApproval!![position]
-        holder.patient_info.text = labAllData!!.first_name+"/"+labAllData!!.ageperiod+"/"+labAllData.gender_name
-         holder.dateText.text =labAllData.order_request_date
-       // holder.status.text = labAllData.order_status_name
-        holder.testMethod.text = labAllData.test_method_name
-        holder.selectCheckBox.isChecked = labAllData.is_selected!!
-        holder.orderNo.text= labAllData.order_number.toString()
-        holder.testname.text=labAllData.test_name
+        //orderNumString = labTestApproval[position].toString()
+
+        if(isTablet) {
+
+            val labAllData = labTestApproval!![position]
+            holder.itemView.patient_info.text =
+                labAllData!!.first_name + "/" + labAllData!!.ageperiod + "/" + labAllData.gender_name
+            holder.itemView.dateText.text = labAllData.order_request_date
+            // holder.itemView.status.text = labAllData.order_status_name
+            holder.itemView.testMethod.text = labAllData.test_method_name
+            holder.itemView.checkbox.isChecked = labAllData.is_selected!!
+            holder.itemView.orderNo.text = labAllData.order_number.toString()
+            holder.itemView.testName.text = labAllData.test_name
 
 
-        if(labTestApproval!![position]!!.order_status_uuid ==7 && labTestApproval!![position]!!.order_status_uuid !=null)
-        {
+            if (labTestApproval!![position]!!.order_status_uuid == 7 && labTestApproval!![position]!!.order_status_uuid != null) {
 
-            holder?.status.setText(labTestApproval!![position]!!.auth_status_name)
-        }
-        else{
+                holder.itemView.status.setText(labTestApproval!![position]!!.auth_status_name)
+            } else {
 
-            holder?.status.setText(labTestApproval!![position]!!.order_status_name)
-        }
+                holder.itemView.status.setText(labTestApproval!![position]!!.order_status_name)
+            }
 
 
-      /*
+            /*
        if(labTestApproval!![position]!!.order_status_uuid ==2)
         {
 
-            holder?.status.setText(labTestApproval!![position]!!.order_status_name)
+            holder.itemView..status.setText(labTestApproval!![position]!!.order_status_name)
         }
 
         */
 
-        if (position % 2 == 0) {
-            holder.mainLinearLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.alternateRow
+            if (position % 2 == 0) {
+                holder.itemView.mainLinearLayout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        mContext,
+                        R.color.alternateRow
+                    )
                 )
-            )
-        } else {
-            holder.mainLinearLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.white
+            } else {
+                holder.itemView.mainLinearLayout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        mContext,
+                        R.color.white
+                    )
                 )
-            )
+            }
+
+
+            if (this.labTestApproval!![position]!!.auth_status_uuid == 4) {
+
+                holder.itemView.print.visibility = View.VISIBLE
+            }
+
+            holder.itemView.print.setOnClickListener {
+
+                onPrintClickListener?.onPrintClick(this.labTestApproval!![position]!!.uuid!!)
+
+                //     this.labTestApproval!![position]!!.uuid
+
+            }
+
+
+            if (labTestApproval!![position]!!.test_method_uuid != 3 && labTestApproval!![position]!!.test_code == "COVID") {
+
+                holder.itemView.radioGroup.visibility = View.VISIBLE
+
+            } else {
+
+                holder.itemView.radioGroup.visibility = View.GONE
+            }
+
+
+
+            if (labTestApproval!![position]!!.order_status_uuid == 7 && labTestApproval!![position]!!.auth_status_uuid == 4 || labTestApproval!![position]!!.order_status_uuid == 2) {
+
+                if (labTestApproval!![position]!!.test_method_uuid != 3 && labTestApproval!![position]!!.test_code == "COVID") {
+
+                    holder.itemView.radioGroup.visibility = View.VISIBLE
+
+                }
+                if (labTestApproval!![position]!!.order_status_uuid == 2) {
+
+                    holder.itemView.status?.setText(labTestApproval!![position]!!.order_status_name)
+                } else {
+
+                    holder.itemView.status.setText(labTestApproval!![position]!!.auth_status_name)
+                }
+
+                labTestApproval!![position]!!.checkboxdeclardtatus = false
+
+                when {
+
+                    labTestApproval!![position]!!.qualifier_uuid == 2 -> {
+
+                        holder.itemView.radioButton1.isChecked = true
+
+                    }
+                    labTestApproval!![position]!!.qualifier_uuid == 1 -> {
+
+                        holder.itemView.radioButton2.isChecked = true
+
+                    }
+                    labTestApproval!![position]!!.qualifier_uuid == 3 -> {
+
+                        holder.itemView.radioButton3.isChecked = true
+                    }
+                }
+            } else {
+                labTestApproval!![position]!!.checkboxdeclardtatus = true
+
+                holder.itemView.radioGroup.visibility = View.GONE
+
+            }
+
+            if (labTestApproval!![position]!!.checkboxdeclardtatus == false) {
+                holder.itemView.radioButton1.isEnabled = false
+
+                holder.itemView.radioButton2.isEnabled = false
+
+                holder.itemView.radioButton3.isEnabled = false
+                holder.itemView.checkbox.isEnabled = false
+
+                holder.itemView.status?.setTextColor(Color.parseColor("#FF0000"))
+
+                when {
+
+                    labTestApproval!![position]!!.qualifier_uuid == 2 -> {
+
+                        holder.itemView.radioButton1.isChecked = true
+
+                    }
+                    labTestApproval!![position]!!.qualifier_uuid == 1 -> {
+
+                        holder.itemView.radioButton2.isChecked = true
+
+                    }
+                    labTestApproval!![position]!!.qualifier_uuid == 3 -> {
+
+                        holder.itemView.radioButton3.isChecked = true
+                    }
+                }
+
+            } else {
+                holder.itemView.radioButton1.isEnabled = false
+                holder.itemView.radioButton2.isEnabled = false
+                holder.itemView.radioButton3.isEnabled = false
+                holder.itemView.checkbox.isEnabled = true
+                holder.itemView.status?.setTextColor(Color.parseColor("#000000"))
+
+
+                when {
+
+                    labTestApproval!![position]!!.qualifier_uuid == 2 -> {
+
+                        holder.itemView.radioButton1.isChecked = true
+
+                    }
+                    labTestApproval!![position]!!.qualifier_uuid == 1 -> {
+
+                        holder.itemView.radioButton2.isChecked = true
+
+                    }
+                    labTestApproval!![position]!!.qualifier_uuid == 3 -> {
+
+                        holder.itemView.radioButton3.isChecked = true
+                    }
+                }
+            }
+
+
+            holder.itemView.checkbox.setOnClickListener {
+
+                val myCheckBox = it as CheckBox
+                val responseLabTestContent = labTestApproval!![position]
+                if (myCheckBox.isChecked) {
+
+                    responseLabTestContent!!.is_selected = true
+
+                    RTLabData!!.add(responseLabTestContent)
+
+                    if (responseLabTestContent.test_method_uuid == 2 && responseLabTestContent.radioselectName == 0) {
+
+                        Toast.makeText(
+                            this.mContext,
+                            "Please select one Result",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+                } else {
+                    holder.itemView.radioGroup.clearCheck()
+
+                    labTestApproval!![position]!!.radioselectName = 0
+
+                    responseLabTestContent!!.is_selected = false
+
+                    RTLabData!!.remove(responseLabTestContent)
+
+                }
+
+            }
+            if (selectAllCheckbox == true) {
+
+                if (labTestApproval!![position]!!.checkboxdeclardtatus == false) {
+                    holder.itemView.checkbox.isEnabled = false
+                    holder.itemView.checkbox.isChecked = false
+                } else {
+                    holder.itemView.checkbox.isChecked = true
+                    holder.itemView.checkbox.isEnabled = true
+                }
+            }
+
+
+            if (this.labTestApproval!![position]!!.qualifier_uuid == 2) {
+
+                holder.itemView.radioButton1.isChecked = true
+
+            } else if (this.labTestApproval!![position]!!.qualifier_uuid == 1) {
+
+                holder.itemView.radioButton2.isChecked = true
+            } else if (this.labTestApproval!![position]!!.qualifier_uuid == 3) {
+
+                holder.itemView.radioButton3.isChecked = true
+            }
+
+
         }
-
-
-        if(this.labTestApproval!![position]!!.auth_status_uuid==4){
-
-            holder.print.visibility=View.VISIBLE
-        }
-
-        holder.print.setOnClickListener {
-
-            onPrintClickListener?.onPrintClick(this.labTestApproval!![position]!!.uuid!!)
-
-            //     this.labTestList!![position]!!.uuid
-
-        }
-
-
-        if(labTestApproval!![position]!!.test_method_uuid!=3 && labTestApproval!![position]!!.test_code=="COVID") {
-
-            holder.radioGroup.visibility = View.VISIBLE
-
-        }
-        else{
-
-            holder.radioGroup.visibility = View.GONE
-        }
-
-
-
-        if(labTestApproval!![position]!!.order_status_uuid ==7 && labTestApproval!![position]!!.auth_status_uuid==4 || labTestApproval!![position]!!.order_status_uuid==2)
+        else
         {
 
-            if(labTestApproval!![position]!!.test_method_uuid!=3 && labTestApproval!![position]!!.test_code=="COVID") {
+            val labAllData = this.labTestApproval!![position]
 
-                holder.radioGroup.visibility = View.VISIBLE
+            if(labTestApproval!![position]?.pattitle!=null && labTestApproval!![position]?.pattitle!="") {
 
-            }
-            if(labTestApproval!![position]!!.order_status_uuid ==2)
-            {
-
-                holder?.status?.setText(labTestApproval!![position]!!.order_status_name)
-            }
-            else
-            {
-
-                holder?.status.setText(labTestApproval!![position]!!.auth_status_name)
-            }
-
-            labTestApproval!![position]!!.checkboxdeclardtatus = false
-
-            when {
-
-                labTestApproval!![position]!!.qualifier_uuid == 2 -> {
-
-                    holder.radioButton1.isChecked = true
-
-                }
-                labTestApproval!![position]!!.qualifier_uuid == 1 -> {
-
-                    holder.radioButton2.isChecked = true
-
-                }
-                labTestApproval!![position]!!.qualifier_uuid == 3 -> {
-
-                    holder.radioButton3.isChecked = true
-                }
-            }
-        }
-        else{
-            labTestApproval!![position]!!.checkboxdeclardtatus = true
-
-            holder.radioGroup.visibility=View.GONE
-
-        }
-
-        if(labTestApproval!![position]!!.checkboxdeclardtatus ==false)
-        {
-            holder.radioButton1.isEnabled=false
-
-            holder.radioButton2.isEnabled=false
-
-            holder.radioButton3.isEnabled=false
-            holder.selectCheckBox.isEnabled = false
-
-            holder?.status?.setTextColor(Color.parseColor("#FF0000"))
-
-            when {
-
-                labTestApproval!![position]!!.qualifier_uuid == 2 -> {
-
-                    holder.radioButton1.isChecked = true
-
-                }
-                labTestApproval!![position]!!.qualifier_uuid == 1 -> {
-
-                    holder.radioButton2.isChecked = true
-
-                }
-                labTestApproval!![position]!!.qualifier_uuid == 3 -> {
-
-                    holder.radioButton3.isChecked = true
-                }
-            }
-
-        }
-        else{
-            holder.radioButton1.isEnabled=false
-            holder.radioButton2.isEnabled=false
-            holder.radioButton3.isEnabled=false
-            holder.selectCheckBox.isEnabled = true
-            holder?.status?.setTextColor(Color.parseColor("#000000"))
-
-
-            when {
-
-                labTestApproval!![position]!!.qualifier_uuid == 2 -> {
-
-                    holder.radioButton1.isChecked = true
-
-                }
-                labTestApproval!![position]!!.qualifier_uuid == 1 -> {
-
-                    holder.radioButton2.isChecked = true
-
-                }
-                labTestApproval!![position]!!.qualifier_uuid == 3 -> {
-
-                    holder.radioButton3.isChecked = true
-                }
-            }
-        }
-
-
-        holder.selectCheckBox.setOnClickListener {
-
-            val myCheckBox = it as CheckBox
-            val responseLabTestContent = labTestApproval!![position]
-            if (myCheckBox.isChecked) {
-
-                responseLabTestContent!!.is_selected = true
-
-                RTLabData!!.add(responseLabTestContent)
-
-                if(responseLabTestContent.test_method_uuid==2 && responseLabTestContent.radioselectName==0){
-
-                    Toast.makeText(this.mContext,"Please select one Result",Toast.LENGTH_SHORT).show()
-                }
-
-
-            }else{
-                holder.radioGroup.clearCheck()
-
-                labTestApproval!![position]!!.radioselectName = 0
-
-                responseLabTestContent!!.is_selected = false
-
-                RTLabData!!.remove(responseLabTestContent)
-
-            }
-
-        }
-        if(selectAllCheckbox == true){
-
-            if(labTestApproval!![position]!!.checkboxdeclardtatus ==false)
-            {
-                holder.selectCheckBox.isEnabled = false
-                holder.selectCheckBox.isChecked = false
+                holder.itemView.tv1.text =""+
+                        labTestApproval!![position]?.pattitle + labTestApproval!![position]!!.first_name + " / " + (labTestApproval!![position]?.gender_name?.get(
+                    0
+                ) ?: "") + " / " + labTestApproval!![position]?.ageperiod
             }
             else{
-                holder.selectCheckBox.isChecked = true
-                holder.selectCheckBox.isEnabled = true
+
+                holder.itemView.tv1.text =
+                    labTestApproval!![position]!!.first_name + " / " + (labTestApproval!![position]?.gender_name?.get(
+                        0
+                    ) ?: "") + " / " + labTestApproval!![position]?.ageperiod
+
             }
-        }
 
 
-        if(this.labTestApproval!![position]!!.qualifier_uuid == 2){
+            holder.itemView.checkbox.setOnClickListener {
 
-            holder.radioButton1.isChecked = true
+                val myCheckBox = it as CheckBox
+                val responseLabTestContent = labTestApproval!![position]
+                if (myCheckBox.isChecked) {
 
-        }
-        else  if(this.labTestApproval!![position]!!.qualifier_uuid == 1){
+                    responseLabTestContent!!.is_selected = true
 
-            holder.radioButton2.isChecked = true
-        }
+                    RTLabData!!.add(responseLabTestContent)
 
-        else  if(this.labTestApproval!![position]!!.qualifier_uuid == 3){
 
-            holder.radioButton3.isChecked = true
+
+                } else {
+
+                    RTLabData!!.remove(responseLabTestContent)
+
+
+                }
+
+
+                if(RTLabData?.size==labTestApproval?.size){
+
+
+                    onSelectAllListener?.onSelectAll(true)
+
+                }
+                else{
+                    onSelectAllListener?.onSelectAll(false)
+                }
+            }
+
+
+            holder.itemView.checkbox.isChecked = labTestApproval!![position]!!.is_selected!!
+
+            if (labTestApproval!![position]!!.order_status_uuid != 2) {
+
+                holder.itemView.status.setText(labTestApproval!![position]!!.order_status_name)
+
+            } else {
+
+                holder.itemView.status.setText(labTestApproval!![position]!!.auth_status_name)
+            }
+            if(labAllData!!.sample_identifier!= null && labAllData!!.sample_identifier!=""){
+
+                holder.itemView.tv2.text=
+                    "${labTestApproval!![position]?.uhid} / ${labTestApproval!![position]?.order_number} / ${labTestApproval!![position]?.test_name} /  ${labTestApproval!![position]?.sample_identifier} /${labTestApproval!![position]?.location_name} / "+utils?.convertDateFormat(
+                        labTestApproval!![position]?.order_request_date!!,
+                        "yyyy-MM-dd HH:mm:ss",
+                        "dd-MM-yyyy HH:mm"
+
+                    )
+
+            }
+            else{
+
+                holder.itemView.tv2.text=
+                    "${labTestApproval!![position]?.uhid} / ${labTestApproval!![position]?.order_number} / ${labTestApproval!![position]?.test_name} / ${labTestApproval!![position]?.location_name} / "+utils?.convertDateFormat(
+                        labTestApproval!![position]?.order_request_date!!,
+                        "yyyy-MM-dd HH:mm:ss",
+                        "dd-MM-yyyy HH:mm"
+                    )
+
+            }
+
+
         }
 
 
@@ -314,6 +417,8 @@ class LabTestApprovalAdapter(context: Context, private var labTestApproval: Arra
     init {
         mLayoutInflater = LayoutInflater.from(context)
         mContext = context
+        utils= Utils(mContext)
+        isTablet = utils!!.isTablet(mContext)
     }
 
     fun getSelectedCheckData(): ArrayList<LabTestApprovalresponseContent?>? {
@@ -412,6 +517,19 @@ class LabTestApprovalAdapter(context: Context, private var labTestApproval: Arra
 
     fun setOnPrintClickListener(onprintClickListener: OnPrintClickListener) {
         this.onPrintClickListener = onprintClickListener
+    }
+
+
+
+    interface OnSelectAllListener {
+        fun onSelectAll(
+            ischeck: Boolean
+        )
+    }
+
+
+    fun setOnSelectAllListener(onSelectAllListener: OnSelectAllListener) {
+        this.onSelectAllListener = onSelectAllListener
     }
 
 }

@@ -37,11 +37,13 @@ data class OrderStatusResponseContent(
     val tech_validation_date: Any = Any(),
     val test_name: String = "",
     val test_uuid: Int = 0,
+    val order_number: Int = 0,
     val first_name : String ="",
     val transferred_by: Any = Any(),
     val transferred_date: Any = Any(),
     val uhid: String = "",
     val pattitle: String="",
+    val from_facility_name: String = "",
     val work_order_status_name: String = "",
     val work_order_status_uuid: Int = 0
 )

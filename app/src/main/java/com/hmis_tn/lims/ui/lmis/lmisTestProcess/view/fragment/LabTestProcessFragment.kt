@@ -99,6 +99,7 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
     private var currentPage = 0
     private var pageSize = 10
+    private var isTablet = false
     private var isLoading = false
     private var isLastPage = false
     private var TOTAL_PAGES: Int = 0
@@ -138,6 +139,7 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
         utils = com.hmis_tn.lims.utils.Utils(requireContext())
 
 
+        isTablet= utils!!.isTablet(requireContext())
 
 
         binding?.searchDrawerCardView?.setOnClickListener {
@@ -194,7 +196,8 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
                     viewModel!!.sampleRecived(RequestModel,sampleRecivedRetrofitCallback)
 
-                    binding?.progressbar!!.setVisibility(View.VISIBLE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.VISIBLE);
 
 
                 }
@@ -220,13 +223,14 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
         }
 
+        if(isTablet) {
 
-        mAdapter!!.setOnPrintClickListener(object :LabTestsProcessAdapter.OnPrintClickListener{
-            override fun onPrintClick(uuid: Int) {
+            mAdapter!!.setOnPrintClickListener(object :
+                LabTestsProcessAdapter.OnPrintClickListener {
+                override fun onPrintClick(uuid: Int) {
 
 
-
-           /*     val bundle = Bundle()
+                    /*     val bundle = Bundle()
 
                 bundle.putInt("pdfid", uuid)
 
@@ -238,8 +242,24 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
                 (activity as MainLandScreenActivity).replaceFragment(labtemplatedialog)*/
 
+                }
+            })
+
+        }
+        else{
+
+            binding!!.selectAllCheckBox?.isChecked= false
+
+        mAdapter!!.setOnSelectAllListener(object :LabTestsProcessAdapter.OnSelectAllListener{
+            override fun onSelectAll(ischeck: Boolean) {
+
+                binding!!.selectAllCheckBox?.isChecked=ischeck
+
+
             }
         })
+
+        }
 
 
         /*
@@ -419,7 +439,7 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
         }
 
-        binding!!.order.setOnClickListener {
+        binding!!.order!!.setOnClickListener {
 
             val request: OrderReq = OrderReq()
 
@@ -788,80 +808,89 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                     mAdapter!!.addAll(responseBody!!.body()!!.responseContents)
 
 
+                    if(isTablet) {
 
-                    binding?.positiveTxt!!.setText("0")
+                        binding?.positiveTxt!!.setText("0")
 
-                    binding?.negativeTxt!!.setText("0")
+                        binding?.negativeTxt!!.setText("0")
 
-                    binding?.equivocalTxt!!.setText("0")
+                        binding?.equivocalTxt!!.setText("0")
 
-                    binding?.rejectedTxt!!.setText("0")
+                        binding?.rejectedTxt!!.setText("0")
 
-                    if (currentPage < TOTAL_PAGES!!) {
-                        binding?.progressbar!!.setVisibility(View.VISIBLE);
-                        mAdapter!!.addLoadingFooter()
-                        isLoading = true
-                        isLastPage = false
-                    } else {
-                        binding?.progressbar!!.setVisibility(View.GONE);
-                        mAdapter!!.removeLoadingFooter()
-                        isLoading = false
-                        isLastPage = true
-                    }
 
-                    if(responseBody!!.body()!!.totalRecords!!<11)
-                    {
-                        binding?.progressbar!!.setVisibility(View.GONE);
-                    }
+                        if(responseBody!!.body()!!.totalRecords!!<11)
+                        {
+                            binding?.progressbar!!.setVisibility(View.GONE);
+                        }
 
-                    val diseaseList = responseBody?.body()?.disease_result_data
-                    for (i in diseaseList!!.indices){
+                        val diseaseList = responseBody?.body()?.disease_result_data
+                        for (i in diseaseList!!.indices){
 
-                    /*    if(diseaseList.isNotEmpty() && diseaseList[i]?.qualifier_uuid == 2){
-                            binding?.positiveTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
-                        }else if(diseaseList.isNotEmpty() && diseaseList[i]?.qualifier_uuid == 1){
-                            binding?.negativeTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
-                        }else if(diseaseList.isNotEmpty() && diseaseList[i]?.qualifier_uuid == 3){
-                            binding?.equivocalTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
-                        }*/
-                    }
+                            /*    if(diseaseList.isNotEmpty() && diseaseList[i]?.qualifier_uuid == 2){
+                                    binding?.positiveTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
+                                }else if(diseaseList.isNotEmpty() && diseaseList[i]?.qualifier_uuid == 1){
+                                    binding?.negativeTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
+                                }else if(diseaseList.isNotEmpty() && diseaseList[i]?.qualifier_uuid == 3){
+                                    binding?.equivocalTxt!!.setText(diseaseList[i]?.qualifier_count.toString())
+                                }*/
+                        }
 
 
 
-                    val orderList = responseBody?.body()?.order_status_count
+                        val orderList = responseBody?.body()?.order_status_count
 
-                    if(orderList?.size!=0){
+                        if(orderList?.size!=0){
 
-                        for (i in orderList!!.indices){
+                            for (i in orderList!!.indices){
 
-                            if(orderList[i]?.order_status_uuid==2){
+                                if(orderList[i]?.order_status_uuid==2){
 
-                                binding?.rejectedTxt!!.setText(orderList[i]?.order_count.toString())
+                                    binding?.rejectedTxt!!.setText(orderList[i]?.order_count.toString())
 
-                            }
-                            if(orderList[i]?.order_status_uuid==SAMPLE_RECEIVE){
+                                }
+                                if(orderList[i]?.order_status_uuid==SAMPLE_RECEIVE){
 
-                                binding?.positiveTxt!!.setText(orderList[i]?.order_count.toString())
+                                    binding?.positiveTxt!!.setText(orderList[i]?.order_count.toString())
 
-                            }
-                            if(orderList[i]?.order_status_uuid==SAMPLE_IN_TRANSPORTUUId){
+                                }
+                                if(orderList[i]?.order_status_uuid==SAMPLE_IN_TRANSPORTUUId){
 
-                                binding?.negativeTxt!!.setText(orderList[i]?.order_count.toString())
+                                    binding?.negativeTxt!!.setText(orderList[i]?.order_count.toString())
+
+                                }
+                                if(orderList[i]?.order_status_uuid==SAMPLE_TRANSPORTUUId){
+
+                                    binding?.equivocalTxt!!.setText(orderList[i]?.order_count.toString())
+
+                                }
+
 
                             }
-                            if(orderList[i]?.order_status_uuid==SAMPLE_TRANSPORTUUId){
-
-                                binding?.equivocalTxt!!.setText(orderList[i]?.order_count.toString())
-
-                            }
-
 
                         }
 
                     }
 
+                    if (currentPage < TOTAL_PAGES!!) {
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.VISIBLE);
+                        mAdapter!!.addLoadingFooter()
+                        isLoading = true
+                        isLastPage = false
+                    } else {
+                        if(isTablet)
+                            binding?.progressbar!!.setVisibility(View.VISIBLE);
+                        mAdapter!!.removeLoadingFooter()
+                        isLoading = false
+                        isLastPage = true
+                    }
+
+
+
                 } else {
-                    binding?.progressbar!!.setVisibility(View.GONE);
+                    if(isTablet)
+                        binding?.progressbar!!.setVisibility(View.VISIBLE);
                     mAdapter!!.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
@@ -871,16 +900,18 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
             else
             {
                 Toast.makeText(context!!,"No records found",Toast.LENGTH_LONG).show()
+                if(isTablet) {
+                    binding?.progressbar!!.setVisibility(View.GONE);
 
-                binding?.progressbar!!.setVisibility(View.GONE);
+                    binding?.positiveTxt!!.setText("0")
 
-                binding?.positiveTxt!!.setText("0")
+                    binding?.negativeTxt!!.setText("0")
 
-                binding?.negativeTxt!!.setText("0")
+                    binding?.equivocalTxt!!.setText("0")
 
-                binding?.equivocalTxt!!.setText("0")
+                    binding?.rejectedTxt!!.setText("0")
 
-                binding?.rejectedTxt!!.setText("0")
+                }
                 mAdapter!!.clearAll()
             }
 
@@ -1024,8 +1055,8 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
 
 
-
-                binding?.progressbar!!.setVisibility(View.GONE);
+                if(isTablet)
+                    binding?.progressbar!!.setVisibility(View.VISIBLE);
                 mAdapter!!.removeLoadingFooter()
                 isLoadingPaginationAdapterCallback = false
                 isLoading = false
@@ -1035,14 +1066,13 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                 println("testing for two  = $currentPage--$TOTAL_PAGES")
 
                 if (currentPage < TOTAL_PAGES!!) {
-                    binding?.progressbar!!.setVisibility(View.VISIBLE);
+
                     mAdapter?.addLoadingFooter()
                     isLoading = true
                     isLastPage = false
                     println("testing for four  = $currentPage--$TOTAL_PAGES")
                 } else {
                     isLastPage = true
-                    binding?.progressbar!!.setVisibility(View.GONE);
 //                    visitHistoryAdapter.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
@@ -1050,7 +1080,7 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                 }
             } else {
                 println("testing for six  = $currentPage--$TOTAL_PAGES")
-                binding?.progressbar!!.setVisibility(View.GONE);
+
                 mAdapter?.removeLoadingFooter()
                 isLoading = false
                 isLastPage = true
@@ -1059,7 +1089,7 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
         override fun onBadRequest(errorBody: Response<LabTestResponseModel?>) {
             isLoadingPaginationAdapterCallback = false
-            binding?.progressbar!!.setVisibility(View.GONE);
+
             mAdapter?.removeLoadingFooter()
             isLoading = false
             isLastPage = true
@@ -1098,6 +1128,8 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
         }
 
         override fun onEverytime() {
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.VISIBLE);
             viewModel!!.progress.value = 8
         }
     }
@@ -1274,7 +1306,9 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
             Toast.makeText(context!!,"Sample Received Successfully",Toast.LENGTH_LONG).show()
 
-            binding?.progressbar!!.setVisibility(View.GONE);
+
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.VISIBLE);
 
             mAdapter!!.clearAll()
 
@@ -1340,7 +1374,8 @@ class LabTestProcessFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
         override fun onEverytime() {
 
-            binding?.progressbar!!.setVisibility(View.GONE);
+            if(isTablet)
+                binding?.progressbar!!.setVisibility(View.VISIBLE);
             viewModel!!.progress.value = 8
         }
 
