@@ -126,8 +126,11 @@
 
     <string name="labApprovalHeading">Lab Approval Details</string>
     <string name="resultApproval">Result Approval</string>
+    <string name="sampleDispatchHeading">Sample Dispatch Details</string>
+    <string name="resultDispatchHeading">Result Dispatch Details</string>
     <string name="orderStatus">Order Status Details</string>
     <string name="sampleReceive">Receive</string>
+    <string name="dispatch">Dispatch</string>
 
 
 

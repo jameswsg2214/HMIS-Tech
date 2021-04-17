@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hmis_tn.lims.R
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseContentsResultDispatch
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseResultDispatch
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.LabTestAdapter
+import com.hmis_tn.lims.utils.Utils
+import kotlinx.android.synthetic.main.row_result_dispatch_list.view.*
 
 
 class ResultDispatchAdapter(context: Context, private var resonseresultdispatchList: ArrayList<ResponseContentsResultDispatch?>?) :
@@ -18,13 +21,15 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
 
     private val mLayoutInflater: LayoutInflater
     private var isLoadingAdded = false
+    private var isTablet:Boolean = false
+    private  var utils:Utils?= null
     private val mContext: Context
     private var onItemClickListener: OnItemClickListener? = null
     var orderNumString: String? = null
-
+    private var onPrintClickListener: OnPrintClickListener? = null
     var status: String? = null
    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var patient_info: TextView
+/*        var patient_info: TextView
         var TestName: TextView
         var orderedNUm: TextView
         var approvedBy: TextView
@@ -39,15 +44,14 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
             orderedNUm = view.findViewById<View>(R.id.orderedNUm) as TextView
             approvedBy = view.findViewById<View>(R.id.approvedBy) as TextView
             ic_print =  view.findViewById<View>(R.id.pdf) as ImageView
-
             serialNum = view.findViewById<View>(R.id.serialNum) as TextView
             mainLinearLayout = view.findViewById(R.id.mainLinearLayout)
-        }
+        }*/
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemLayout = LayoutInflater.from(mContext)
-            .inflate(R.layout.row_result_dispatch_list, parent, false) as LinearLayout
+            .inflate(R.layout.row_result_dispatch_list, parent, false)
         var recyclerView: RecyclerView
         return MyViewHolder(itemLayout)
     }
@@ -56,53 +60,95 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
 
-        holder.serialNum.text=(position+1).toString()
+        
+        if(isTablet) {
+            holder.itemView.serialNum.text = (position + 1).toString()
 
-        val ResultDispathData = this.resonseresultdispatchList!![position]
+            val ResultDispathData = this.resonseresultdispatchList!![position]
+
+            if (ResultDispathData!!.patient_order_detail?.vw_patient_info?.pattitle != null) {
+
+                holder.itemView.patient_info.text =
+                    ResultDispathData!!.patient_order_detail?.vw_patient_info?.pattitle + " " + ResultDispathData!!.patient_order_detail?.vw_patient_info?.first_name + "/" + ResultDispathData!!.patient_order_detail?.vw_patient_info?.ageperiod
+
+            } else {
+
+                holder.itemView.patient_info.text =
+                    ResultDispathData!!.patient_order_detail?.vw_patient_info?.first_name + "/" + ResultDispathData!!.patient_order_detail?.vw_patient_info?.ageperiod
+            }
+            holder.itemView.TestName.text =
+                ResultDispathData!!.patient_order_detail?.test_master!!.name.toString()
+            holder.itemView.orderedNUm.text =
+                ResultDispathData!!.patient_order_detail?.patient_order?.order_number.toString()
+            holder.itemView.approvedBy.text = ResultDispathData!!.approved_details?.first_name.toString()
+
+            holder.itemView.pdf.setOnClickListener {
+
+                onItemClickListener?.onItemClick(ResultDispathData, position)
+
+            }
 
 
+            /*
 
-        if(ResultDispathData!!.patient_order_detail?.vw_patient_info?.pattitle!=null){
-
-            holder.patient_info.text  = ResultDispathData!!.patient_order_detail?.vw_patient_info?.pattitle+" "+ResultDispathData!!.patient_order_detail?.vw_patient_info?.first_name+"/"+ResultDispathData!!.patient_order_detail?.vw_patient_info?.ageperiod
-
-        }
-        else{
-
-            holder.patient_info.text  =ResultDispathData!!.patient_order_detail?.vw_patient_info?.first_name+"/"+ResultDispathData!!.patient_order_detail?.vw_patient_info?.ageperiod
-        }
-        holder.TestName.text = ResultDispathData!!.patient_order_detail?.test_master!!.name.toString()
-        holder.orderedNUm.text = ResultDispathData!!.patient_order_detail?.patient_order?.order_number.toString()
-        holder.approvedBy.text = ResultDispathData!!.approved_details?.first_name.toString()
-
-        holder.ic_print.setOnClickListener {
-
-            onItemClickListener?.onItemClick(ResultDispathData, position)
-
-        }
-
-
-        /*
-
-        holder.patient_info.text = labAllData!!.title
-        holder.pinNum.text=labAllData!!.genre
-        holder.TestName.text = labAllData.year
+        holder.itemView.patient_info.text = labAllData!!.title
+        holder.itemView.pinNum.text=labAllData!!.genre
+        holder.itemView.TestName.text = labAllData.year
 
         */
-       if (position % 2 == 0) {
-            holder.mainLinearLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.alternateRow
+            if (position % 2 == 0) {
+                holder.itemView.mainLinearLayout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        mContext,
+                        R.color.alternateRow
+                    )
                 )
-            )
-        } else {
-            holder.mainLinearLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    mContext,
-                    R.color.white
+            } else {
+                holder.itemView.mainLinearLayout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        mContext,
+                        R.color.white
+                    )
                 )
-            )
+            }
+
+        }
+
+        else{
+
+
+            val ResultDispathData = this.resonseresultdispatchList!![position]
+
+            if (ResultDispathData!!.patient_order_detail?.vw_patient_info?.pattitle != null) {
+
+                holder.itemView.tv1.text =
+                    ResultDispathData!!.patient_order_detail?.vw_patient_info?.pattitle + " " + ResultDispathData!!.patient_order_detail?.vw_patient_info?.first_name + "/" + ResultDispathData!!.patient_order_detail?.vw_patient_info?.ageperiod
+
+            } else {
+
+                holder.itemView.tv1.text =
+                    ResultDispathData!!.patient_order_detail?.vw_patient_info?.first_name + "/" + ResultDispathData!!.patient_order_detail?.vw_patient_info?.ageperiod
+            }
+
+
+            holder.itemView.tv2.text=
+                ResultDispathData!!.patient_order_detail?.test_master!!.name.toString()+" / " + ResultDispathData!!.patient_order_detail?.patient_order?.order_number.toString()+" / " + ResultDispathData!!.approved_details?.first_name.toString()+" / "+utils?.convertDateFormat(
+                    ResultDispathData?.patient_order_detail!!.patient_order!!.order_request_date!!,
+                    "yyyy-MM-dd HH:mm:ss",
+                    "dd-MM-yyyy HH:mm"
+
+                )
+
+
+            holder.itemView.checkbox.setOnClickListener {
+
+                var checkBox:CheckBox = it as CheckBox
+
+                onPrintClickListener!!.onPrintClick(resonseresultdispatchList!![position]!!,checkBox.isChecked)
+
+
+            }
+
         }
     }
 
@@ -113,6 +159,10 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
     init {
         mLayoutInflater = LayoutInflater.from(context)
         mContext = context
+
+        utils= Utils(mContext)
+
+        isTablet =utils!!.isTablet(mContext)
     }
 
     fun setData(responseContent: List<ResponseContentsResultDispatch?>?) {
@@ -149,6 +199,18 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
             resonseresultdispatchList!!.removeAt(position)
             notifyItemRemoved(position)
         }*/
+    }
+
+    interface OnPrintClickListener {
+        fun onPrintClick(
+            responseContent: ResponseContentsResultDispatch?,
+            checkBox: Boolean
+        )
+    }
+
+
+    fun setOnPrintClickListener(onprintClickListener: OnPrintClickListener) {
+        this.onPrintClickListener = onprintClickListener
     }
 
     interface OnItemClickListener {

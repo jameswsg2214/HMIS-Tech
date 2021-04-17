@@ -12,7 +12,9 @@ import com.hmis_tn.lims.retrofitCallbacks.RetrofitCallback
 import com.hmis_tn.lims.retrofitCallbacks.RetrofitMainCallback
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseResultDispatch
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.RequestDispatchSearch
+import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.Requestpdf
 import com.hmis_tn.lims.utils.Utils
+import okhttp3.ResponseBody
 
 
 class ResultDispatchViewModel(
@@ -83,4 +85,23 @@ class ResultDispatchViewModel(
         //progress.value = 8
         facility_id = appPreferences?.getInt(AppConstants.FACILITY_UUID)
     }
+
+
+    fun GetPDFdownload(requestpdf: Requestpdf, getPDFRetrofitCallback: RetrofitCallback<ResponseBody>) {
+        val userDataStoreBean = userDetailsRoomRepository?.getUserDetails()
+        if (!Utils.isNetworkConnected(getApplication())) {
+            errorText.value = getApplication<Application>().getString(R.string.no_internet)
+            return
+        }
+        progress.value = 0
+        val aiiceApplication = HmisApplication.get(getApplication())
+        val apiService = aiiceApplication.getRetrofitService()
+
+        apiService?.getresultPDF(AppConstants.ACCEPT_LANGUAGE_EN,
+            AppConstants.BEARER_AUTH + userDataStoreBean?.access_token,
+            userDataStoreBean?.uuid!!, facility_id!!,
+            requestpdf
+        )?.enqueue(RetrofitMainCallback(getPDFRetrofitCallback))
+    }
+
 }

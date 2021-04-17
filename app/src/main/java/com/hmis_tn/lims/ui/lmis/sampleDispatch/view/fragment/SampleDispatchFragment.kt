@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -30,6 +31,7 @@ import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.assignToOtherResponse.La
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.labTestResponse.LabTestResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethod
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.testMethodResponse.ResponseTestMethodContent
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.LabTestAdapter
 import com.hmis_tn.lims.ui.lmis.sampleDispatch.view.dialogfragment.DispatchDialogFragment
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.RejectDialogFragment
 import com.hmis_tn.lims.ui.lmis.sampleDispatch.model.request.SampleDispatchRequest
@@ -66,6 +68,7 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
     private var currentPage = 0
     private var pageSize = 10
+    private var isTablet = false
     private var isLoading = false
     private var isLastPage = false
     private var TOTAL_PAGES: Int = 0
@@ -120,6 +123,7 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
         binding?.lifecycleOwner = this
         binding?.viewModel = viewModel
         utils = Utils(requireContext())
+        isTablet=utils!!.isTablet(requireContext())
 
         viewModel?.getTextMethod1(facility_id, getTestMethdCallBack1)
 
@@ -145,7 +149,6 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
         facility_id = appPreferences?.getInt(AppConstants.FACILITY_UUID)!!
 
         LabUUId = appPreferences?.getInt(AppConstants.LAB_UUID)!!
-        utils = Utils(requireContext())
 
   /*      binding!!.print.setOnClickListener {
 
@@ -360,11 +363,26 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
 
         }
 
-        binding!!.selectAllCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
 
-            mAdapter!!.selectAllCheckbox(isChecked)
+        binding?.selectAllCheckBox?.setOnClickListener {
+
+            val myCheckBox = it as CheckBox
+
+            mAdapter!!.selectAllCheckbox(myCheckBox.isChecked!!)
+
 
         }
+
+        binding!!.selectAllCheckBox?.isChecked= false
+
+        mAdapter!!.setOnSelectAllListener(object : SampleDispatchAdapter.OnSelectAllListener{
+            override fun onSelectAll(ischeck: Boolean) {
+
+                binding!!.selectAllCheckBox?.isChecked=ischeck
+
+
+            }
+        })
 /*
         binding?.rejected?.setOnClickListener{
             val ft = childFragmentManager.beginTransaction()
@@ -635,14 +653,17 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
             Log.i("",""+responsedata)
 
 
+            if(isTablet) {
 
-            binding?.positiveTxt!!.text = "0"
+                binding?.positiveTxt!!.text = "0"
 
-            binding?.negativeTxt!!.text = "0"
+                binding?.negativeTxt!!.text = "0"
 
-            binding?.equivocalTxt!!.text = "0"
+                binding?.equivocalTxt!!.text = "0"
 
-            binding?.rejectedTxt!!.text = "0"
+                binding?.rejectedTxt!!.text = "0"
+
+            }
 
             if (responseBody!!.body()?.responseContents?.isNotEmpty()!!) {
 
@@ -654,7 +675,8 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                     isLoadingPaginationAdapterCallback = false
                     mAdapter!!.addAll(responseBody.body()!!.responseContents)
                     if (currentPage < TOTAL_PAGES) {
-                        binding?.progressbar!!.visibility = View.VISIBLE
+                        if(isTablet)
+                            binding?.progressbar!!.visibility = View.VISIBLE
                         mAdapter!!.addLoadingFooter()
                         isLoading = true
                         isLastPage = false
@@ -665,61 +687,65 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                     }
 
                 } else {
-
-                    binding?.progressbar!!.visibility = View.GONE
+                    if(isTablet)
+                        binding?.progressbar!!.visibility = View.GONE
                     mAdapter!!.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
                 }
-                if(responseBody.body()!!.totalRecords!!<11)
-                {
-                    binding?.progressbar!!.visibility = View.GONE
-                }
 
-                val diseaseList = responseBody.body()?.order_status_count
-                for (i in diseaseList!!.indices){
 
-                    if(diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == SAMPLE_TRANSPORTUUId){
-                        binding?.positiveTxt!!.text = diseaseList[i]?.order_count.toString()
-                    }else if(diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == SAMPLE_RECEIVE){
-                        binding?.negativeTxt!!.text = diseaseList[i]?.order_count.toString()
-                    }else if(diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == SAMPLE_IN_TRANSPORTUUId){
-                        binding?.equivocalTxt!!.text = diseaseList[i]?.order_count.toString()
-                    }
-                    else if(diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == REJECTEDUUId){
+if(isTablet) {
+    val diseaseList = responseBody.body()?.order_status_count
+    for (i in diseaseList!!.indices) {
 
-                        binding?.rejectedTxt!!.text = diseaseList[i]?.order_count.toString()
+        if (diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == SAMPLE_TRANSPORTUUId) {
+            binding?.positiveTxt!!.text = diseaseList[i]?.order_count.toString()
+        } else if (diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == SAMPLE_RECEIVE) {
+            binding?.negativeTxt!!.text = diseaseList[i]?.order_count.toString()
+        } else if (diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == SAMPLE_IN_TRANSPORTUUId) {
+            binding?.equivocalTxt!!.text = diseaseList[i]?.order_count.toString()
+        } else if (diseaseList.size != 0 && diseaseList[i]?.order_status_uuid == REJECTEDUUId) {
 
-                    }
-                }
+            binding?.rejectedTxt!!.text = diseaseList[i]?.order_count.toString()
 
-                val orderList = responseBody.body()?.order_status_count
+        }
+    }
 
-                if(orderList?.size!=0){
+    val orderList = responseBody.body()?.order_status_count
 
-                    for (i in orderList!!.indices){
+    if (orderList?.size != 0) {
 
-                        if(orderList[i]?.order_status_uuid==2){
+        for (i in orderList!!.indices) {
 
-                            binding?.rejectedTxt!!.text = orderList[i]?.order_count.toString()
+            if (orderList[i]?.order_status_uuid == 2) {
 
-                        }
+                binding?.rejectedTxt!!.text = orderList[i]?.order_count.toString()
 
-                    }
+            }
 
-                }
+        }
+
+    }
+
+}
 
             }else{
                 Toast.makeText(requireContext(),"No records found",Toast.LENGTH_LONG).show()
-                binding?.progressbar!!.visibility = View.GONE
 
-                binding?.positiveTxt!!.text = "0"
 
-                binding?.negativeTxt!!.text = "0"
+                if(isTablet) {
+                    binding?.progressbar!!.visibility = View.GONE
 
-                binding?.equivocalTxt!!.text = "0"
+                    binding?.positiveTxt!!.text = "0"
 
-                binding?.rejectedTxt!!.text = "0"
+                    binding?.negativeTxt!!.text = "0"
+
+                    binding?.equivocalTxt!!.text = "0"
+
+                    binding?.rejectedTxt!!.text = "0"
+
+                }
 
                 mAdapter!!.clearAll()
             }
@@ -777,7 +803,8 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
     val labTestApprovalSecondResponseRetrofitCallback = object : RetrofitCallback<LabTestResponseModel> {
         override fun onSuccessfulResponse(response: Response<LabTestResponseModel?>) {
             if (response.body()?.responseContents!!.isNotEmpty()) {
-                binding?.progressbar!!.visibility = View.GONE
+                if(isTablet)
+                    binding?.progressbar!!.visibility = View.GONE
                 mAdapter!!.removeLoadingFooter()
                 isLoading = false
                 isLoadingPaginationAdapterCallback = false
@@ -787,14 +814,16 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                 println("testing for two  = $currentPage--$TOTAL_PAGES")
 
                 if (currentPage < TOTAL_PAGES) {
-                    binding?.progressbar!!.visibility = View.VISIBLE
+                    if(isTablet)
+                            binding?.progressbar!!.visibility = View.VISIBLE
                     mAdapter?.addLoadingFooter()
                     isLoading = true
                     isLastPage = false
                     println("testing for four  = $currentPage--$TOTAL_PAGES")
                 } else {
                     isLastPage = true
-                    binding?.progressbar!!.visibility = View.GONE
+                    if(isTablet)
+                           binding?.progressbar!!.visibility = View.GONE
 //                    visitHistoryAdapter.removeLoadingFooter()
                     isLoading = false
                     isLastPage = true
@@ -802,7 +831,8 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
                 }
 
             } else {
-                binding?.progressbar!!.visibility = View.GONE
+                if(isTablet)
+                           binding?.progressbar!!.visibility = View.GONE
                 println("testing for six  = $currentPage--$TOTAL_PAGES")
                 mAdapter?.removeLoadingFooter()
                 isLoading = false
@@ -850,7 +880,8 @@ class SampleDispatchFragment : Fragment(), RejectDialogFragment.OnLabTestRefresh
         }
 
         override fun onEverytime() {
-            binding?.progressbar!!.visibility = View.GONE
+            if(isTablet)
+                binding?.progressbar!!.visibility = View.GONE
         }
     }
 

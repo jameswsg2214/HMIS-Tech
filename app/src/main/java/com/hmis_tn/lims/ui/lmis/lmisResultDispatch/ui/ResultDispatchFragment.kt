@@ -1,8 +1,16 @@
 package com.hmis_tn.lims.ui.lmis.lmisResultDispatch.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +32,13 @@ import com.hmis_tn.lims.utils.Utils
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseContentsResultDispatch
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseResultDispatch
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.RequestDispatchSearch
+import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.Requestpdf
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.viewmodel.ResultDispatchViewModel
+import com.hmis_tn.lims.utils.FileHelper
+import okhttp3.ResponseBody
 
 import retrofit2.Response
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,6 +49,7 @@ class ResultDispatchFragment : Fragment() {
     var utils: Utils? = null
     private var viewModel: ResultDispatchViewModel? = null
     var appPreferences: AppPreferences? = null
+    var listPrint:ArrayList<ResponseContentsResultDispatch?> = ArrayList()
 
     private var mAdapter: ResultDispatchAdapter? = null
     var linearLayoutManager: LinearLayoutManager? = null
@@ -56,6 +69,7 @@ class ResultDispatchFragment : Fragment() {
 
     private var currentPage = 0
     private var pageSize = 10
+    private var isTablet = false
     private var isLoading = false
     private var isLastPage = false
     private var TOTAL_PAGES: Int = 0
@@ -65,6 +79,15 @@ class ResultDispatchFragment : Fragment() {
     private var pinnumber: String = ""
     private var searchUsingOrderNo: String = ""
     private var qucik_search: String = ""
+
+    var downloadZipFileTask: DownloadZipFileTask? =
+        null
+    private var destinationFile: File?=null
+
+    companion object {
+        const val PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 101
+
+    }
 
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
@@ -84,6 +107,7 @@ class ResultDispatchFragment : Fragment() {
         binding?.lifecycleOwner = this
         binding?.viewModel = viewModel
         utils = Utils(requireContext())
+        isTablet = utils!!.isTablet(requireContext())
         binding?.searchDrawerCardView?.setOnClickListener {
             binding?.drawerLayout!!.openDrawer(GravityCompat.END)
 
@@ -173,10 +197,42 @@ class ResultDispatchFragment : Fragment() {
             labResultDispatchListAPI(pageSize, currentPage)
         }
 
+        mAdapter!!.setOnPrintClickListener(object :ResultDispatchAdapter.OnPrintClickListener{
+            override fun onPrintClick(responseContent: ResponseContentsResultDispatch?, checkBox: Boolean) {
+
+                if(checkBox){
+
+                    listPrint!!.add(responseContent)
+
+                }
+                else{
+
+                    listPrint!!.remove(responseContent)
+                }
+
+            }
+        })
+
+
+        binding?.print?.setOnClickListener {
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                runTimePermission()
+
+            } else {
+
+                val requestpdf : Requestpdf = Requestpdf()
+                requestpdf.Id= listOf(listPrint[0]!!.patient_order_detail?.patient_order_test_details_uuid!!)
+                viewModel?.GetPDFdownload(requestpdf, GetPDFRetrofitCallback)
+
+            }
+
+
+        }
+
         mAdapter!!.setOnItemClickListener(object :
             ResultDispatchAdapter.OnItemClickListener {
-
-
             override fun onItemClick(
                 responseContent: ResponseContentsResultDispatch?,
                 position: Int
@@ -527,6 +583,184 @@ class ResultDispatchFragment : Fragment() {
                 binding?.progressbar!!.visibility = View.GONE
             }
         }
+
+
+
+
+    private fun runTimePermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE
+            )
+            return
+        }
+
+        else{
+            val requestpdf : Requestpdf = Requestpdf()
+            requestpdf.Id= listOf(listPrint.get(0)!!.patient_order_detail?.patient_order_test_details_uuid)
+            viewModel?.GetPDFdownload(requestpdf, GetPDFRetrofitCallback)
+            return
+        }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE) {
+            Log.i("", "" + grantResults)
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // now, you have permission go ahead
+                val requestpdf : Requestpdf = Requestpdf()
+                requestpdf.Id= listOf(listPrint[0]?.patient_order_detail?.patient_order_test_details_uuid)
+                viewModel?.GetPDFdownload(requestpdf, GetPDFRetrofitCallback)
+
+            } else {
+
+                getCustomDialog()
+            }
+
+        }
+
+    }
+
+    private fun getCustomDialog() {
+        // build alert dialog
+        val dialogBuilder = AlertDialog.Builder(context)
+        // set message of alert dialog
+        dialogBuilder.setMessage("App need this permission")
+            // if the dialog is cancelable
+            .setCancelable(false)
+            // positive button text and action
+            .setPositiveButton("Proceed", DialogInterface.OnClickListener { dialog, id ->
+                runTimePermission()
+            })
+            // negative button text and action
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, id ->
+                dialog.cancel()
+            })
+        // create dialog box
+        val alert = dialogBuilder.create()
+        // set title for alert dialog box
+        alert.setTitle("Permission!!")
+        // show alert dialog
+        alert.show()
+    }
+
+    val GetPDFRetrofitCallback = object : RetrofitCallback<ResponseBody> {
+        override fun onSuccessfulResponse(responseBody: Response<ResponseBody?>) {
+            //you can now get your file in the InputStream
+            downloadZipFileTask = DownloadZipFileTask()
+            downloadZipFileTask!!.execute(responseBody?.body())
+
+
+        }
+
+        override fun onBadRequest(errorBody: Response<ResponseBody?>) {
+
+//            Log.e("badreq",response.toString())
+//            val gson = GsonBuilder().create()
+            /*var mError = SampleErrorResponse()
+            try {
+                mError = gson.fromJson(response!!.errorBody()!!.string(), SampleErrorResponse::class.java)
+
+
+
+            } catch (e: IOException) { // handle failure to read error
+            }*/
+        }
+
+        override fun onServerError(response: Response<*>?) {
+
+        }
+
+        override fun onUnAuthorized() {
+
+        }
+
+        override fun onForbidden() {
+
+        }
+
+        override fun onFailure(failure: String?) {
+//            utils?.showToast(R.color.negativeToast, binding?.mainLayout!!, failure)
+        }
+
+        override fun onEverytime() {
+            viewModel!!.progress.value = 8
+        }
+
+    }
+    @Suppress("DEPRECATION")
+    inner class DownloadZipFileTask :
+        AsyncTask<ResponseBody?, Pair<Int?, Long?>?, String?>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+        }
+        fun doProgress(progressDetails: Pair<Int?, Long?>?) {
+            publishProgress(progressDetails)
+        }
+
+        override fun onPostExecute(result: String?) {
+//            binding?.progressbar!!.setVisibility(View.GONE);
+/*
+            binding?.pdfView!!.fromFile(destinationFile)
+                .password(null)
+                .defaultPage(0)
+                .enableSwipe(true)
+                .swipeHorizontal(false)
+                .enableDoubletap(true)
+                .onPageError { page, _ ->
+                    Toast.makeText(
+                        context,
+                        "Error at page: $page", Toast.LENGTH_LONG
+                    ).show()
+                }
+                .load()
+            Toast.makeText(
+                context,
+                "Storage path: $destinationFile", Toast.LENGTH_LONG
+            ).show()*/
+
+
+            destinationFile?.let { FileHelper(context).showNotification(it) }
+
+
+        }
+        override fun doInBackground(vararg params: ResponseBody?): String? {
+            saveToDisk(params[0]!!, "${listPrint[0]!!.patient_order_detail!!.vw_patient_info!!.first_name}.pdf")
+            return null
+        }}
+    private fun saveToDisk(body: ResponseBody, filename: String) {
+        try {
+            destinationFile = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                filename
+            )
+            val inputstream : InputStream? = body.byteStream()
+            val os: OutputStream = FileOutputStream(destinationFile)
+            val buffer = ByteArray(1024)
+            var bytesRead: Int
+            //read from is to buffer
+            while (inputstream!!.read(buffer).also { bytesRead = it } != -1) {
+                os.write(buffer, 0, bytesRead)
+            }
+            inputstream.close()
+            //flush OutputStream to write any buffered data to file
+            os.flush()
+            os.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
 
 
 }

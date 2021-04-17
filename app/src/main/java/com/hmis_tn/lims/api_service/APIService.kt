@@ -40,6 +40,7 @@ import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.model.OrderStatusSpinnerResponse
 import com.hmis_tn.lims.ui.lmis.lmisOrderStatus.model.TestNameResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.model.ResponseResultDispatch
 import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.RequestDispatchSearch
+import com.hmis_tn.lims.ui.lmis.lmisResultDispatch.request.Requestpdf
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.AssignToOtherRequest.AssignToOtherRequest
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.DirectApprovelReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.GetNoteTemplateReq
@@ -81,6 +82,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
@@ -779,6 +781,16 @@ interface APIService {
         @Query("temp_type_id") temp_type_id: Int
     ): Call<TempleResponseModel>
 
+    @Streaming
+    @POST(resultPDF)
+    fun getresultPDF(
+        @Header("Accept-Language") acceptLanguage: String?,
+        @Header("Authorization") authorization: String?,
+        @Header("user_uuid") user_uuid: Int,
+        @Header("facility_uuid") facility_uuid: Int,
+        @Body requestpdf: Requestpdf
+    ): Call<ResponseBody>
+
 
 
     companion object {
@@ -936,5 +948,9 @@ interface APIService {
             BASE_DOMAIN + "HMIS-EMR/v1/api/template/create"
         const val LabUpdateTemplate =
             BASE_DOMAIN + "HMIS-EMR/v1/api/template/updatetemplateById"
+
+        const val resultPDF =
+            BASE_DOMAIN + "HMIS-LIS/v1/api/patientworkorderdetails/printauthorizedlabresults"
+
     }
 }

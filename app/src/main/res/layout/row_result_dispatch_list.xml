@@ -1,197 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    app:cardElevation="4dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="5dp"
     android:layout_height="wrap_content">
-    <LinearLayout
+
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:padding="5dp"
         android:layout_width="match_parent"
+        android:background="@color/fadeBlue"
         android:layout_height="wrap_content"
-        android:id="@+id/mainLinearLayout"
-        android:background="@drawable/edittext_border_white"
-        android:orientation="horizontal"
+        tools:ignore="RtlCompat">
 
-        android:weightSum="6">
 
-        <TextView
-            android:id="@+id/serialNum"
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="S.no"
-            android:textSize="@dimen/dr_medium_text"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:textColor="@color/navColor"
-            android:layout_weight="0.50">
+            >
 
-        </TextView>
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
-        <!--   <TextView
-               android:layout_width="0dp"
-               android:layout_height="match_parent"
-               android:layout_weight="1"
-               android:gravity="center"
-               android:text="PIN"
-               android:id="@+id/pinNum"
-               android:textColor="@color/navColor"
-               android:textSize="14sp">
-
-           </TextView>
+        </CheckBox>
 
 
-           <View
-               android:layout_width="2dp"
-               android:layout_height="match_parent"
-               android:background="@color/view" />
-   -->
-        <TextView
-            android:layout_width="0dp"
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.30"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/patient_info"
-            android:text="Patient Info"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
-
-        </TextView>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@+id/checkbox"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="3dp"
+            android:orientation="vertical">
 
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.90"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:text="Order No"
-            android:id="@+id/orderedNUm"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
+            <TextView
+                android:id="@+id/tv1"
+                android:text="@string/labTestHeading"
+                android:background="@color/fadeBlue"
+                style="@style/SimpleTextView3"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_centerVertical="true"
+                >
+            </TextView>
 
-        </TextView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
 
-        <!--  <TextView
-              android:layout_width="0dp"
-              android:layout_height="match_parent"
-              android:layout_weight="1"
-              android:gravity="center"
-              android:id="@+id/dateText"
-              android:text="Date&amp;Time"
-              android:textColor="@color/navColor"
-              android:textSize="14sp">
+                <TextView
+                    android:id="@+id/tv2"
+                    android:text="listmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmbbbbbbb"
+                    android:background="@color/fadeBlue"
+                    style="@style/SmallTextView"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/status"
+                    android:singleLine="false"
+                    >
+                </TextView>
 
-          </TextView>
-          <View
-              android:layout_width="2dp"
-              android:layout_height="match_parent"
-              android:background="@color/view" />-->
 
-        <!--  <TextView
-              android:layout_width="0dp"
-              android:layout_height="match_parent"
-              android:layout_weight="1"
-              android:gravity="center"
-              android:text="Ordered by"
-              android:id="@+id/ordereBY"
-              android:textColor="@color/navColor"
-              android:textSize="14sp">
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/ic_arrow_left"
+                    android:gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:text="Created"
+                    android:visibility="gone"
+                    android:paddingVertical="5dp"
+                    android:paddingHorizontal="10dp"
+                    android:textSize="@dimen/dr_small_text"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/hmis_background"
+                    android:background="@drawable/status_border"
+                    android:layout_height="wrap_content"
+                    tools:ignore="RtlCompat">
 
-          </TextView>
+                </TextView>
 
 
 
+            </RelativeLayout>
 
 
-          <View
-              android:layout_width="2dp"
-              android:layout_height="match_parent"
-              android:background="@color/view" />-->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.30"
-            android:id="@+id/approvedBy"
-            android:gravity="center"
-            android:text="Approved By"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
-
-        </TextView>
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.30"
-            android:gravity="center"
-            android:text="Test Name"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/TestName"
-            android:textColor="@color/navColor"
-            android:textSize="@dimen/dr_medium_text">
-
-        </TextView>
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/view" />
+        </LinearLayout>
 
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.70"
-            android:gravity="center"
-            android:id="@+id/pdf"
-            android:layout_gravity="center_vertical"
-            android:padding="5dp"
-            app:srcCompat="@drawable/ic_print"
-            android:textSize="@dimen/dr_medium_text">
 
-        </ImageView>
-
-        <!--
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/view" />
-        -->
-        <!-- <CheckBox
-             android:layout_width="0dp"
-             android:layout_height="match_parent"
-             android:layout_weight="0.50"
-             android:gravity="center"
-             android:id="@+id/checkbox"
-             android:textColor="@color/navColor"
-             android:textSize="11sp">
-
-         </CheckBox>
-
-         <View
-             android:layout_width="2dp"
-             android:layout_height="match_parent"
-             android:background="@color/view" />-->
-
-    </LinearLayout>
+    </RelativeLayout>
 
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

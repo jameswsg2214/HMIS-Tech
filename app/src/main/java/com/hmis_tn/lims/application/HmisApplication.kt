@@ -1,8 +1,11 @@
 package com.hmis_tn.lims.application
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.res.Configuration
 import android.net.ConnectivityManager
+import android.os.Build
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.FirebaseApp
 import com.hmis_tn.lims.api_service.APIService
@@ -19,7 +22,7 @@ class HmisApplication : MultiDexApplication() {
 
 
     private var mRetrofitService: APIService? = null
-//    private var fireBaseAnalyticsManager: FirebaseAnalyticsManager? = null
+    //    private var fireBaseAnalyticsManager: FirebaseAnalyticsManager? = null
 
 
     private val id: String = "1"
@@ -29,6 +32,8 @@ class HmisApplication : MultiDexApplication() {
         app = this
         instance = this
         FirebaseApp.initializeApp(this)
+
+        createNotificationChannels()
 /*
 
         //Injection used koin module instead of dagger
@@ -116,8 +121,24 @@ class HmisApplication : MultiDexApplication() {
         var paymentSuccess : Boolean = false
     }
     */
+        const val CHANNEL_1 = "Channel 1"
     }
 
 
+
+    private fun createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                Companion.CHANNEL_1,
+                "Download File",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationChannel.description = "Channel 1"
+            notificationChannel.enableVibration(true)
+
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(notificationChannel)
+        }
+    }
 
 }
