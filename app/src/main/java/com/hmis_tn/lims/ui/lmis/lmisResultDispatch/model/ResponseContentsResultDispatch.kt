@@ -12,5 +12,6 @@ data class ResponseContentsResultDispatch(
     var patient_work_order_uuid: Int? = 0,
     var to_facility_uuid: Int? = 0,
     var uuid: Int? = 0,
+    var ischeck: Boolean? = false,
     var work_order_status_uuid: Int? = 0
 )

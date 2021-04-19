@@ -23,6 +23,7 @@ import com.hmis_tn.lims.config.AppConstants
 import com.hmis_tn.lims.config.AppPreferences
 import com.hmis_tn.lims.databinding.DialogOrderProcessListBinding
 import com.hmis_tn.lims.retrofitCallbacks.RetrofitCallback
+import com.hmis_tn.lims.ui.homepage.ui.HomeScreenActivity
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.DirectApprovelReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.GetNoteTemplateReq
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.request.orderRequest.Header
@@ -32,7 +33,12 @@ import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.SendIdList
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.noteTemplateResponse.GetNoteTemplateResp
 import com.hmis_tn.lims.ui.lmis.lmisTest.model.response.orderProcessResponse.OrderProcessResponseModel
 import com.hmis_tn.lims.ui.lmis.lmisTest.view.adapter.OrderProcessMobAdapter
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.AssignToOtherDialogFragment
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.OrderProcessDialogFragment
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.RejectDialogFragment
+import com.hmis_tn.lims.ui.lmis.lmisTest.view.dialogFragment.SendForApprovalDialogFragment
 import com.hmis_tn.lims.ui.lmis.lmisTest.viewModel.LabTestViewModel
+import com.hmis_tn.lims.ui.lmis.lmisTestProcess.view.fragment.LabTestProcessFragment
 import com.hmis_tn.lims.ui.login.model.SimpleResponseModel
 import com.hmis_tn.lims.utils.CustomProgressDialog
 import com.hmis_tn.lims.utils.OldRichTextEditorDialogFragment
@@ -43,7 +49,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class OrderProcessFragment : Fragment() {
+class OrderProcessFragment : Fragment(),RejectDialogFragment.OnLabTestRefreshListener {
 
     private var OrderData: ArrayList<SendIdList>? = ArrayList()
     private var department_uuid: Int? = null
@@ -129,6 +135,20 @@ class OrderProcessFragment : Fragment() {
 
         }
 */
+
+        binding?.rejectcardview?.setOnClickListener {
+
+         //   callbackLabTestCallBack?.onArrayList(OrderData)
+
+            val ft = childFragmentManager.beginTransaction()
+            val dialog = RejectDialogFragment()
+            val bundle = Bundle()
+            bundle.putParcelableArrayList(AppConstants.RESPONSECONTENT, OrderData)
+            dialog.arguments = bundle
+            dialog.show(ft, "Tag")
+
+
+        }
 
 
         mAdapter = OrderProcessMobAdapter(requireContext(), ArrayList())
@@ -707,6 +727,24 @@ class OrderProcessFragment : Fragment() {
 
             callbackOrderProcess?.onRefreshOrderList("")
 
+            if(!utils!!.isTablet(requireContext())) {
+
+                if (From == "Test") {
+
+                    val labtemplatedialog = LabTestFragment()
+
+                    (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+
+                } else {
+
+                    val labtemplatedialog = LabTestProcessFragment()
+
+                    (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+                }
+
+            }
 
         }
 
@@ -770,6 +808,26 @@ class OrderProcessFragment : Fragment() {
 
         */
             callbackOrderProcess?.onRefreshOrderList(From)
+
+
+            if(!utils!!.isTablet(requireContext())) {
+
+                if (From == "Test") {
+
+                    val labtemplatedialog = LabTestFragment()
+
+                    (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+
+                } else {
+
+                    val labtemplatedialog = LabTestProcessFragment()
+
+                    (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+                }
+
+            }
             //dialog!!.dismiss()
 
         }
@@ -949,6 +1007,38 @@ class OrderProcessFragment : Fragment() {
     interface OnLabTestCallBack {
 
         fun onArrayList(orderData: ArrayList<SendIdList>?)
+    }
+
+    override fun onRefreshList() {
+
+        if(!utils!!.isTablet(requireContext())) {
+
+            if (From == "Test") {
+
+                val labtemplatedialog = LabTestFragment()
+
+                (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+
+            } else {
+
+                val labtemplatedialog = LabTestProcessFragment()
+
+                (activity as HomeScreenActivity).replaceFragment(labtemplatedialog)
+
+            }
+
+        }
+    }
+
+
+    override fun onAttachFragment(childFragment: Fragment) {
+        super.onAttachFragment(childFragment)
+
+        if (childFragment is RejectDialogFragment) {
+            childFragment.setOnLabTestRefreshListener(this)
+        }
+
     }
 
 }

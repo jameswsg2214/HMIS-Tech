@@ -84,6 +84,9 @@ class ResultDispatchFragment : Fragment() {
         null
     private var destinationFile: File?=null
 
+    private  var printListUUid:ArrayList<Int> = ArrayList()
+    private  var printpatentUUid:ArrayList<String> = ArrayList()
+
     companion object {
         const val PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 101
 
@@ -197,17 +200,51 @@ class ResultDispatchFragment : Fragment() {
             labResultDispatchListAPI(pageSize, currentPage)
         }
 
-        mAdapter!!.setOnPrintClickListener(object :ResultDispatchAdapter.OnPrintClickListener{
-            override fun onPrintClick(responseContent: ResponseContentsResultDispatch?, checkBox: Boolean) {
+        mAdapter!!.setOnPrintClickListener(object : ResultDispatchAdapter.OnPrintClickListener {
+            override fun onPrintClick(
+                responseContent: ResponseContentsResultDispatch?,
+                checkBox: Boolean
+            ) {
 
-                if(checkBox){
+                if (checkBox) {
 
-                    listPrint!!.add(responseContent)
 
-                }
-                else{
+                    if (printpatentUUid.size != 0) {
+
+                        if (printpatentUUid.contains(responseContent!!.patient_order_detail!!.vw_patient_info!!.uhid!!)) {
+
+                            printpatentUUid.add(responseContent!!.patient_order_detail!!.vw_patient_info!!.uhid!!)
+
+                            printListUUid.add(responseContent!!.patient_order_detail!!.patient_order_test_details_uuid!!)
+
+                        } else {
+
+                            Toast.makeText(requireContext(), "Different PIN and order Number Not possible to print", Toast.LENGTH_SHORT).show()
+
+                            mAdapter!!.clearCheckBox()
+
+                            printListUUid.clear()
+                            printpatentUUid.clear()
+
+                        }
+
+                    } else {
+
+                        printpatentUUid.add(responseContent!!.patient_order_detail!!.vw_patient_info!!.uhid!!)
+
+                        printListUUid.add(responseContent!!.patient_order_detail!!.patient_order_test_details_uuid!!)
+
+
+                    }
+
+                } else {
 
                     listPrint!!.remove(responseContent)
+
+                    printpatentUUid.add(responseContent!!.patient_order_detail!!.vw_patient_info!!.uhid!!)
+
+                    printListUUid.add(responseContent!!.patient_order_detail!!.patient_order_test_details_uuid!!)
+
                 }
 
             }
@@ -223,7 +260,10 @@ class ResultDispatchFragment : Fragment() {
             } else {
 
                 val requestpdf : Requestpdf = Requestpdf()
-                requestpdf.Id= listOf(listPrint[0]!!.patient_order_detail?.patient_order_test_details_uuid!!)
+                requestpdf.Id= printListUUid
+
+
+                //    listOf(listPrint[0]!!.patient_order_detail?.patient_order_test_details_uuid!!)
                 viewModel?.GetPDFdownload(requestpdf, GetPDFRetrofitCallback)
 
             }
@@ -601,7 +641,10 @@ class ResultDispatchFragment : Fragment() {
 
         else{
             val requestpdf : Requestpdf = Requestpdf()
-            requestpdf.Id= listOf(listPrint.get(0)!!.patient_order_detail?.patient_order_test_details_uuid)
+            requestpdf.Id= printListUUid
+
+
+                //listOf(listPrint.get(0)!!.patient_order_detail?.patient_order_test_details_uuid)
             viewModel?.GetPDFdownload(requestpdf, GetPDFRetrofitCallback)
             return
         }
@@ -618,7 +661,9 @@ class ResultDispatchFragment : Fragment() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // now, you have permission go ahead
                 val requestpdf : Requestpdf = Requestpdf()
-                requestpdf.Id= listOf(listPrint[0]?.patient_order_detail?.patient_order_test_details_uuid)
+                requestpdf.Id= printListUUid
+
+              //      listOf(listPrint[0]?.patient_order_detail?.patient_order_test_details_uuid)
                 viewModel?.GetPDFdownload(requestpdf, GetPDFRetrofitCallback)
 
             } else {

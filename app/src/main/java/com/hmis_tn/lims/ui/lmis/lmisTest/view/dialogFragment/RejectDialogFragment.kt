@@ -130,6 +130,28 @@ class RejectDialogFragment : DialogFragment() {
             // get value from bundle..
             favouriteData = args.getParcelableArrayList<SendIdList>(AppConstants.RESPONSECONTENT)!!
 
+            if(favouriteData.size ==1) {
+                binding?.testName?.setText(
+                    favouriteData[0].name
+                )
+            }
+            else{
+
+                for(i in favouriteData!!.indices){
+
+                    if(binding?.testName?.text!="") {
+                        binding?.testName?.text = ""+binding?.testName?.text +" , "+ favouriteData[i].name
+                    }
+                    else{
+
+                        binding?.testName?.text = favouriteData[i].name
+
+                    }
+
+                }
+
+
+            }
 
         }
 
@@ -137,28 +159,7 @@ class RejectDialogFragment : DialogFragment() {
         viewModel!!.getRejectReference(getRejectRefernceRetrofitCallback)
 
 
-        if(favouriteData.size ==1) {
-            binding?.testName?.setText(
-                favouriteData[0].name
-            )
-        }
-        else{
 
-            for(i in favouriteData!!.indices){
-
-                if(binding?.testName?.text!="") {
-                    binding?.testName?.text = ""+binding?.testName?.text +" , "+ favouriteData[i].name
-                }
-                else{
-
-                    binding?.testName?.text = favouriteData[i].name
-
-                }
-
-            }
-
-
-        }
 
         binding?.closeImageView?.setOnClickListener {
             //Call back

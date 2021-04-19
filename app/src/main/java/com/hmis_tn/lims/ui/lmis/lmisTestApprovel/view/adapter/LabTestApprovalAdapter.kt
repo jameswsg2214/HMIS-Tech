@@ -374,7 +374,7 @@ class LabTestApprovalAdapter(context: Context, private var labTestApproval: Arra
 
             holder.itemView.checkbox.isChecked = labTestApproval!![position]!!.is_selected!!
 
-            if (labTestApproval!![position]!!.order_status_uuid != 2) {
+            if (labTestApproval!![position]!!.auth_status_uuid == null ) {
 
                 holder.itemView.status.setText(labTestApproval!![position]!!.order_status_name)
 

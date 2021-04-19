@@ -1609,7 +1609,6 @@ binding?.selectAllCheckBox?.setOnClickListener {
     override fun onAttachFragment(childFragment: Fragment) {
         super.onAttachFragment(childFragment)
 
-
         if(childFragment is OrderProcessDialogFragment){
             childFragment.setOnOrderProcessRefreshListener(this)
         }

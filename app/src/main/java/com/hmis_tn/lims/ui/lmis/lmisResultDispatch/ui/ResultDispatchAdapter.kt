@@ -132,6 +132,7 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
 
 
             holder.itemView.tv2.text=
+                ResultDispathData!!.patient_order_detail!!.vw_patient_info!!.uhid+" / "+
                 ResultDispathData!!.patient_order_detail?.test_master!!.name.toString()+" / " + ResultDispathData!!.patient_order_detail?.patient_order?.order_number.toString()+" / " + ResultDispathData!!.approved_details?.first_name.toString()+" / "+utils?.convertDateFormat(
                     ResultDispathData?.patient_order_detail!!.patient_order!!.order_request_date!!,
                     "yyyy-MM-dd HH:mm:ss",
@@ -140,9 +141,13 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
                 )
 
 
+            holder.itemView.checkbox.isChecked= ResultDispathData.ischeck!!
+
             holder.itemView.checkbox.setOnClickListener {
 
                 var checkBox:CheckBox = it as CheckBox
+
+                resonseresultdispatchList!![position]!!.ischeck = checkBox.isChecked
 
                 onPrintClickListener!!.onPrintClick(resonseresultdispatchList!![position]!!,checkBox.isChecked)
 
@@ -218,6 +223,20 @@ class ResultDispatchAdapter(context: Context, private var resonseresultdispatchL
     }
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         this.onItemClickListener = onItemClickListener
+    }
+
+    fun clearCheckBox() {
+
+        for(i in resonseresultdispatchList!!.indices){
+
+            if(resonseresultdispatchList!![i]!!.ischeck!!)
+                resonseresultdispatchList!![i]!!.ischeck= false
+
+
+        }
+
+        notifyDataSetChanged()
+
     }
 
 

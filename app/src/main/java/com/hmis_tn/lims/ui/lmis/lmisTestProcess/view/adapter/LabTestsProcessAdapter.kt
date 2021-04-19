@@ -222,7 +222,7 @@ class LabTestsProcessAdapter(context: Context, private var labTestList: ArrayLis
 
             holder.itemView.checkbox.isChecked = labTestList!![position]!!.is_selected!!
 
-            if (labTestList!![position]!!.order_status_uuid != 2) {
+            if (labTestList!![position]!!.auth_status_uuid == null ) {
 
                 holder.itemView.status.setText(labTestList!![position]!!.order_status_name)
 
