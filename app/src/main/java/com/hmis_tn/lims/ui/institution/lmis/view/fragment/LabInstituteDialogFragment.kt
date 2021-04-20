@@ -34,6 +34,7 @@ import com.hmis_tn.lims.ui.institution.viewModel.InstituteViewModel
 import com.hmis_tn.lims.ui.login.model.institution_response.InstitutionResponseModel
 import com.hmis_tn.lims.ui.login.model.institution_response.InstitutionresponseContent
 import com.hmis_tn.lims.utils.Utils
+import com.hmis_tn.lims.utils.ViewUtils.setMandatoryText
 
 
 class LabInstituteDialogFragment : DialogFragment() {
@@ -112,7 +113,7 @@ class LabInstituteDialogFragment : DialogFragment() {
 
     private fun initView() {
 
-        binding?.listName?.text="Lab"
+        binding?.listName?.setMandatoryText("Lab")
 
         binding?.closeImageView?.setOnClickListener {
             dialog?.dismiss()

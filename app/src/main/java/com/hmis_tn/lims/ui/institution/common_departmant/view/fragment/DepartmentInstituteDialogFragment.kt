@@ -145,9 +145,7 @@ class DepartmentInstituteDialogFragment : DialogFragment() {
                 department_uuid =
                     departmentListGetDetails?.get(position)?.department_uuid
 
-
                 departmentname = departmentListGetDetails?.get(position)?.department?.name
-
 
             }
 

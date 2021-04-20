@@ -342,6 +342,27 @@ class LabTestFragment : Fragment(),
             }
         })
 
+        if(!isTablet){
+
+            binding!!.print!!.setOnClickListener {
+
+
+                val datas = mAdapter!!.getSelectedCheckData()
+                if (datas!!.size == 0) {
+
+
+                    Toast.makeText(context, "Please Select Any one Item", Toast.LENGTH_SHORT).show()
+
+                    return@setOnClickListener
+
+                }
+
+
+
+                }
+
+        }
+
   /*      mAdapter!!.setOnPrintClickListener(object :LabTestAdapter.OnPrintClickListener{
             override fun onPrintClick(uuid: Int) {
 

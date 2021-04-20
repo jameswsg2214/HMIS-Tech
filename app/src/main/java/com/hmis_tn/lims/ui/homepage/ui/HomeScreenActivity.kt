@@ -731,6 +731,31 @@ class HomeScreenActivity : AppCompatActivity() ,LanguagesDialogFragemnt.OnLangua
         val land= appPreferences?.getString(AppConstants.LANDSCREEN)
 
         val landurl= appPreferences?.getString(AppConstants.LANDURL)
+
+
+        if(land!! == AppConstants.LABAPPROVELCODE){
+
+            val op=LabTestApprovalFragment()
+
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.landfragment, op)
+            fragmentTransaction.commit()
+        }
+        else if(land == AppConstants.LABPROCESSCODE){
+
+            val op=LabTestProcessFragment()
+
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.landfragment, op)
+            fragmentTransaction.commit()
+        }
+        else if(land == AppConstants.LABTESTCODE){
+
+            val op=LabTestFragment()
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.landfragment, op)
+            fragmentTransaction.commit()
+        }
 /*
 
         if(land!! == AppConstants.LABAPPROVELCODE){
